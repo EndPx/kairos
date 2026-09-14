@@ -76,6 +76,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M0-06 / Kuru settlement experiment design
+- Date: 2026-09-15
+- Environment and chain ID: Planned Monad Testnet `10143`; no transaction submitted
+- Version/commit/source URL: `docs/KURU_SETTLEMENT_EXPERIMENT.md`; selected Kuru proxy and implementation recorded in M0-05.
+- Command or reproducible steps: Design review against the M0.6 requirements and acceptance cases SET-01–04 and PRICE-01.
+- Result (PASS / FAIL / BLOCKED): PASS — six bounded test cases and required artifacts are specified. BLOCKED execution: source ABI/deployment match, decoded market params/L2, authorized funded test wallet, and an authorized test adapter deployment.
+- Artifact / receipt / transaction hash: `docs/KURU_SETTLEMENT_EXPERIMENT.md`; no hash because no transaction was authorized.
+- Limitations (fixture, fork, testnet, simulation, live): This is an experiment design, not Kuru execution evidence.
+- Next action: M0.7 — probe CRE CLI, SDK, network/forwarder support, and account access.
+
+---
+
 - ID and requirement: DOC-03 / English submission documentation
 - Date: 2026-09-15
 - Environment and chain ID: Documentation-only; no chain or runtime accessed
