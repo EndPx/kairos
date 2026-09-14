@@ -1,6 +1,6 @@
 # Current status
 Updated: 2026-09-15
-Stage: M0 repository and compatibility — in progress; application implementation NOT STARTED.
+Stage: M0 repository and compatibility — complete with sponsor blockers recorded; application implementation NOT STARTED.
 
 Completed:
 - Final user specification copied unchanged.
@@ -14,6 +14,7 @@ Completed:
 - M0.6 Kuru settlement experiment design and M0.7 CRE runtime capability probe recorded.
 - M0.8 Privy client capability and configuration probe recorded; no user, wallet, or transaction was accessed.
 - M0.9 Aurora Intents API capability probe recorded; no key, quote, deposit address, funding transfer, or lifecycle lookup was requested.
+- M0 exit review completed: every required sponsor is either runtime-probed and precisely blocked, with separate evidence and a next task. No sponsor has been replaced by a mock or alternative service.
 
 Unverified:
 - All runtime integrations, exact environment compatibility, deployed ABIs, available credentials.
@@ -21,6 +22,6 @@ Unverified:
 - Project stack, codebase and visual design.
 
 Next:
-Perform the M0 exit review: normalize each sponsor result to verified or evidence-backed blocked status, record M1 entry blockers, and do not start M1.
+Await authorization to begin M1.1 shared domain types and unit conventions. Before M1.6, resolve the Kuru ABI/market-behavior blocker recorded in `docs/M0_EXIT_REVIEW.md`.
 
 Do not report product ready, integration passed or tests passed based on this file.

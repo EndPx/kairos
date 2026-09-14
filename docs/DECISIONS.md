@@ -33,6 +33,7 @@ Authoritative product text: PRODUCT_SPEC_FINAL.md.
 ## M0 recorded decisions
 - 2026-09-15 — Monad Testnet (`chainId` 10143 / `0x279f`) is the selected compatibility-probe environment because the official Monad documentation lists the Foundation RPC endpoint and Kuru publishes a MON-USDC testnet market. This is not an Aurora compatibility claim.
 - 2026-09-15 — Kairos must model native gas independently from USDC budget, MON output, trading fees, and actual settlement. Monad charges `gas_limit × price_per_gas`, not gas used; all user and executor transaction paths must use an explicitly bounded gas limit after measurement. Reserve-balance failures remain transaction failures, never token-budget spending.
+- 2026-09-15 — M0 closes with Kuru, CRE, Privy, and Aurora precisely blocked rather than substituted or mocked. M1 may use generic, clearly labeled fixtures for policy correctness only; no sponsor-specific ABI, forwarder, route, chain support, or transaction claim may be inferred until its independent blocker is resolved.
 
 ## Superseded
 Escrow/deposit-to-Kairos proposals, unconditional no-custody claims, mandatory Privy session signing, forced Intents Connect, guaranteed completion/better price, and $48K as a confirmed obtainable prize are not current requirements.

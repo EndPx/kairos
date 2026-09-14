@@ -88,6 +88,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M0-10 / M0 exit compatibility review
+- Date: 2026-09-15
+- Environment and chain ID: Documentation/evidence review; no new chain or service access
+- Version/commit/source URL: `WORKPLAN.md` M0 exit; M0-04 through M0-09 evidence records; `docs/M0_EXIT_REVIEW.md`.
+- Command or reproducible steps: Reviewed each required sponsor against the M0 exit condition: runtime-verified narrow probe or precisely blocked with an evidence record and independent next task.
+- Result (PASS / FAIL / BLOCKED): PASS — M0 exit condition is met: Kuru is BLOCKED with partial deployment/token read evidence; CRE, Privy, and Aurora are BLOCKED with specific configuration/capability evidence. Monad public-read platform probe is VERIFIED. No blocker is hidden by a mock or scope change.
+- Artifact / receipt / transaction hash: `docs/M0_EXIT_REVIEW.md`; no transaction hash.
+- Limitations (fixture, fork, testnet, simulation, live): M0 contains no contract, frontend, workflow, Aurora API, Privy wallet, Kuru settlement, or deployment proof. Product readiness is not claimed.
+- Next action: Await authorization for M1.1; retain the M0 sponsor gates as hard prerequisites for sponsor-specific implementation.
+
+---
+
 - ID and requirement: M0-09 / Aurora Intents capability probe
 - Date: 2026-09-15
 - Environment and chain ID: Documentation and local presence-only check; no Aurora API request, chain, quote, deposit address, or transfer accessed
