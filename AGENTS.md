@@ -21,6 +21,13 @@ Keep secrets out of chat, docs, logs and version control; add only variable name
 No real-money spending, production deployment, public publishing or messages to sponsors are authorized by this handoff alone. Complete local preparation; obtain explicit user authorization for those actions when required.
 This document does not require extra approval for ordinary local coding, reviews, tests or fixes.
 
+## Git and submission discipline
+- Repository-facing code, documentation, commit messages, UI copy, and evidence must be written in English. Continue communicating with the user in Indonesian.
+- Work in small, cohesive commits. A commit must contain one narrowly scoped, reviewable change and its directly related tests or documentation only.
+- Run the relevant verification before each commit. Do not batch unrelated work into one commit.
+- Push every verified small commit directly to `main` immediately. Confirm the push succeeded before beginning the next independently reviewable change.
+- Never force-push, rewrite public history, or include secrets, generated credentials, or unverified claims in a commit.
+
 ## Quality and evidence
 Implement meaningful unit/invariant, adapter integration and end-to-end tests from docs/ACCEPTANCE_TESTS.md.
 Record actual results and failures in EVIDENCE.md with environment, command, version and artifact.
