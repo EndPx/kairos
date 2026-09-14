@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M0-01 / Repository baseline
+- Date: 2026-09-15
+- Environment and chain ID: Windows 11; Node.js v24.18.0; npm 11.8.0; pnpm 10.21.0; Git 2.42.0.windows.2; no chain accessed
+- Version/commit/source URL: Repository `EndPx/kairos`, baseline commit `54c728f`
+- Command or reproducible steps: `git status --short --branch`; `git remote -v`; `git log -3 --oneline`; local tool command inventory.
+- Result (PASS / FAIL / BLOCKED): PASS — `main` was clean and tracked `origin/main`; handoff-only repository contains no application source, package manifest, lockfile, or contract toolchain.
+- Artifact / receipt / transaction hash: Command output in this goal turn; Git history beginning at `01ad36d`.
+- Limitations (fixture, fork, testnet, simulation, live): No sponsor, RPC, contract, or application runtime was accessed.
+- Next action: M0.2 — select and pin the monorepo/toolchain after official documentation review.
+
+---
+
 - ID and requirement: DOC-03 / English submission documentation
 - Date: 2026-09-15
 - Environment and chain ID: Documentation-only; no chain or runtime accessed
