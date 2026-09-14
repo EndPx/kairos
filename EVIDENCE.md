@@ -88,6 +88,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M0-08 / Privy capability and configuration probe
+- Date: 2026-09-15
+- Environment and chain ID: Documentation and local presence-only check; no chain, Privy account, wallet, or user accessed
+- Version/commit/source URL: Privy React quickstart; Privy EVM transaction documentation; Monad Next.js PWA Privy template documentation, reviewed 2026-09-15; package pin `@privy-io/react-auth` `3.42.0` in `docs/TOOLCHAIN.md`.
+- Command or reproducible steps: Reviewed primary documentation; relied on the M0.3 presence-only local environment inventory for `NEXT_PUBLIC_PRIVY_APP_ID` and `NEXT_PUBLIC_PRIVY_CLIENT_ID`.
+- Result (PASS / FAIL / BLOCKED): BLOCKED — documented user-confirmed EVM transaction path exists, but no Privy Web App ID, dashboard configuration, allowed origin, selected-chain confirmation, or user test account is available.
+- Artifact / receipt / transaction hash: `docs/PRIVY_CAPABILITY_PROBE.md`; no transaction hash.
+- Limitations (fixture, fork, testnet, simulation, live): Documentation confirms an SDK surface, not Kairos configuration or functioning wallet integration. Delegated signing and gas sponsorship were not assumed.
+- Next action: M0.9 — probe Aurora Intents credentials, exact route requirements, and Monad/Kuru compatibility without requesting funds.
+
+---
+
 - ID and requirement: M0-07 / CRE capability probe
 - Date: 2026-09-15
 - Environment and chain ID: Local CRE CLI; no chain accessed
