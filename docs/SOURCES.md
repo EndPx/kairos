@@ -4,7 +4,7 @@ This is a curated source index, not a vendored copy of all sponsor docs. Re-fetc
 Do not treat documentation descriptions as proof of deployed behavior.
 
 ## Local authoritative sources
-- PRODUCT_SPEC_FINAL.md: byte-for-byte copy of final user attachment.
+- PRODUCT_SPEC_FINAL.md: controlled English translation of the final user specification for submission; the Indonesian original remains authoritative if an ambiguity is found.
 - ../sources/TRACKS_RAW.txt: complete user-provided track/bounty list.
 - ../sources/AURORA_RAW.txt: complete user-provided Aurora details.
 - HACKATHON_REQUIREMENTS.md: normalized other sponsor details transcribed from user message; not raw portal HTML.

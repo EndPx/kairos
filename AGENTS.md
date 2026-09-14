@@ -28,4 +28,3 @@ A compiled frontend, mocked receipt, documentation claim or simulated report alo
 Update STATUS.md after each milestone: completed, in progress, blocked, exact next action.
 Do not mark the product complete while a required sponsor or acceptance criterion remains unproven.
 Task continuity comes from files, not assumed access to old chats.
-
