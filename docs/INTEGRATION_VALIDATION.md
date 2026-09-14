@@ -35,8 +35,14 @@ If Aurora cannot fund the chosen testnet, record the incompatibility, working op
 Deadline release boundary; optional execution spacing; stale-data age; price rounding; treatment of native gas versus output; account-wide balance contention; admin/upgradability model.
 Choose routine defaults with tests. Escalate product-visible changes with concrete evidence, while continuing independent work.
 
+## Monad platform validation
+Before selecting a contract or frontend stack, review Monad differences from Ethereum, current gas pricing, and reserve-balance behavior. Native gas reservation must not be confused with USDC budget, MON output, trading fee, or executor gas reporting.
+
+For the user-facing indexer, assess recovery after restart and chain reorg/finality behavior against the official Monad indexing guidance. `kuru-terminal` may be studied as an event-ingestion comparison only; pin its commit and license before copying any implementation. Select one indexer strategy rather than importing multiple providers.
+
+The Next.js/Serwist/Privy embedded-wallet template is a candidate scaffold, not an approved dependency list. Inspect exact packages, versions, license, and chain configuration before adopting it. Its 0x example must not replace Kuru order-book execution.
+
 ## Credentials inventory
 List variable names and why each is needed, never actual secrets.
 Potential categories: Monad RPC, Privy public app ID/server secret if required, CRE authentication, Aurora API key, test deployment/executor keys.
 Determine exact names from selected SDKs. Keep private keys and secrets server/local only.
-

@@ -10,6 +10,14 @@ Do not treat documentation descriptions as proof of deployed behavior.
 - HACKATHON_REQUIREMENTS.md: normalized other sponsor details transcribed from user message; not raw portal HTML.
 Older design drafts intentionally excluded to prevent resurrecting escrow or mandatory delegation.
 
+## Metropolis resource update (user-provided, 2026-09-14)
+- Full portal catalog was supplied by the user as `sources/METROPOLIS_RESOURCES_RAW.md`; it is contextual portal material, not a verified API reference or a new product requirement. The raw catalog has not yet been added to this repository.
+- Highest-priority references for Kairos are the official Monad pages for EVM differences, gas pricing, reserve balance, contract verification, indexers, and the Next.js/Serwist/Privy embedded-wallet template.
+- `https://github.com/monad-developers/kuru-terminal` is a reference for Kuru event ingestion and recovery only. Inspect its license and pin a commit before any reuse; do not adopt its entire provider set or mistake it for Kairos's adaptive engine.
+- The resource catalog's “Execution-Aware Trading Interfaces” category supports thematic alignment only. It does not establish novelty, eligibility, sponsor capability, or an award.
+- Do not replace the required Kuru order-book path with the catalogue's 0x/Privy example. Do not interpret “no pending states” as a UI requirement: Kairos must show submitted, confirmed, failed, and stale states honestly.
+- QuickNode, Tenderly, and Zerion references are optional unclaimed team perks. Eligibility, limits, and Monad support must be confirmed before use; they are not cash prizes or required integrations.
+
 ## Kuru
 - https://docs.kuru.io/ — official overview.
 - https://docs.kuru.io/llms.txt — documentation index.
@@ -56,6 +64,14 @@ API examples require revalidation against endpoint reference, not blind copying.
 - https://hackathon.monad.xyz/resources — bounty link; fetch failed.
 User-provided deadline is precise local time; do not infer a different deadline from marketing dates.
 
+Additional current-primary-doc checks before implementation:
+- https://docs.monad.xyz/developer-essentials/differences — verify deviations from Ethereum before applying tooling or execution assumptions.
+- https://docs.monad.xyz/developer-essentials/gas-pricing — verify current gas behavior.
+- https://docs.monad.xyz/developer-essentials/reserve-balance — account for native gas reservation separately from Kairos's input/output accounting.
+- https://docs.monad.xyz/guides/verify-smart-contract/index — deployment verification procedure.
+- https://docs.monad.xyz/guides/indexers/index — indexer selection and recovery reference.
+- https://docs.monad.xyz/templates/next-serwist-privy-embedded-wallet — candidate scaffold only; inspect dependencies and license before adoption.
+
 ## Standards and agent setup
 - https://eips.ethereum.org/EIPS/eip-20 — allowance/transferFrom standard. Read.
 - https://learn.chatgpt.com/docs/agent-configuration/agents-md — official AGENTS.md guidance, opened via developers.openai.com/codex/guides/agents-md.
@@ -64,4 +80,3 @@ User-provided deadline is precise local time; do not infer a different deadline 
 For each integration save date, URL, package version/commit, chain ID, contract code/ABI verification, transaction/log or test artifact.
 Source statuses: user-final / user-rules / docs-read / discovered-not-verified / runtime-verified.
 No runtime-verified sponsor integration currently exists in this package.
-

@@ -14,3 +14,14 @@ Add records:
 
 Documentation reads are context evidence only. Keep runtime proof separate.
 
+---
+
+- ID and requirement: DOC-02 / M0 implementation-source update
+- Date: 2026-09-14
+- Environment and chain ID: Documentation-only; no chain or runtime accessed
+- Version/commit/source URL: User-provided Metropolis resource update, stated source https://hackathon.monad.xyz/resources
+- Command or reproducible steps: Reviewed supplied resource update; updated `docs/SOURCES.md`, `docs/HACKATHON_REQUIREMENTS.md`, and `docs/INTEGRATION_VALIDATION.md`.
+- Result (PASS / FAIL / BLOCKED): PASS — references and prize interpretation recorded; no runtime integration claim.
+- Artifact / receipt / transaction hash: Git history for the updated documentation
+- Limitations (fixture, fork, testnet, simulation, live): User-provided portal content; external API support, entitlements, and current docs remain unverified.
+- Next action: Use current primary documentation and executable probes to validate Monad/Kuru/CRE/Privy/Aurora compatibility.

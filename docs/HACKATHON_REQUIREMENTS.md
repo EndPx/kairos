@@ -2,7 +2,7 @@
 Source: user-supplied Metropolis text in sources/. Read this as supplied rules, not independent confirmation of the full portal.
 Deadline shown: 2026-10-14 10:59 GMT+7 / WIB.
 One primary track; multiple applicable sponsor bounties may be selected. Solo teams allowed. Project required before selection.
-Primary: Onchain Finance & Trading. $30,000 displayed; prize division and full judging rubric not supplied.
+Primary: Onchain Finance & Trading. Subsequent user-provided prizes material says each main track has three $10,000 winners from its $30,000 pool. Full judging rubric remains unverified.
 
 ## Kuru — Build the Next Consumer Trading App on Kuru
 $5,000 single prize, Finance & Trading.
@@ -38,7 +38,7 @@ Winner support includes engineering office hours, roadmap session, features/dist
 ## Submission
 Aurora references standard requirements: public repo, technical demo video, pitch video, live product link.
 Full primary-track rules, team eligibility, prior-work policy, video durations, prize-stacking rules and primary prize split remain unverified.
-Four sponsor pools sum to $18,000. Hypothetical first prizes total $15,500 if stacking allowed. $48,000 is category pool arithmetic, not confirmed team winnings.
+Subsequent user-provided prizes material says main-track and earned sponsor bounty prizes stack. Selected sponsor first prizes total $15,500 (Kuru $5,000 + Privy $5,000 + CRE $3,000 + Aurora $2,500); one main-track win plus those prizes totals $25,500. Grand Champion is listed as $25,000, but whether it also stacks with a track win remains unconfirmed. $50,500 including Grand Champion is therefore conditional, not a confirmed payout. Service-plan/rebate estimates are not cash.
 Do not add other sponsors to fit prizes; requirements may conflict with scope.
 
 ## Evidence mapping
@@ -47,4 +47,3 @@ Kuru: actual fills + target-user narrative + honest test/use evidence + continua
 Privy: visible wallet transaction actions.
 CRE: workflow source + successful CLI output or deployment details + external/onchain connection.
 Aurora: source/destination receipts + actual use in Kairos + settlement/refund handling.
-
