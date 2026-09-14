@@ -88,6 +88,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M0-07 / CRE capability probe
+- Date: 2026-09-15
+- Environment and chain ID: Local CRE CLI; no chain accessed
+- Version/commit/source URL: CRE CLI `v1.0.10` (self-reports latest `v1.34.0`); npm `@chainlink/cre-sdk` `1.21.1`; current Chainlink consumer-contract documentation.
+- Command or reproducible steps: `cre --help`; `cre version`; `cre whoami`; `cre workflow --help`; `npm view @chainlink/cre-sdk version --json`.
+- Result (PASS / FAIL / BLOCKED): BLOCKED — runtime command surface is present, but CLI is stale and account organization/key access is absent. No Monad supported-network or forwarder evidence has been established.
+- Artifact / receipt / transaction hash: `docs/CRE_CAPABILITY_PROBE.md`; command output in this goal turn.
+- Limitations (fixture, fork, testnet, simulation, live): No workflow project, report, simulation, deployment, or transaction exists.
+- Next action: M0.8 — verify Privy SDK/configuration capability without claiming wallet transactions.
+
+---
+
 - ID and requirement: DOC-03 / English submission documentation
 - Date: 2026-09-15
 - Environment and chain ID: Documentation-only; no chain or runtime accessed
