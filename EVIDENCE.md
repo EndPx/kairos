@@ -88,6 +88,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M0-09 / Aurora Intents capability probe
+- Date: 2026-09-15
+- Environment and chain ID: Documentation and local presence-only check; no Aurora API request, chain, quote, deposit address, or transfer accessed
+- Version/commit/source URL: Aurora Intents API integration guide and supported-chains page, reviewed 2026-09-15.
+- Command or reproducible steps: Reviewed current primary API documentation; relied on M0.3's presence-only inventory for `AURORA_API_KEY`; searched official documentation for Monad support without a confirming result.
+- Result (PASS / FAIL / BLOCKED): BLOCKED — API-key requirement and dry-quote/lifecycle semantics are documented, but no authorized key exists and no evidence establishes a Monad Testnet route to the selected Kuru USDC asset.
+- Artifact / receipt / transaction hash: `docs/AURORA_CAPABILITY_PROBE.md`; no quote or transaction hash.
+- Limitations (fixture, fork, testnet, simulation, live): No token discovery, dry quote, funding transfer, or refund-state runtime test occurred. The public supported-chains rendering did not establish Monad support.
+- Next action: M0 exit review — record the combined compatibility gate and exact M1 prerequisites without starting M1.
+
+---
+
 - ID and requirement: M0-08 / Privy capability and configuration probe
 - Date: 2026-09-15
 - Environment and chain ID: Documentation and local presence-only check; no chain, Privy account, wallet, or user accessed
