@@ -1,0 +1,38 @@
+# Decisions and interpretation boundaries
+Authoritative product text: PRODUCT_SPEC_FINAL.md.
+
+## Locked
+- Kairos: Execute within your limits. Spot execution, not price prediction.
+- Initial Kuru MON/USDC market, USDC input buy direction.
+- Cumulative linear budget release plus liquidity-adaptive sizing.
+- Funds stay in user wallet between execution transactions; no Kairos prefunding.
+- ERC20 allowance and per-order policy are separate controls.
+- Owner authorizes policy; executor cannot freely select destination, recipient, limits or assets.
+- Onchain effective average buy-price bound uses actual settlement amounts, with explicit fees and decimals.
+- Atomic settlement returns unused input and routes output to user. No residual resting order is acceptable under the agreed flow.
+- Actual input accounting, minFill checked against actual fill.
+- Lifecycle ACTIVE/COMPLETED/EXPIRED/CANCELLED; partial fill is progress.
+- Deadline blocks execution based on timestamp even without storage update.
+- Cancel order does not revoke allowance. Revoke is a separate token action.
+- Remainder below minFill is not force-filled.
+- Kuru real integration, CRE meaningful workflow, Privy wallet transactions, Aurora real cross-chain flow.
+- No fabricated traction; testnet testing is legitimate evidence, not economic mainnet volume.
+
+## Not yet locked / must resolve with evidence
+- Language/library versions, repository structure, indexer implementation and UI visual style.
+- Kuru deployed ABI, native MON handling, exact market precision, fee and refund behavior.
+- CRE available networks/forwarders and account access.
+- Aurora source/destination environment, asset contract, settlement/refund behavior.
+- Optional minExecutionInterval. maxPerFill alone does not cap transaction frequency.
+- Future multiple orders: one wallet allowance/balance is shared, not reserved per order.
+- Deadline boundary: linear release plus strict expiry can leave a final remainder; test discrete units and boundary semantics. Do not claim guaranteed completion or silently introduce early-release grace.
+- Price semantics are effective average price, not a guarantee for every individual match.
+- Protocol fee may be zero for hackathon; do not silently introduce fees.
+- Contract mutability/admin privileges: document chosen controls and their effect on wallet permissions.
+
+## Superseded
+Escrow/deposit-to-Kairos proposals, unconditional no-custody claims, mandatory Privy session signing, forced Intents Connect, guaranteed completion/better price, and $48K as a confirmed obtainable prize are not current requirements.
+
+## Change log
+Add date, proposed change, evidence, product impact and user decision for material deviations.
+

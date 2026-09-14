@@ -1,0 +1,156 @@
+AI
+Aurora Intents
+
+Bring Any-Chain Liquidity to Monad
+Integrate Aurora Intents (powered by NEAR Intents) into a Monad app for any-chain deposits, swaps, or deposit-and-execute flows.
+
+Prize
+$5,000 USD
+
+• 1st place: $2,500
+• 2nd place: $1,500
+• 3rd place: $1,000
+Non-monetary winner support bundle:
+• 2 weeks of Aurora engineering office hours
+• A 1:1 roadmap session with Aurora's product team
+• A featured spot on Aurora's Connected livestream
+• A written case study + landing-page feature
+• Distribution across Aurora's channels (160K+ social, 50K+ newsletter, 45K+ Telegram/Discord)
+• Warm BD support toward a live production partnership
+
+Track
+All tracks
+
+Deadline
+Oct 14, 2026 at 10:59 GMT+7
+
+Project selection
+Create a project before choosing tracks and bounties.
+
+About
+What this bounty is for
+Integrate into any Monad app you're building (swap, deposit, or custom execution) using Aurora Intents, powered by NEAR Intents (Swap API, Intents Deposits, Intents Connect).
+What Aurora Intents brings to a Monad app:
+• A persistent, any-chain deposit address — one address per user that accepts funds from 31+ chains, non-EVM included, with no separate deposit flow to build per chain
+• Built-in cross-chain swap — users fund or interact with the app using whatever asset they hold; Aurora routes and swaps into exactly what the app needs
+• Deposit & execute in one flow — using Intents Connect, a deposit can trigger a smart contract call directly: stake, lend, mint, or open a position the moment funds land
+• A bigger addressable user base — anyone holding assets on supported chains can use the app immediately
+• Custom fees — apps can set their own fee on every cross-chain flow, with a 40–60% revenue share in favor of the integrator
+
+Judging criteria
+What judges look for
+Ships a working integration of at least one Aurora Intents product (Intents Connect, Swap API, or Intents Deposits), demoed live — an actual working flow, not mocked
+
+Removes a real cross-chain friction point for the end user — solves a credible user problem
+
+Technical quality: correct settlement/refund handling, clean UX with cross-chain complexity hidden from the user, an easy-to-understand flow that avoids unnecessary actions
+
+Fit and creativity within its chosen track (trading, consumer/payments, social, or infra)
+
+Bonus: multi-chain source coverage, contract-level composability via Intents Connect, or a Confidential Intents use case
+
+Deliverables
+What to have ready
+A working integration of at least one Aurora Intents product (Intents Connect, Swap API, or Intents Deposits), demoed live — not mocked
+
+A live, working cross-chain flow showing funds arriving from another chain and being used within the Monad app
+
+Standard Metropolis submission requirements also apply — see track-level deliverables (public repo, technical demo video, pitch video, live product link)
+
+Suggested starting points
+Ideas that leave room for your own angle
+01
+Swap-in-place deposits — let users fund your app with whatever asset they hold on any of the 31+ supported chains
+
+02
+Deposit & execute in one flow via Intents Connect — trigger a stake, lend, mint, or position open the moment funds land
+
+03
+Persistent any-chain deposit addresses — one address per user across chains, no per-chain deposit flow to build
+
+04
+Contract-level composability using Intents Connect
+
+05
+A Confidential Intents use case (bonus)
+
+Relevant resources
+Start with the official path.
+Documentation:
+
+Aurora Intents docs
+docs.intents.aurora.dev
+(opens in a new tab)
+Intents Connect
+docs.intents.aurora.dev
+(opens in a new tab)
+Intents Deposits
+docs.intents.aurora.dev
+(opens in a new tab)
+Intents Swap
+docs.intents.aurora.dev
+(opens in a new tab)
+Intents Connect Developer Guides
+docs.intents.aurora.dev
+(opens in a new tab)
+Persistent Deposit Address Flow
+x.com
+(opens in a new tab)
+Supported chains (Swaps/Deposits)
+docs.intents.aurora.dev
+(opens in a new tab)
+Supported chains (Intents Connect)
+docs.intents.aurora.dev
+(opens in a new tab)
+Other resources:
+
+Landing page
+intents.aurora.dev
+(opens in a new tab)
+Use cases
+docs.intents.aurora.dev
+(opens in a new tab)
+Aurora Intents YouTube
+youtube.com
+(opens in a new tab)
+Demo (Intents Deposits)
+intents-connect-landing.vercel.app
+(opens in a new tab)
+Demo (Intents Connect)
+intents-connect-landing.vercel.app
+(opens in a new tab)
+Intents Connect examples
+docs.intents.aurora.dev
+(opens in a new tab)
+Deposit into Hyperliquid demo
+hypercore-deposits-demo.vercel.app
+(opens in a new tab)
+Case study — Solflare (Intents Deposits)
+x.com
+(opens in a new tab)
+Case study — Coca (Deposits + Swap API)
+x.com
+(opens in a new tab)
+Case study — Wowmax (Swap API)
+x.com
+(opens in a new tab)
+Case study — MyTonWallet (Swap API)
+x.com
+(opens in a new tab)
+Support:
+
+Dedicated mentor from the Aurora Intents Product team during the build
+
+Aurora's Telegram channel
+t.me
+(opens in a new tab)
+1:1 technical session on request during office hours
+
+Build on Monad
+docs.monad.xyz
+(opens in a new tab)
+Monad developer portal
+developers.monad.xyz
+(opens in a new tab)
+Metropolis resources
+Metropolis
