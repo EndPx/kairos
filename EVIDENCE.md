@@ -40,6 +40,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M0-03 / Environment and credential inventory
+- Date: 2026-09-15
+- Environment and chain ID: Local environment presence check; no chain accessed
+- Version/commit/source URL: Monad Privy template documents `NEXT_PUBLIC_PRIVY_APP_ID` and optional `NEXT_PUBLIC_PRIVY_CLIENT_ID`.
+- Command or reproducible steps: PowerShell presence-only check of named variables; `Get-ChildItem -Force -Name .env*`.
+- Result (PASS / FAIL / BLOCKED): PASS — `.env.example` and credential inventory created without values. BLOCKED configuration: Monad RPC, Privy app identifiers, CRE credentials, Aurora API credentials, and test signers are absent.
+- Artifact / receipt / transaction hash: `.env.example`; `docs/CREDENTIALS.md`.
+- Limitations (fixture, fork, testnet, simulation, live): Presence checks do not verify validity; CRE and Aurora variable names remain provisional pending official API probes.
+- Next action: M0.4 — locate and probe an official/public Monad RPC without a transaction.
+
+---
+
 - ID and requirement: DOC-03 / English submission documentation
 - Date: 2026-09-15
 - Environment and chain ID: Documentation-only; no chain or runtime accessed
