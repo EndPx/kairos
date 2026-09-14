@@ -28,6 +28,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M0-02 / Monorepo and toolchain decision
+- Date: 2026-09-15
+- Environment and chain ID: Node.js v24.18.0; pnpm 10.21.0; no chain accessed
+- Version/commit/source URL: Next.js official installation documentation; Monad official Privy template; npm registry metadata recorded in `docs/TOOLCHAIN.md`.
+- Command or reproducible steps: `npm view next@16.3.5 version engines --json`; `npm view react/typescript/viem/wagmi/@privy-io/react-auth/hardhat/@openzeppelin/contracts/vitest/prettier version --json`; `pnpm --version`; `node --version`.
+- Result (PASS / FAIL / BLOCKED): PASS — selected a pnpm workspace and pinned the initial web, EVM-client, contract, test, and formatter versions without installing packages.
+- Artifact / receipt / transaction hash: `docs/TOOLCHAIN.md`.
+- Limitations (fixture, fork, testnet, simulation, live): Kuru, CRE, Privy, Aurora, RPC, and indexer packages are deliberately unpinned pending their probes.
+- Next action: M0.3 — inventory required environment variables without recording credentials.
+
+---
+
 - ID and requirement: DOC-03 / English submission documentation
 - Date: 2026-09-15
 - Environment and chain ID: Documentation-only; no chain or runtime accessed
