@@ -64,6 +64,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M0-05 / Kuru read-only deployment probe
+- Date: 2026-09-15
+- Environment and chain ID: Monad Testnet `10143`, Foundation RPC
+- Version/commit/source URL: Kuru official Contract Addresses page; no source ABI pinned yet.
+- Command or reproducible steps: `eth_getCode` for market and USDC; ERC-20 `decimals()`, `symbol()`, `name()` calls; `eth_getStorageAt` at EIP-1967 implementation slot.
+- Result (PASS / FAIL / BLOCKED): PARTIAL PASS — official market/token addresses contain code; USDC metadata is `USDC Coin` / `USDC` / 6 decimals; market is an EIP-1967 proxy whose implementation is `0x72cae0a99c19b574e8a6de558f43fc1d019c9374`.
+- Artifact / receipt / transaction hash: Raw JSON-RPC responses in this goal turn; no transaction submitted.
+- Limitations (fixture, fork, testnet, simulation, live): ABI, `getMarketParams`, L2 encoding, token orientation, fee units, and settlement/refund behavior remain unverified; do not implement adapter from function names alone.
+- Next action: M0.6 — write the smallest authorized Kuru settlement experiment design while source ABI retrieval continues.
+
+---
+
 - ID and requirement: DOC-03 / English submission documentation
 - Date: 2026-09-15
 - Environment and chain ID: Documentation-only; no chain or runtime accessed
