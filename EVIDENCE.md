@@ -52,6 +52,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M0-04 / Monad platform probe
+- Date: 2026-09-15
+- Environment and chain ID: Monad Testnet, `10143` / `0x279f`; Foundation RPC `https://rpc-testnet.monadinfra.com`
+- Version/commit/source URL: Official Monad Testnet, Differences, Gas Pricing, Reserve Balance, and Block Explorers documentation reviewed 2026-09-15.
+- Command or reproducible steps: POST JSON-RPC `eth_chainId`, `eth_blockNumber`, `eth_gasPrice`, and `eth_getCode(0xcA11bde05977b3631167028862bE2a173976CA11, latest)` to the Foundation endpoint.
+- Result (PASS / FAIL / BLOCKED): PASS — returned `0x279f`, `0x3ba6463`, `0x17bfac7c00`, and non-empty canonical Multicall3 bytecode.
+- Artifact / receipt / transaction hash: Raw JSON-RPC output in this goal turn; no transaction submitted.
+- Limitations (fixture, fork, testnet, simulation, live): Testnet read evidence only. Gas behavior documentation must still be applied to measured Kairos calls.
+- Next action: M0.5 — verify Kuru testnet market bytecode, tokens, parameters, and L2 book through this RPC.
+
+---
+
 - ID and requirement: DOC-03 / English submission documentation
 - Date: 2026-09-15
 - Environment and chain ID: Documentation-only; no chain or runtime accessed
