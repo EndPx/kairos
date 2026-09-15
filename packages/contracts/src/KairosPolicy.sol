@@ -25,6 +25,8 @@ contract KairosPolicy is ReentrancyGuard {
     error Replay();
     error ReleaseExceeded();
     error BudgetExceeded();
+    error InsufficientBalance();
+    error InsufficientAllowance();
     error MinimumFillNotMet();
     error PriceLimitExceeded();
     error SettlementMismatch();
@@ -162,6 +164,8 @@ contract KairosPolicy is ReentrancyGuard {
         if (uint256(order.spent) + proposal.proposedInput > order.budget) revert BudgetExceeded();
 
         IERC20Minimal input = IERC20Minimal(tokenIn);
+        if (input.balanceOf(order.owner) < proposal.proposedInput) revert InsufficientBalance();
+        if (input.allowance(order.owner, address(this)) < proposal.proposedInput) revert InsufficientAllowance();
         uint256 ownerInputBefore = input.balanceOf(order.owner);
         uint256 ownerOutputBefore = _outputBalance(order.owner);
         uint256 policyInputBefore = input.balanceOf(address(this));

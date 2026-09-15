@@ -88,6 +88,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M1-05 / Core policy invariant coverage
+- Date: 2026-09-15
+- Environment and chain ID: Local Hardhat network; no public chain accessed
+- Version/commit/source URL: `packages/contracts/test/KairosPolicy.ts`; `packages/contracts/test/KairosPolicyInvariants.ts`; `packages/shared/test/units.test.ts`.
+- Command or reproducible steps: `pnpm contracts:compile`; `pnpm contracts:test`; `pnpm test`; `pnpm typecheck`.
+- Result (PASS / FAIL / BLOCKED): PASS for local policy coverage — 10 Hardhat fixture tests, 4 shared Vitest tests, and typecheck passed. Acceptance mapping and limitations are recorded in `docs/POLICY_TEST_COVERAGE.md`.
+- Artifact / receipt / transaction hash: Local test output and `docs/POLICY_TEST_COVERAGE.md`; no transaction hash.
+- Limitations (fixture, fork, testnet, simulation, live): Kuru is not mocked as an integration success. Native MON and actual venue-residual cases remain BLOCKED pending the Kuru deployment/fork settlement evidence.
+- Next action: Conduct limited CRE/Privy/Aurora readiness checks and retain M1 partial until the Kuru adapter gate is resolved.
+
+---
+
 - ID and requirement: M1-04 / ABI-verified Kuru adapter boundary
 - Date: 2026-09-15
 - Environment and chain ID: Local Hardhat network; selected external target is Monad Testnet `10143`, but no external call occurred

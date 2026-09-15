@@ -19,6 +19,7 @@ Completed:
 - M1.1 shared domain types and integer-unit conventions implemented and locally tested. The effective-price rule explicitly handles USDC-6 and MON-18 scales without division.
 - M1.2–M1.5 generic Solidity policy core implemented and locally tested with a fixture-only venue: immutable access controls, owner lifecycle, cumulative release, proposal expiry/nonce, actual balance-delta accounting, price/minimum-fill enforcement, and reentrancy protection.
 - M1.6 Kuru ABI boundary implemented with exact read-verified parameter types and quote conversion. The boundary deliberately rejects execution until Kuru deployment/source and settlement evidence is available.
+- M1.8 local core suite expanded: 10 Hardhat fixture tests and 4 shared unit tests now cover access, lifecycle, cumulative release, replay, price, measured settlement, reentrancy, balance, and allowance behavior.
 
 Unverified:
 - All runtime integrations, exact environment compatibility, deployed ABIs, available credentials.
@@ -26,6 +27,6 @@ Unverified:
 - Project stack, codebase and visual design.
 
 Next:
-Complete M1.8: broaden local property/invariant coverage for authorization, cumulative spend, lifecycle, price, settlement isolation, and wallet allowance/balance behavior. M1 exit remains blocked on real Kuru adapter proof.
+Resolve the documented Kuru implementation/settlement gate or obtain authorization for a documented fork; M1 remains partial until then. Limited CRE/Privy/Aurora readiness validation may continue without starting M3/M4.
 
 Do not report product ready, integration passed or tests passed based on this file.
