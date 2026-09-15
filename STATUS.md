@@ -19,10 +19,11 @@ Completed:
 - M1.1 shared domain types and integer-unit conventions implemented and locally tested. The effective-price rule explicitly handles USDC-6 and MON-18 scales without division.
 - M1.2–M1.5 generic Solidity policy core implemented and locally tested with a fixture-only venue: immutable access controls, owner lifecycle, cumulative release, proposal expiry/nonce, actual balance-delta accounting, price/minimum-fill enforcement, and reentrancy protection.
 - M1.6 Kuru ABI boundary implemented with exact read-verified parameter types and quote conversion. The boundary deliberately rejects execution until Kuru deployment/source and settlement evidence is available.
-- M1.8 local core suite expanded: 10 Hardhat fixture tests and 4 shared unit tests now cover access, lifecycle, cumulative release, replay, price, measured settlement, reentrancy, balance, and allowance behavior.
+- M1.8 local core suite expanded: 11 Hardhat tests (10 fixture-policy tests plus one guarded Kuru-boundary test) and 4 shared unit tests cover access, lifecycle, cumulative release, replay, price, measured settlement, reentrancy, balance, allowance, and guarded Kuru execution behavior.
 - Limited readiness follow-up: CRE CLI updated to `v1.34.0` and local authentication confirmed; Privy and Aurora configuration/route requirements restated without storing credentials. No M3/M4 work started.
 - Kuru source-provenance follow-up: Explorer/Sourcify source paths remain unavailable, but implementation bytecode carries solc `0.8.30` metadata and an IPFS CID. The CID content was unavailable through tested public gateways, so exact build identity remains unverified.
 - Policy accounting hardening: same-token input/output configurations, unsafe decimal exponents, and non-exact input receipt are rejected before an adapter can run; local suite now has 11 contract tests.
+- Regression-baseline verification at `c6032ea1bc8954ad97d80a08e6fa2c1ecab7d00d`: compile, 11 Hardhat tests, 4 Vitest tests, and shared TypeScript typecheck passed on Node.js `24.18.0` / pnpm `10.21.0`. The historically recorded constructor-revert failure did not reproduce; its record remains in the evidence ledger. M1 remains partial because Kuru adapter proof is still absent.
 
 Unverified:
 - All runtime integrations, exact environment compatibility, deployed ABIs, available credentials.

@@ -100,6 +100,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M1-11 / Regression-baseline verification after `c6032ea`
+- Date: 2026-09-15
+- Environment and chain ID: Windows local environment; Node.js `v24.18.0`; pnpm `10.21.0`; Hardhat `3.16.0`; Solidity compiler `0.8.28`; Vitest `5.0.0`; TypeScript `7.0.2`; no public chain accessed
+- Version/commit/source URL: `c6032ea1bc8954ad97d80a08e6fa2c1ecab7d00d` (`fix: harden policy settlement accounting`); `packages/contracts/test/KairosPolicyInvariants.ts`.
+- Command or reproducible steps: In sequence: `pnpm contracts:compile` (exit `0`, `No contracts to compile`); `pnpm contracts:test` (exit `0`, 11 Mocha tests passing); `pnpm test` (exit `0`, 1 Vitest file / 4 tests passing); `pnpm typecheck` (exit `0`). Static inspection confirmed `await expect(ethers.deployContract('KairosPolicy', args)).to.be.revertedWithCustomError(await ethers.getContractFactory('KairosPolicy'), 'InvalidAddress')` in the constructor-revert test.
+- Result (PASS / FAIL / BLOCKED): PASS — the complete requested local verification sequence passed and emitted no unhandled-rejection warning. The constructor assertion is awaited, retains the `InvalidAddress` custom-error check, and the historical failure was not reproduced. This is an evidence update, not a bug fix or a causal diagnosis.
+- Artifact / receipt / transaction hash: Command output from this task; `packages/contracts/test/KairosPolicyInvariants.ts`; no transaction hash.
+- Limitations (fixture, fork, testnet, simulation, live): Historical context is preserved: the earlier `c6032ea` verification attempt emitted an unhandled `InvalidAddress()` constructor rejection after nine reported passing tests, so M1-10's original clean-run claim was not evidence of that failed attempt. This later result does not establish why the earlier failure occurred. All policy execution tests remain local fixture/boundary tests and do not prove Kuru settlement.
+- Next action: Obtain Kuru implementation source/build provenance and run the separately authorized, bounded deployment-or-documented-fork settlement proof; until then, retain M1 as partial.
+
+---
+
 - ID and requirement: M1-09 / Kuru implementation bytecode metadata probe
 - Date: 2026-09-15
 - Environment and chain ID: Monad Testnet `10143`; Foundation RPC; read-only `eth_getCode`; no transaction
