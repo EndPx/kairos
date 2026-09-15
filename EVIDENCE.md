@@ -88,6 +88,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M1-09 / Kuru implementation bytecode metadata probe
+- Date: 2026-09-15
+- Environment and chain ID: Monad Testnet `10143`; Foundation RPC; read-only `eth_getCode`; no transaction
+- Version/commit/source URL: Implementation `0x72cae0a99c19b574e8a6de558f43fc1d019c9374`; embedded IPFS CID `Qmejh4dRV4xZGQwU9asEepspYaALt2eodjoRegaJRe9tT7`.
+- Command or reproducible steps: JSON-RPC `eth_getCode`; parse final two-byte CBOR length, IPFS multihash, and compiler bytes; attempt public IPFS retrieval through ipfs.io, dweb.link, Pinata, and w3s gateways.
+- Result (PASS / FAIL / BLOCKED): PARTIAL PASS — runtime code contains a valid Solidity metadata segment with solc `0.8.30`, aligned with the pinned repository configuration. BLOCKED — metadata content/source hashes could not be fetched from tested public gateways (`429`, `403`, `404`), so exact source/build equivalence remains unproven.
+- Artifact / receipt / transaction hash: Updated `docs/KURU_COMPATIBILITY_INVESTIGATION.md`; no transaction hash.
+- Limitations (fixture, fork, testnet, simulation, live): Compiler-version alignment and CID presence are not source verification or settlement proof.
+- Next action: Retry CID retrieval through a reliable gateway or obtain the full compiler input/deployment manifest from Kuru; then compare source hashes and run the authorized settlement experiment.
+
+---
+
 - ID and requirement: M1-08 / Kuru source provenance follow-up
 - Date: 2026-09-15
 - Environment and chain ID: Public source/explorer endpoints; selected deployment is Monad Testnet `10143`; no write transaction

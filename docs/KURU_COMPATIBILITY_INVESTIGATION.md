@@ -96,6 +96,17 @@ Additional source-verification paths were checked after the initial investigatio
 
 No bytecode equivalence claim is made from the current repository. The source contract itself declares `pragma ^0.8.20`, while the repository configuration selects a specific newer compiler profile; the missing deployment build metadata is material.
 
+### Runtime bytecode metadata follow-up
+
+The implementation runtime bytecode is 35,548 bytes and ends with a 51-byte Solidity CBOR metadata segment. It identifies:
+
+| Metadata field | Observed value |
+|---|---|
+| Compiler version bytes | `0x00081e` → solc `0.8.30` |
+| IPFS metadata CID | `Qmejh4dRV4xZGQwU9asEepspYaALt2eodjoRegaJRe9tT7` |
+
+The compiler value aligns with the pinned repository configuration (`0.8.30`), which is useful corroboration but still not proof that the current GitHub revision is the deployed build. Attempts to retrieve that CID's metadata from public gateways were rate-limited (`429`) or denied/not found (`403`/`404`) during this probe. The CID should be retried from a reliable gateway or supplied by Kuru alongside the full compiler input and deployment manifest.
+
 ## Compatibility conclusion
 
 **Partially verified.** The official SDK ABI is behaviorally compatible with the selected proxy for both essential read functions, and the returned parameters establish native-MON/USDC orientation, precisions, bounds, and current fee values. The exact deployed implementation source/bytecode equivalence and all write-path settlement semantics remain unproven. Kairos must not mark the Kuru adapter integrated or execute market orders from this evidence alone.
