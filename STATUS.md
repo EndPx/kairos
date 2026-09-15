@@ -17,6 +17,7 @@ Completed:
 - M0 exit review completed: every required sponsor is either runtime-probed and precisely blocked, with separate evidence and a next task. No sponsor has been replaced by a mock or alternative service.
 - M1 Kuru investigation: official contract/SDK revisions pinned; read-only `getMarketParams` and `getL2Book` calls are ABI-compatible with the selected proxy. Exact implementation source equivalence and write-path settlement remain blocked.
 - M1.1 shared domain types and integer-unit conventions implemented and locally tested. The effective-price rule explicitly handles USDC-6 and MON-18 scales without division.
+- M1.2–M1.5 generic Solidity policy core implemented and locally tested with a fixture-only venue: immutable access controls, owner lifecycle, cumulative release, proposal expiry/nonce, actual balance-delta accounting, price/minimum-fill enforcement, and reentrancy protection.
 
 Unverified:
 - All runtime integrations, exact environment compatibility, deployed ABIs, available credentials.
@@ -24,6 +25,6 @@ Unverified:
 - Project stack, codebase and visual design.
 
 Next:
-Complete M1.2 contract access model: initialize the Solidity project and implement restricted owner/executor/market/token/recipient controls with tests.
+Complete M1.6 by adding the ABI-verified but runtime-blocked Kuru adapter boundary, then broaden local invariant coverage for M1.8. No Kuru execution claim is permitted without the source/settlement evidence gate.
 
 Do not report product ready, integration passed or tests passed based on this file.

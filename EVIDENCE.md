@@ -88,6 +88,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M1-03 / Policy core access, lifecycle, scheduling, provenance, and fixture settlement
+- Date: 2026-09-15
+- Environment and chain ID: Local Hardhat network only; solc `0.8.28`, Hardhat `3.16.0`, OpenZeppelin Contracts `5.6.1`; no public chain accessed
+- Version/commit/source URL: `packages/contracts/hardhat.config.ts`; `packages/contracts/src/KairosPolicy.sol`; fixture contracts under `packages/contracts/src/test`.
+- Command or reproducible steps: `pnpm contracts:compile`; `pnpm contracts:test`; `pnpm test`; `pnpm typecheck`.
+- Result (PASS / FAIL / BLOCKED): PASS — Solidity compilation passed; 5 Hardhat/Mocha fixture tests, 4 shared Vitest tests, and TypeScript typecheck passed. Initial compile failed with `stack too deep`; enabling documented `viaIR: true` resolved it before final verification.
+- Artifact / receipt / transaction hash: `docs/POLICY_CORE.md`; local test output; no transaction hash.
+- Limitations (fixture, fork, testnet, simulation, live): `MockERC20` and `MockVenueAdapter` are fixtures, not Kuru. Native MON forwarding and real Kuru partial/refund/venue-balance semantics are not proven by these tests.
+- Next action: M1.6 — add ABI-verified Kuru interface/restricted adapter boundary but preserve its runtime-blocked status; then expand M1.8 invariant coverage.
+
+---
+
 - ID and requirement: M1-02 / Shared domain types and integer-unit conventions
 - Date: 2026-09-15
 - Environment and chain ID: Local Node.js `24.18.0`, pnpm `10.21.0`; no chain accessed
