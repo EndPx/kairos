@@ -88,6 +88,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M1-07 / Limited sponsor readiness follow-up
+- Date: 2026-09-15
+- Environment and chain ID: Local CRE CLI; no chain, workflow, Privy wallet, Aurora request, funding quote, or transaction accessed
+- Version/commit/source URL: Official CRE updater release installed locally; `cre version` reports `v1.34.0`; readiness details in `docs/M1_INTEGRATION_READINESS.md`.
+- Command or reproducible steps: `cre update`; local backup and replacement of the updater-downloaded Windows binary after automatic replacement failed; `cre version`; `cre whoami`; `cre workflow --help`.
+- Result (PASS / FAIL / BLOCKED): PARTIAL PASS — CRE CLI is current and local authentication is available. BLOCKED — Monad target/forwarder, workflow configuration, simulation, and deployment proof remain absent. Privy and Aurora remain configuration/route-blocked and no secret was persisted or used in a network request.
+- Artifact / receipt / transaction hash: Updated `docs/CRE_CAPABILITY_PROBE.md`, `docs/M1_INTEGRATION_READINESS.md`, and environment matrix; no transaction hash.
+- Limitations (fixture, fork, testnet, simulation, live): No M3/M4 implementation, CRE simulation, Privy browser flow, Aurora token discovery, quote, deposit, or transfer occurred.
+- Next action: Resolve Kuru adapter proof for M1 exit; separately verify CRE Monad forwarder support before M3.
+
+---
+
 - ID and requirement: M1-06 / Kuru AMM-vault read follow-up
 - Date: 2026-09-15
 - Environment and chain ID: Monad Testnet `10143`; Foundation RPC; read-only `eth_call`

@@ -25,3 +25,11 @@ CRE onchain writes submit a signed report through a `KeystoneForwarder`, which c
 4. Then initialize a minimal workflow that reads one Kairos state value and one external market-data value, and run `cre workflow simulate`.
 
 No workflow, report, forwarder, deployment, or simulation is claimed by this probe.
+
+## M1 follow-up — 2026-09-15
+
+The official `cre update` command downloaded CLI `v1.34.0`, but could not replace the active executable automatically on Windows. The previous executable was preserved as a local backup and the downloaded official binary was manually installed; `cre version` now reports `v1.34.0`.
+
+`cre whoami` now confirms that an authenticated local account is available. Account identifiers and personal details are intentionally not recorded. This removes the prior local authentication blocker, but it does not establish a workflow project, target-network support, a Monad forwarder address, simulation, deployment authorization, or a deployed workflow.
+
+Next: initialize no deployment until the current Chainlink supported-network/forwarder directory identifies the exact Monad environment and a minimal workflow can be simulated with no secret committed.

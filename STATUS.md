@@ -20,6 +20,7 @@ Completed:
 - M1.2–M1.5 generic Solidity policy core implemented and locally tested with a fixture-only venue: immutable access controls, owner lifecycle, cumulative release, proposal expiry/nonce, actual balance-delta accounting, price/minimum-fill enforcement, and reentrancy protection.
 - M1.6 Kuru ABI boundary implemented with exact read-verified parameter types and quote conversion. The boundary deliberately rejects execution until Kuru deployment/source and settlement evidence is available.
 - M1.8 local core suite expanded: 10 Hardhat fixture tests and 4 shared unit tests now cover access, lifecycle, cumulative release, replay, price, measured settlement, reentrancy, balance, and allowance behavior.
+- Limited readiness follow-up: CRE CLI updated to `v1.34.0` and local authentication confirmed; Privy and Aurora configuration/route requirements restated without storing credentials. No M3/M4 work started.
 
 Unverified:
 - All runtime integrations, exact environment compatibility, deployed ABIs, available credentials.
@@ -27,6 +28,6 @@ Unverified:
 - Project stack, codebase and visual design.
 
 Next:
-Resolve the documented Kuru implementation/settlement gate or obtain authorization for a documented fork; M1 remains partial until then. Limited CRE/Privy/Aurora readiness validation may continue without starting M3/M4.
+Resolve the documented Kuru implementation/settlement gate or obtain authorization for a documented fork; M1 remains partial until then. For CRE, verify exact Monad forwarder/network before workflow code begins.
 
 Do not report product ready, integration passed or tests passed based on this file.
