@@ -16,6 +16,7 @@ Completed:
 - M0.9 Aurora Intents API capability probe recorded; no key, quote, deposit address, funding transfer, or lifecycle lookup was requested.
 - M0 exit review completed: every required sponsor is either runtime-probed and precisely blocked, with separate evidence and a next task. No sponsor has been replaced by a mock or alternative service.
 - M1 Kuru investigation: official contract/SDK revisions pinned; read-only `getMarketParams` and `getL2Book` calls are ABI-compatible with the selected proxy. Exact implementation source equivalence and write-path settlement remain blocked.
+- M1.1 shared domain types and integer-unit conventions implemented and locally tested. The effective-price rule explicitly handles USDC-6 and MON-18 scales without division.
 
 Unverified:
 - All runtime integrations, exact environment compatibility, deployed ABIs, available credentials.
@@ -23,6 +24,6 @@ Unverified:
 - Project stack, codebase and visual design.
 
 Next:
-Complete M1.1 shared domain types and integer-unit conventions, then build policy contracts/tests using explicitly labeled Kuru fixtures. Keep M1.6 runtime adapter proof blocked until the requirements in `docs/KURU_COMPATIBILITY_INVESTIGATION.md` are satisfied.
+Complete M1.2 contract access model: initialize the Solidity project and implement restricted owner/executor/market/token/recipient controls with tests.
 
 Do not report product ready, integration passed or tests passed based on this file.

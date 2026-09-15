@@ -88,6 +88,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M1-02 / Shared domain types and integer-unit conventions
+- Date: 2026-09-15
+- Environment and chain ID: Local Node.js `24.18.0`, pnpm `10.21.0`; no chain accessed
+- Version/commit/source URL: TypeScript `7.0.2`; Vitest `5.0.0`; M1.1 implementation in `packages/shared`.
+- Command or reproducible steps: `pnpm install --frozen-lockfile=false`; `pnpm test`; `pnpm typecheck`.
+- Result (PASS / FAIL / BLOCKED): PASS — 4 unit tests passed and TypeScript typecheck passed. Exact parsing rejects excess fractional precision; price enforcement includes quote/base/price scales without division.
+- Artifact / receipt / transaction hash: `packages/shared/src/units.ts`, `packages/shared/src/domain.ts`, `packages/shared/test/units.test.ts`, `docs/UNIT_CONVENTIONS.md`; no transaction hash.
+- Limitations (fixture, fork, testnet, simulation, live): This is local generic policy code. It does not prove contract arithmetic or any Kuru write integration.
+- Next action: M1.2 — implement and test the restricted contract access model.
+
+---
+
 - ID and requirement: M1-01 / Kuru source, ABI, and read-only market investigation
 - Date: 2026-09-15
 - Environment and chain ID: Monad Testnet `10143`; Foundation RPC; no signer, transaction, value, or gas used

@@ -1,0 +1,17 @@
+{
+  "name": "kairos",
+  "private": true,
+  "packageManager": "pnpm@10.21.0",
+  "engines": {
+    "node": ">=20.9.0",
+    "pnpm": ">=10.21.0"
+  },
+  "scripts": {
+    "test": "pnpm --filter @kairos/shared test",
+    "typecheck": "pnpm --filter @kairos/shared typecheck"
+  },
+  "devDependencies": {
+    "typescript": "7.0.2",
+    "vitest": "5.0.0"
+  }
+}
