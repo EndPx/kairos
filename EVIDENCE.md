@@ -88,6 +88,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M1-01 / Kuru source, ABI, and read-only market investigation
+- Date: 2026-09-15
+- Environment and chain ID: Monad Testnet `10143`; Foundation RPC; no signer, transaction, value, or gas used
+- Version/commit/source URL: Kuru contracts `2060bb2736080c175d80d568bfdb6226bb5abd04`; Kuru SDK/ABI `636509c2eafd63479d3f399703354e0d09f51e18`; MonadScan Testnet implementation page.
+- Command or reproducible steps: `git ls-remote` on both official repositories; GitHub API tree/blob inspection; JSON-RPC `eth_call` for selectors `0x90c9427c` and `0x46fdfbb1`; MonadScan HTTP source-page inspection; unauthenticated Etherscan V2 source request.
+- Result (PASS / FAIL / BLOCKED): PARTIAL PASS — pinned official ABI successfully decodes `getMarketParams` and `getL2Book` at the selected proxy. Parameters establish native MON base, USDC quote, precision/bounds and zero current fees. BLOCKED — implementation is explorer-unverified and no build provenance or write-path settlement proof exists.
+- Artifact / receipt / transaction hash: `docs/KURU_COMPATIBILITY_INVESTIGATION.md`; no transaction hash.
+- Limitations (fixture, fork, testnet, simulation, live): L2 manual payload had zero levels at one probe snapshot; AMM-vault liquidity and every write/settlement property remain unproven. Source-revision identity is not inferred from ABI compatibility.
+- Next action: M1.1 — establish generic shared domain types and integer conversion rules; retain a blocked Kuru adapter runtime gate.
+
+---
+
 - ID and requirement: M0-10 / M0 exit compatibility review
 - Date: 2026-09-15
 - Environment and chain ID: Documentation/evidence review; no new chain or service access

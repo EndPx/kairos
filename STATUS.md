@@ -1,6 +1,6 @@
 # Current status
 Updated: 2026-09-15
-Stage: M0 repository and compatibility — complete with sponsor blockers recorded; application implementation NOT STARTED.
+Stage: M1 policy and execution core — in progress; Kuru adapter integration remains blocked pending deployment/source and settlement proof.
 
 Completed:
 - Final user specification copied unchanged.
@@ -15,6 +15,7 @@ Completed:
 - M0.8 Privy client capability and configuration probe recorded; no user, wallet, or transaction was accessed.
 - M0.9 Aurora Intents API capability probe recorded; no key, quote, deposit address, funding transfer, or lifecycle lookup was requested.
 - M0 exit review completed: every required sponsor is either runtime-probed and precisely blocked, with separate evidence and a next task. No sponsor has been replaced by a mock or alternative service.
+- M1 Kuru investigation: official contract/SDK revisions pinned; read-only `getMarketParams` and `getL2Book` calls are ABI-compatible with the selected proxy. Exact implementation source equivalence and write-path settlement remain blocked.
 
 Unverified:
 - All runtime integrations, exact environment compatibility, deployed ABIs, available credentials.
@@ -22,6 +23,6 @@ Unverified:
 - Project stack, codebase and visual design.
 
 Next:
-Await authorization to begin M1.1 shared domain types and unit conventions. Before M1.6, resolve the Kuru ABI/market-behavior blocker recorded in `docs/M0_EXIT_REVIEW.md`.
+Complete M1.1 shared domain types and integer-unit conventions, then build policy contracts/tests using explicitly labeled Kuru fixtures. Keep M1.6 runtime adapter proof blocked until the requirements in `docs/KURU_COMPATIBILITY_INVESTIGATION.md` are satisfied.
 
 Do not report product ready, integration passed or tests passed based on this file.
