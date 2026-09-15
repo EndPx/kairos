@@ -18,6 +18,7 @@ Completed:
 - M1 Kuru investigation: official contract/SDK revisions pinned; read-only `getMarketParams` and `getL2Book` calls are ABI-compatible with the selected proxy. Exact implementation source equivalence and write-path settlement remain blocked.
 - M1.1 shared domain types and integer-unit conventions implemented and locally tested. The effective-price rule explicitly handles USDC-6 and MON-18 scales without division.
 - M1.2–M1.5 generic Solidity policy core implemented and locally tested with a fixture-only venue: immutable access controls, owner lifecycle, cumulative release, proposal expiry/nonce, actual balance-delta accounting, price/minimum-fill enforcement, and reentrancy protection.
+- M1.6 Kuru ABI boundary implemented with exact read-verified parameter types and quote conversion. The boundary deliberately rejects execution until Kuru deployment/source and settlement evidence is available.
 
 Unverified:
 - All runtime integrations, exact environment compatibility, deployed ABIs, available credentials.
@@ -25,6 +26,6 @@ Unverified:
 - Project stack, codebase and visual design.
 
 Next:
-Complete M1.6 by adding the ABI-verified but runtime-blocked Kuru adapter boundary, then broaden local invariant coverage for M1.8. No Kuru execution claim is permitted without the source/settlement evidence gate.
+Complete M1.8: broaden local property/invariant coverage for authorization, cumulative spend, lifecycle, price, settlement isolation, and wallet allowance/balance behavior. M1 exit remains blocked on real Kuru adapter proof.
 
 Do not report product ready, integration passed or tests passed based on this file.

@@ -88,6 +88,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M1-04 / ABI-verified Kuru adapter boundary
+- Date: 2026-09-15
+- Environment and chain ID: Local Hardhat network; selected external target is Monad Testnet `10143`, but no external call occurred
+- Version/commit/source URL: Kuru contracts `2060bb2736080c175d80d568bfdb6226bb5abd04`; Kuru SDK/ABI `636509c2eafd63479d3f399703354e0d09f51e18`; `docs/KURU_COMPATIBILITY_INVESTIGATION.md`.
+- Command or reproducible steps: `pnpm contracts:compile`; `pnpm contracts:test`.
+- Result (PASS / FAIL / BLOCKED): PASS for boundary safety — 6 local contract tests passed, including exact USDC-to-Kuru quote conversion and rejection of unauthorized/unverified execution. BLOCKED for real adapter — the implementation deliberately cannot call Kuru until source/deployment provenance and settlement behavior are proven.
+- Artifact / receipt / transaction hash: `packages/contracts/src/interfaces/IKuruOrderBook.sol`, `packages/contracts/src/KuruAdapterBoundary.sol`, `packages/contracts/test/KuruAdapterBoundary.ts`, `docs/KURU_ADAPTER_BOUNDARY.md`; no transaction hash.
+- Limitations (fixture, fork, testnet, simulation, live): No Kuru write, fork, market execution, native-MON receipt, partial fill, FOK, minOut, or residual-balance proof exists.
+- Next action: M1.8 — expand local property/invariant coverage; retain M1 as partial until adapter proof is obtained.
+
+---
+
 - ID and requirement: M1-03 / Policy core access, lifecycle, scheduling, provenance, and fixture settlement
 - Date: 2026-09-15
 - Environment and chain ID: Local Hardhat network only; solc `0.8.28`, Hardhat `3.16.0`, OpenZeppelin Contracts `5.6.1`; no public chain accessed
