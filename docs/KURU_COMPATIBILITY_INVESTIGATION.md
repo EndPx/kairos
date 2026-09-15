@@ -85,6 +85,17 @@ The MonadScan Testnet implementation page returned HTTP 200 but describes `0x72c
 
 An unauthenticated Etherscan V2 `getsourcecode` request for chain `10143` returned `status: 0`, `message: NOTOK`; it did not supply source or ABI. This is an access limitation, not proof that no verification source exists elsewhere.
 
+Additional source-verification paths were checked after the initial investigation:
+
+| Path | Result | Consequence |
+|---|---|---|
+| Sourcify v2 contract endpoint | HTTP `404` for chain `10143` / implementation | No verified Sourcify artifact is available at that path. |
+| Sourcify full-match metadata | HTTP `404` | No full-match metadata at that path. |
+| Sourcify partial-match metadata | HTTP `404` | No partial-match metadata at that path. |
+| Pinned Kuru repository build configuration | Current revision selects solc `0.8.30`, optimizer runs `1000`, `viaIR: true`, and Prague EVM | This is useful source provenance but cannot be equated to the unverified deployed implementation without a deployment manifest or verification metadata. |
+
+No bytecode equivalence claim is made from the current repository. The source contract itself declares `pragma ^0.8.20`, while the repository configuration selects a specific newer compiler profile; the missing deployment build metadata is material.
+
 ## Compatibility conclusion
 
 **Partially verified.** The official SDK ABI is behaviorally compatible with the selected proxy for both essential read functions, and the returned parameters establish native-MON/USDC orientation, precisions, bounds, and current fee values. The exact deployed implementation source/bytecode equivalence and all write-path settlement semantics remain unproven. Kairos must not mark the Kuru adapter integrated or execute market orders from this evidence alone.

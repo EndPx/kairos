@@ -88,6 +88,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M1-08 / Kuru source provenance follow-up
+- Date: 2026-09-15
+- Environment and chain ID: Public source/explorer endpoints; selected deployment is Monad Testnet `10143`; no write transaction
+- Version/commit/source URL: Kuru contracts `2060bb2736080c175d80d568bfdb6226bb5abd04`; its `foundry.toml` and `hardhat.config.js`; Sourcify public endpoints for implementation `0x72cae...c9374`.
+- Command or reproducible steps: GET Sourcify v2/full-match/partial-match metadata endpoints; inspect pinned repository compiler configuration via raw GitHub source.
+- Result (PASS / FAIL / BLOCKED): BLOCKED — all three Sourcify paths returned HTTP `404`. The source repository config is solc `0.8.30` / optimizer `1000` / viaIR / Prague, but no evidence ties it to the selected unverified implementation bytecode.
+- Artifact / receipt / transaction hash: Updated `docs/KURU_COMPATIBILITY_INVESTIGATION.md`; no transaction hash.
+- Limitations (fixture, fork, testnet, simulation, live): Explorer/API/Sourcify absence cannot prove an implementation never had a source release elsewhere. It only prevents a bytecode-equivalence assertion here.
+- Next action: Obtain a Kuru deployment manifest, verified source, or exact compiler input/output from a Kuru maintainer; then run the authorized settlement experiment.
+
+---
+
 - ID and requirement: M1-07 / Limited sponsor readiness follow-up
 - Date: 2026-09-15
 - Environment and chain ID: Local CRE CLI; no chain, workflow, Privy wallet, Aurora request, funding quote, or transaction accessed
