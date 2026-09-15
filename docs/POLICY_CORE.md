@@ -10,6 +10,8 @@ The deployment configuration is immutable: executor, market, input token, output
 
 The contract does not include an arbitrary-call method, a withdrawal method, a mutable recipient, or mutable venue configuration. Cancellation changes only order policy; it never changes a wallet's ERC-20 allowance.
 
+Input and output token addresses must differ, so owner balance deltas remain attributable to one asset. Decimal exponents are bounded to `77` to prevent unsafe `10 ** decimals` arithmetic. Fee-on-transfer input is rejected before any adapter call unless the policy contract receives the exact proposed amount; the selected USDC route is therefore treated as an exact-transfer requirement.
+
 ## Lifecycle and scheduling
 
 An order holds owner, budget/spent/received, start/end, fill bounds, price limit, nonce, and cancellation state. Derived status is `ACTIVE`, `COMPLETED`, `CANCELLED`, or `EXPIRED`. At `endTime` and later, execution is rejected strictly. `releasedBudget` floors linear cumulative release; `availableToSpend` subtracts actual previous spend. Deferred release remains available without allowing a single execution above `maxPerFill`.

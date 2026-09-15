@@ -88,6 +88,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M1-10 / Policy accounting hardening
+- Date: 2026-09-15
+- Environment and chain ID: Local Hardhat network; no public chain accessed
+- Version/commit/source URL: `packages/contracts/src/KairosPolicy.sol`; `packages/contracts/test/KairosPolicyInvariants.ts`.
+- Command or reproducible steps: `pnpm contracts:compile`; `pnpm contracts:test`.
+- Result (PASS / FAIL / BLOCKED): PASS — 11 local contract tests passed. Same-token input/output deployment rejects; decimal exponents are bounded; the contract checks exact receipt of proposed ERC-20 input before giving an adapter allowance.
+- Artifact / receipt / transaction hash: Updated policy core and test coverage documentation; no transaction hash.
+- Limitations (fixture, fork, testnet, simulation, live): Exact-transfer behavior is a Kairos policy requirement; selected live USDC transfer semantics and Kuru settlement remain separately unproven.
+- Next action: Resolve Kuru implementation/source and settlement proof for M1 exit.
+
+---
+
 - ID and requirement: M1-09 / Kuru implementation bytecode metadata probe
 - Date: 2026-09-15
 - Environment and chain ID: Monad Testnet `10143`; Foundation RPC; read-only `eth_getCode`; no transaction

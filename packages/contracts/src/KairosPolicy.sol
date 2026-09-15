@@ -18,6 +18,7 @@ contract KairosPolicy is ReentrancyGuard {
 
     error Unauthorized();
     error InvalidAddress();
+    error InvalidDecimals();
     error InvalidPolicy();
     error InvalidProposal();
     error OrderNotActive(Status status);
@@ -81,7 +82,8 @@ contract KairosPolicy is ReentrancyGuard {
         uint8 outputDecimals_,
         uint8 priceDecimals_
     ) {
-        if (executor_ == address(0) || market_ == address(0) || tokenIn_ == address(0) || adapter_ == address(0)) revert InvalidAddress();
+        if (executor_ == address(0) || market_ == address(0) || tokenIn_ == address(0) || tokenIn_ == tokenOut_ || adapter_ == address(0)) revert InvalidAddress();
+        if (inputDecimals_ > 77 || outputDecimals_ > 77 || priceDecimals_ > 77) revert InvalidDecimals();
         executor = executor_;
         market = market_;
         tokenIn = tokenIn_;
@@ -171,6 +173,7 @@ contract KairosPolicy is ReentrancyGuard {
         uint256 policyInputBefore = input.balanceOf(address(this));
 
         _safeTransferFrom(input, order.owner, address(this), proposal.proposedInput);
+        if (input.balanceOf(address(this)) != policyInputBefore + proposal.proposedInput) revert SettlementMismatch();
         _forceApprove(input, adapter, proposal.proposedInput);
         (uint256 reportedInput, uint256 reportedOutput) = IVenueAdapter(adapter).executeBuy(proposal.proposedInput, proposal.minimumOutput, order.owner);
         _forceApprove(input, adapter, 0);

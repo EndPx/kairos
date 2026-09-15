@@ -68,4 +68,13 @@ describe('KairosPolicy invariants (fixture-only venue)', function () {
     expect(await output.balanceOf(owner.address)).to.equal(ownerOutputBefore + 20_000_000_000_000_000_000n);
     expect((await policy.getOrder(0)).received).to.equal(20_000_000_000_000_000_000n);
   });
+
+  it('rejects ambiguous same-token accounting and unsafe decimal exponents at deployment', async function () {
+    const { ethers } = await network.create();
+    const [executor] = await ethers.getSigners();
+    const token = await ethers.deployContract('MockERC20', ['Mock USD Coin', 'mUSDC', 6]);
+    const adapter = await ethers.deployContract('MockVenueAdapter', [await token.getAddress(), await token.getAddress()]);
+    const args = [executor.address, '0x0000000000000000000000000000000000000001', await token.getAddress(), await token.getAddress(), await adapter.getAddress(), 6, 6, 8];
+    await expect(ethers.deployContract('KairosPolicy', args)).to.be.revertedWithCustomError(await ethers.getContractFactory('KairosPolicy'), 'InvalidAddress');
+  });
 });

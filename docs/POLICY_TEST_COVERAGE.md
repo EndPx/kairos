@@ -19,6 +19,7 @@ The local suite runs against Hardhat's in-memory chain and explicitly labeled `M
 | SEC-01 | Fixture callback cannot reenter `execute` or double spend | PASS |
 | SEC-02 | Reused nonce rejects | PASS |
 | WAL-01/02 | Insufficient balance and revoked allowance reject before venue call | PASS |
+| Accounting hardening | Same-token input/output deployment rejects; decimal exponent is bounded; exact proposed input arrival is required before adapter call | PASS (local policy) |
 
 ## Exact command and result
 
@@ -29,7 +30,7 @@ pnpm test
 pnpm typecheck
 ```
 
-At the recorded run, Solidity compilation passed; `pnpm contracts:test` reported **10 passing** tests; shared Vitest reported **4 passing** tests; and TypeScript typecheck passed.
+At the recorded run, Solidity compilation passed; `pnpm contracts:test` reported **11 passing** tests; shared Vitest reported **4 passing** tests; and TypeScript typecheck passed.
 
 ## Remaining M1 exit gap
 
