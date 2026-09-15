@@ -62,6 +62,23 @@ The native base plus USDC quote establishes the initial Kairos direction: a mark
 
 `getL2Book()` returned an ABI-encoded dynamic byte payload of 64 bytes at the probed block `62636237`: the block number followed by a zero bid sentinel. Decoding with the pinned SDK layout yielded zero manual bid and ask levels. This only proves the wire format and this snapshot's manual-level payload; it does **not** prove executable liquidity, because the SDK combines manual levels with AMM-vault data through additional reads.
 
+### Follow-up AMM-vault read
+
+The same pinned SDK ABI declares `getVaultParams()`. A follow-up `eth_call` using selector `0x88bb4f60` returned eight ABI words:
+
+| Field | Value |
+|---|---:|
+| `kuruAmmVault` | `0xfCd4C42d772e63Db2E09e87dC42010C8973a9B0f` |
+| `vaultBestBid` | `0` |
+| `bidPartiallyFilledSize` | `0` |
+| `vaultBestAsk` | `uint256.max` sentinel |
+| `askPartiallyFilledSize` | `0` |
+| `vaultBidOrderSize` | `0` |
+| `vaultAskOrderSize` | `0` |
+| `spread` | `100` |
+
+Together with the L2 payload, this snapshot contains no manual levels and no active vault bid/ask size. It is a point-in-time read, not a statement that the market cannot later have liquidity. The adaptive engine must treat this state as no executable capacity rather than constructing a trade.
+
 ## Explorer and implementation identity result
 
 The MonadScan Testnet implementation page returned HTTP 200 but describes `0x72cae...c9374` as **Contract: Unverified** and presents "Verify and Publish". The proxy page is likewise a proxy page, but does not establish that the pinned GitHub revision compiled to the deployed implementation.

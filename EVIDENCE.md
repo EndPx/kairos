@@ -88,6 +88,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M1-06 / Kuru AMM-vault read follow-up
+- Date: 2026-09-15
+- Environment and chain ID: Monad Testnet `10143`; Foundation RPC; read-only `eth_call`
+- Version/commit/source URL: Kuru SDK ABI `636509c2eafd63479d3f399703354e0d09f51e18`, `abi/OrderBook.json` `getVaultParams` output layout.
+- Command or reproducible steps: GitHub blob read of the pinned ABI; JSON-RPC `eth_call` selector `0x88bb4f60` to selected Kuru proxy; ABI word decoding.
+- Result (PASS / FAIL / BLOCKED): PASS — vault params decoded: zero bid/ask order size, best-bid zero, best-ask `uint256.max` sentinel, spread `100`. Combined with M1-01's manual L2 snapshot, this recorded block has no executable levels. Kuru write settlement remains BLOCKED.
+- Artifact / receipt / transaction hash: Updated `docs/KURU_COMPATIBILITY_INVESTIGATION.md`; no transaction hash.
+- Limitations (fixture, fork, testnet, simulation, live): One read snapshot only; it does not guarantee later market liquidity or prove a trade/settlement path.
+- Next action: Retain no-capacity behavior for future engine work; continue M1 readiness review without sending a Kuru transaction.
+
+---
+
 - ID and requirement: M1-05 / Core policy invariant coverage
 - Date: 2026-09-15
 - Environment and chain ID: Local Hardhat network; no public chain accessed
