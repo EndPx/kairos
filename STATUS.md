@@ -21,6 +21,7 @@ Completed:
 - M1.6 Kuru ABI boundary implemented with exact read-verified parameter types and quote conversion. The boundary deliberately rejects execution until Kuru deployment/source and settlement evidence is available.
 - M1.8 local core suite expanded: 10 Hardhat fixture tests and 4 shared unit tests now cover access, lifecycle, cumulative release, replay, price, measured settlement, reentrancy, balance, and allowance behavior.
 - Limited readiness follow-up: CRE CLI updated to `v1.34.0` and local authentication confirmed; Privy and Aurora configuration/route requirements restated without storing credentials. No M3/M4 work started.
+- Kuru source-provenance follow-up: Explorer/Sourcify source paths remain unavailable, but implementation bytecode carries solc `0.8.30` metadata and an IPFS CID. The CID content was unavailable through tested public gateways, so exact build identity remains unverified.
 
 Unverified:
 - All runtime integrations, exact environment compatibility, deployed ABIs, available credentials.
@@ -28,6 +29,6 @@ Unverified:
 - Project stack, codebase and visual design.
 
 Next:
-Resolve the documented Kuru implementation/settlement gate or obtain authorization for a documented fork; M1 remains partial until then. For CRE, verify exact Monad forwarder/network before workflow code begins.
+Obtain Kuru's full compiler input/deployment manifest or accessible metadata CID content, then compare source hashes and request explicit authorization for the bounded settlement experiment. M1 remains partial until adapter behavior is proven against the selected deployment or documented fork.
 
 Do not report product ready, integration passed or tests passed based on this file.
