@@ -124,6 +124,30 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M1-13 / Kuru adapter settlement against documented fork
+- Date: 2026-09-16
+- Environment and chain ID: Source Monad Testnet `10143`; isolated Hardhat EDR `31337`; block `62944132`, hash `0xb5a5a55678513ced1b7a43da8bed39a2d3b3e9284c34c0dc6e033ed12c914098`; no public transaction
+- Version/commit/source URL: Kuru contracts `2060bb2736080c175d80d568bfdb6226bb5abd04`; SDK/ABI `636509c2eafd63479d3f399703354e0d09f51e18`; selected proxy/implementation and mutations in `docs/KURU_FORK_SETTLEMENT.md`.
+- Command or reproducible steps: PowerShell: `$env:RUN_KURU_FORK='1'; pnpm --filter @kairos/contracts kuru:fork:test; Remove-Item Env:RUN_KURU_FORK`. The test traced and set a local-only USDC balance, deposited local native funds into the deployed Margin Account, placed a controlled ask through deployed Kuru bytecode, then executed `KairosPolicy → KuruAdapter → selected Kuru proxy`.
+- Result (PASS / FAIL / BLOCKED): PASS — final run reported 5 passing tests. Non-FOK `30,000,000` quote input consumed `20,000,000`, returned `10,000,000`, and forwarded `400 MON`; accounting/nonce matched actual deltas; pre-existing adapter `1 USDC` / `2 MON` remained; new residual was zero; active L2 became empty. Kuru FOK and minOut failures plus Kairos actual-minFill and effective-price failures reverted atomically with nonce, allowance, balances, and active levels unchanged.
+- Artifact / receipt / transaction hash: `packages/contracts/src/KuruAdapter.sol`, `packages/contracts/test/KuruForkIntegration.ts`, `docs/KURU_FORK_SETTLEMENT.md`; stdout JSON from the passing test; no public transaction hash.
+- Limitations (fixture, fork, testnet, simulation, live): Real deployed Kuru bytecode runs on a local fork, but source liquidity was empty and all balances/liquidity were explicitly controlled local mutations. Two development assertions failed before the final pass: `s_orders(id).size` remains stale after an overfill despite empty active L2, and the L2 payload's block-number prefix advances across reverted local transactions. Assertions were corrected to active-level semantics, not removed. Exact source/deployment equivalence remains BLOCKED because metadata CID retrieval failed and the source repository does not pin its imported Solady revision.
+- Next action: Obtain from Kuru the exact standard-JSON compiler input/output or deployment manifest, including Solady commit and source hashes, for implementation `0x72cae0a99c19b574e8a6de558f43fc1d019c9374`; then perform bytecode comparison and decide the public adapter gate separately.
+
+---
+
+- ID and requirement: M1-14 / Constructor-revert asynchronous regression
+- Date: 2026-09-16
+- Environment and chain ID: Local Hardhat EDR; no public chain write
+- Version/commit/source URL: Fix commit `166498a51622cb919cd3f7e550b9d1b6145c6677`; Hardhat `3.16.0`; ethers plugin `4.0.15`; Chai matcher from the pinned toolbox.
+- Command or reproducible steps: In the first complete post-adapter sequence, `pnpm contracts:compile` and the 5-case fork suite passed, then `pnpm contracts:test` emitted an unhandled `InvalidAddress()` rejection after nine local tests and exited `1`. The assertion constructed `ethers.deployContract(...)` before awaiting `ethers.getContractFactory(...)` inline. The fix obtains `policyFactory` first and then awaits `expect(policyFactory.deploy(...)).to.be.revertedWithCustomError(...)`.
+- Result (PASS / FAIL / BLOCKED): PASS after fix — the complete ordered sequence (`contracts:compile`, gated 5-test fork suite, default contract suite, shared tests, typecheck) exited `0`. The default contract run reported 11 passing and 5 intentionally pending fork-gated tests; shared Vitest reported 4 passing. `InvalidAddress` remains asserted, and a distinct valid-token deployment now actually asserts `InvalidDecimals` for exponent `78`.
+- Artifact / receipt / transaction hash: `packages/contracts/test/KairosPolicyInvariants.ts`; commit `166498a`; no transaction hash.
+- Limitations (fixture, fork, testnet, simulation, live): This corrects test-promise timing and missing constructor coverage; it does not change contract behavior. The earlier non-reproduction record M1-11 remains historical evidence and is not rewritten.
+- Next action: Retain this assertion ordering in future constructor-revert tests and keep the gated fork suite in the pre-commit verification sequence for adapter changes.
+
+---
+
 - ID and requirement: M1-09 / Kuru implementation bytecode metadata probe
 - Date: 2026-09-15
 - Environment and chain ID: Monad Testnet `10143`; Foundation RPC; read-only `eth_getCode`; no transaction

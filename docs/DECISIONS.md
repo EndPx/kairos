@@ -20,7 +20,7 @@ Authoritative product text: PRODUCT_SPEC_FINAL.md.
 
 ## Not yet locked / must resolve with evidence
 - Language/library versions, repository structure, indexer implementation and UI visual style.
-- Kuru deployed ABI, native MON handling, exact market precision, fee and refund behavior.
+- Exact Kuru deployed-source/build equivalence and public adapter deployment authorization. ABI behavior, native MON handling, market precision, zero-fee snapshot, and partial refund behavior are fixed-fork evidenced.
 - CRE available networks/forwarders and account access.
 - Aurora source/destination environment, asset contract, settlement/refund behavior.
 - Optional minExecutionInterval. maxPerFill alone does not cap transaction frequency.
@@ -37,6 +37,8 @@ Authoritative product text: PRODUCT_SPEC_FINAL.md.
 - 2026-09-15 — M1 policy values use exact unsigned integer units. Decimal input with unsupported precision is rejected; cumulative release floors; effective BUY price is enforced with a cross-multiplied inequality that includes input, output, and price decimal scales. This protects USDC-6/MON-18 accounting from floating-point or truncation bypasses.
 - 2026-09-15 — The initial policy deployment configuration is immutable: executor, market, input/output tokens, adapter, and decimal scales. Per-order recipient is fixed to its owner. This is deliberately narrower than an arbitrary routing registry so the executor cannot redirect funds. The local fixture adapter is a test double only and cannot satisfy the Kuru adapter proof gate.
 - 2026-09-15 — Local policy compilation uses solc `0.8.28` with optimizer runs `200` and `viaIR: true`. `viaIR` is required by the current settlement-function structure after a documented stack-depth compiler error.
+- 2026-09-16 — The executable Kuru adapter is immutable and chain-bound. The application path uses non-margin market buys, measures current-call balance deltas, preserves pre-existing balances, resets venue allowance, and forwards native MON/refunds atomically. The fork uses chain `31337`; no public deployment was enabled.
+- 2026-09-16 — A non-FOK partial fill consumes owner-to-policy allowance for the full proposed input even when Kuru refunds unused input. Actual wallet balance and order accounting use the smaller actual input. Allowance is therefore independent authorization capacity; finite-approval UX must expose possible re-approval rather than misreport allowance as spend.
 
 ## Superseded
 Escrow/deposit-to-Kairos proposals, unconditional no-custody claims, mandatory Privy session signing, forced Intents Connect, guaranteed completion/better price, and $48K as a confirmed obtainable prize are not current requirements.

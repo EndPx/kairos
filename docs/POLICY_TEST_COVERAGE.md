@@ -10,12 +10,12 @@ The local suite runs against Hardhat's in-memory chain and explicitly labeled `M
 | POL-02 | Input above immutable per-fill cap rejects | PASS |
 | POL-03 | Order whose end time is in the past derives non-active status and rejects execution | PASS |
 | POL-04 | Cancelled order rejects; ERC-20 allowance remains unchanged | PASS |
-| POL-05 | Adapter-reported actual input below `minFill` rejects atomically | PASS (fixture) |
+| POL-05 | Adapter-reported actual input below `minFill` rejects atomically | PASS (fixture and fixed Kuru fork) |
 | POL-06 | A remainder below minimum is not forced by the policy; no completion is inferred | PARTIAL — covered by fill lower-bound rejection, no dedicated dust UI yet |
-| PRICE-01/02 | Actual output producing an effective price above limit rejects; USDC-6/MON-18 scaling covered in shared tests | PASS (fixture/local arithmetic) |
-| SET-01 | Actual input/output and unused input are measured/forwarded in one fixture transaction | PASS (fixture) |
-| SET-02 | Pre-existing adapter balances are not attributed to owner receipt | PASS (fixture) |
-| SET-03/04 | Native MON output and real venue leftovers | BLOCKED — requires Kuru source/settlement proof |
+| PRICE-01/02 | Actual output producing an effective price above limit rejects; USDC-6/MON-18 scaling covered in shared tests | PASS (fixture/local arithmetic and fixed Kuru fork) |
+| SET-01 | Actual input/output and unused input are measured/forwarded atomically | PASS (fixture and fixed Kuru fork) |
+| SET-02 | Pre-existing adapter balances are not attributed to owner receipt or swept | PASS (fixture and fixed Kuru fork) |
+| SET-03/04 | Native MON output, zero new adapter residual, and no active resting taker order | PASS (fixed Kuru fork with controlled liquidity) |
 | SEC-01 | Fixture callback cannot reenter `execute` or double spend | PASS |
 | SEC-02 | Reused nonce rejects | PASS |
 | WAL-01/02 | Insufficient balance and revoked allowance reject before venue call | PASS |
@@ -25,13 +25,14 @@ The local suite runs against Hardhat's in-memory chain and explicitly labeled `M
 
 ```text
 pnpm contracts:compile
+$env:RUN_KURU_FORK='1'; pnpm --filter @kairos/contracts kuru:fork:test; Remove-Item Env:RUN_KURU_FORK
 pnpm contracts:test
 pnpm test
 pnpm typecheck
 ```
 
-At the recorded run, Solidity compilation passed; `pnpm contracts:test` reported **11 passing** tests; shared Vitest reported **4 passing** tests; and TypeScript typecheck passed.
+At the post-fix run, compilation passed; the gated Kuru fork suite reported **5 passing** tests; the default contract suite reported **11 passing** and **5 intentionally pending** gated fork tests; shared Vitest reported **4 passing** tests; and TypeScript typecheck passed. See `docs/KURU_FORK_SETTLEMENT.md`.
 
 ## Remaining M1 exit gap
 
-The M1 policy-correctness portion is locally evidenced. M1 as a whole remains partial because Kuru adapter behavior has not been evidenced against the selected deployment or a documented fork. `KuruAdapterBoundary` intentionally prevents any misleading execution claim.
+The policy-correctness portion and Kuru adapter behavior are now evidenced locally against a fixed fork of the selected deployment. M1 remains conservatively partial because exact deployed-source/build equivalence is unavailable and no executable adapter has been deployed publicly. `KuruAdapterBoundary` remains execution-disabled; the fixed-fork test uses `KuruAdapter` bound to local chain `31337`.

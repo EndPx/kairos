@@ -23,8 +23,9 @@ Completed:
 - Limited readiness follow-up: CRE CLI updated to `v1.34.0` and local authentication confirmed; Privy and Aurora configuration/route requirements restated without storing credentials. No M3/M4 work started.
 - Kuru source-provenance follow-up: Explorer/Sourcify source paths remain unavailable, but implementation bytecode carries solc `0.8.30` metadata and an IPFS CID. The CID content was unavailable through tested public gateways, so exact build identity remains unverified.
 - Policy accounting hardening: same-token input/output configurations, unsafe decimal exponents, and non-exact input receipt are rejected before an adapter can run; local suite now has 11 contract tests.
-- Regression-baseline verification at `c6032ea1bc8954ad97d80a08e6fa2c1ecab7d00d`: compile, 11 Hardhat tests, 4 Vitest tests, and shared TypeScript typecheck passed on Node.js `24.18.0` / pnpm `10.21.0`. The historically recorded constructor-revert failure did not reproduce; its record remains in the evidence ledger. M1 remains partial because Kuru adapter proof is still absent.
+- Regression history: the constructor-revert unhandled rejection did not reproduce during the `b8cac49` baseline, then reproduced after the fork suite in a longer verification sequence. Commit `166498a` resolves the race by obtaining the contract factory before starting the expected-revert deployment; it retains `InvalidAddress` and adds the previously missing `InvalidDecimals` assertion. The complete post-fix sequence is clean.
 - Kuru fixed-block fork foundation: a read-only Hardhat EDR fork of Monad Testnet block `62944132` now reproduces the selected proxy, implementation bytecode, market parameters, empty source book/vault state, and official Margin Account linkage. No settlement or source-equivalence claim is made yet.
+- Kuru behavioral settlement on the fixed fork: 5 adapter tests prove partial actual input/output, refund, native MON forwarding, Kuru minOut/FOK reverts, policy minFill/effective-price rollback, nonce/allowance behavior, pre-existing balance isolation, zero new residual, and no active resting taker order. All liquidity/balance mutations are local-only and documented.
 
 Unverified:
 - All runtime integrations, exact environment compatibility, deployed ABIs, available credentials.
@@ -32,6 +33,6 @@ Unverified:
 - Project stack, codebase and visual design.
 
 Next:
-Use controlled, explicitly labeled local-fork balances and liquidity to exercise the application Kuru adapter against the selected bytecode. Independently obtain Kuru's compiler input/deployment manifest or accessible metadata CID content. M1 remains partial until settlement behavior is proven and remaining evidence limits are recorded.
+Obtain Kuru's exact standard-JSON compiler input/output or deployment manifest for implementation `0x72cae0...c9374`, including the missing Solady revision/source hashes, then compare runtime bytecode and review whether the public execution interlock can be replaced. M1 remains conservatively partial; do not enter M2.
 
 Do not report product ready, integration passed or tests passed based on this file.
