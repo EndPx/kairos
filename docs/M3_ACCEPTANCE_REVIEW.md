@@ -1,7 +1,7 @@
 # M3 acceptance review
 
 Date: 2026-09-17
-Reviewed revision before this evidence update: `c2d2ab5d`
+Reviewed revision before this evidence update: `bab0532b0d6ff127dd287cbd0c16650656e96f90`
 
 ## Decision
 
@@ -19,7 +19,7 @@ The M1 public-execution interlock remains unchanged. No deployment, broadcast, w
 | M3.2 CRE workflow | Same-block Kuru/policy acquisition, unchanged M2 engine, exact report encoding, single guarded submission attempt | PASS — local | No deployed workflow or public receiver call |
 | M3.3 CRE simulation | Authenticated CLI rerun: real Kuru fixed-block stale WAIT plus explicit fixture EXECUTE/report; `submitted:false`; handler latency `927ms` and `647ms` | PASS — simulation | Deployment was not performed because account access is unavailable and is conditional in M3.3; no forwarder/receiver delivery or continuous automation is claimed |
 | M3.4 Indexer | Canonical event projection, atomic checkpoint, restart, cursor-hash rebuild, separate decision provenance, and separate executor-attempt transitions | PASS — local | No public Kairos address or verified deployed CRE execution-history producer exists for live ingestion |
-| M3.5 Privy integration | Real pinned SDK boundary, embedded EVM wallet configuration, chain switch, balance/allowance reads, user-confirmed approve/create/cancel/revoke calls, and honest missing-config gate | PARTIAL | Browser runtime proves login, embedded-wallet presence, and Monad Testnet `10143`; no actual wallet action or public contract target exists, and the UI correctly disables those actions |
+| M3.5 Privy integration | Real pinned SDK boundary, embedded EVM wallet configuration, chain switch, balance/allowance reads, user-confirmed approve/create/cancel/revoke calls, honest missing-config gate, and an artifact-pinned lifecycle-only deployment path with two independent execution locks | PARTIAL | Browser runtime proves login, embedded-wallet presence, Monad Testnet `10143`, and native-balance reading. The live balance is `0 MON`; the page correctly blocks deployment below the `0.23 MON` cap. No actual wallet action or public contract target exists. |
 | M3.6 Create-order page | Integer-safe USDC/policy-price fields, cumulative schedule, separate approval, risk/custody disclosure | PASS — local | Transaction submission remains blocked by M3.5 external configuration |
 | M3.7 Orders/detail | Restarted index history plus current pinned policy lifecycle, manual-L2 display boundary, decision provenance, cancel/allowance controls | PASS — local / PARTIAL live | Runtime shows configuration blocker without deployed addresses/index file |
 | M3.8 Execution report | Actual settlement aggregation, weighted price, fill count/duration, separate venue fee/gas, fill-block receipt/market enrichment, explorer links, local wallet history, and server-side executor-attempt states | PASS — local / PARTIAL live | No public indexed fill or live attempt producer; nonzero venue fee cannot be reconstructed exactly from net output |
@@ -68,4 +68,4 @@ The 2026-09-17 targeted rerun additionally completed `pnpm workflow:typecheck`, 
 
 ## Required external action
 
-To convert M3 from PARTIAL to COMPLETE, execute the explicitly authorized lifecycle-only disabled deployment in `docs/M3_LIMITED_DEPLOYMENT_PLAN.md`, then prove approve/create/cancel/revoke through the already authenticated embedded wallet. The public App ID and web Client ID are present only in ignored local configuration, and browser runtime already proves login plus Monad Testnet `10143`. CRE deployment is not required by the written simulation alternative; it becomes relevant only for optional deployed-delivery evidence and requires a workflow identity, linked owner/access, exact receiver configuration, and separate broadcast authorization. Secrets must remain in local secret storage and never enter chat or version control.
+To convert M3 from PARTIAL to COMPLETE, first fund the authenticated embedded wallet with at least `0.23 MON` of Monad Testnet gas. Then execute the explicitly authorized lifecycle-only disabled deployment in `docs/M3_LIMITED_DEPLOYMENT_PLAN.md` and prove approve/create/cancel/revoke through that wallet, with action-time confirmation for each transaction. The public App ID and web Client ID are present only in ignored local configuration, and browser runtime already proves login plus Monad Testnet `10143`. CRE deployment is not required by the written simulation alternative; it becomes relevant only for optional deployed-delivery evidence and requires a workflow identity, linked owner/access, exact receiver configuration, and separate broadcast authorization. Secrets must remain in local secret storage and never enter chat or version control.

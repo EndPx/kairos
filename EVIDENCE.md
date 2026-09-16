@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M3-12 / browser-prepared, execution-disabled Privy lifecycle target
+- Date: 2026-09-17
+- Environment and chain ID: Windows local Next.js runtime with an authenticated Privy embedded EVM wallet on Monad Testnet `10143`; Foundation RPC reads for pending nonce, native balance, and bytecode; no wallet prompt, deployment, signature, token approval, contract call, or broadcast occurred
+- Version/commit/source URL: implementation commit `bab0532b0d6ff127dd287cbd0c16650656e96f90`; `@privy-io/react-auth` `3.42.0`; viem `2.56.5`; Next.js `16.3.5`; Solidity bytecode from the repository's pinned Hardhat artifacts
+- Command or reproducible steps: exact artifact-bytecode comparison against `packages/contracts/artifacts`; `pnpm web:typecheck`; `pnpm web:test`; `pnpm web:build`; `pnpm -C apps/web doctor`; independent accessibility-tree inspection of `http://localhost:3000/system/limited-deployment`; `git diff --check`; credential-fingerprint scan; remote-head comparison after push
+- Result (PASS / FAIL / BLOCKED): PASS for local preparation and fail-closed browser behavior. TypeScript exited `0`; Vitest reported 15 files / 42 tests; the production build exited `0` and emitted `/system/limited-deployment`; the pinned adapter and policy bytecodes matched their Hardhat artifacts exactly; the direct React Doctor package command exited `0` without diagnostic output. The authenticated browser displayed Monad Testnet `10143`, the embedded wallet, precomputed CREATE addresses, aggregate gas-limit cap `2,210,000`, allowance cap `1 USDC`, and gas-spend cap `0.23 MON`. BLOCKED for public actions: the RPC balance read returned `0 MON`, so the page displayed the specific funding blocker and disabled both deployment buttons.
+- Artifact / receipt / transaction hash: `apps/web/src/app/system/limited-deployment/page.tsx`; `apps/web/src/components/limited-deployment-panel.tsx`; `apps/web/src/lib/limited-deployment.ts`; `apps/web/src/lib/limited-deployment-artifacts.ts`; `apps/web/src/lib/limited-deployment.test.ts`; implementation commit `bab0532b0d6ff127dd287cbd0c16650656e96f90`; no transaction hash or receipt
+- Limitations (fixture, fork, testnet, simulation, live): The UI used a live testnet nonce/balance read but no state-changing action. The prepared adapter always reverts execution, and the prepared policy binds its executor to the dead address; neither contract exists onchain yet. This is not deployment, Privy transaction proof, Kuru execution, CRE delivery, or an audit. The first attempted combined Doctor invocation used an invalid pnpm filter form and exited `1` with `Unknown option: 'recursive'`; the direct package command was then run successfully. Local ignored environment configuration was not added to Git.
+- Next action: Fund the authenticated embedded wallet with at least `0.23 MON` of Monad Testnet gas, then explicitly authorize the six bounded transactions in `docs/M3_LIMITED_DEPLOYMENT_PLAN.md`. Request action-time confirmation before each deployment/approval/lifecycle transaction and retain the public Kuru execution interlock.
+
+---
+
 - ID and requirement: M3-11 / authenticated CRE simulation rerun, forwarder contract check, and Privy runtime configuration
 - Date: 2026-09-17
 - Environment and chain ID: Windows local CLI, CRE simulator, Hardhat EDR gas statistics, Next.js development runtime, and Monad Testnet `10143`; all chain access was read-only and no deployment, signer, wallet transaction, or broadcast was used

@@ -8,7 +8,7 @@ Purpose: provide a real Monad Testnet target for the PRIVY-01 approve/create/can
 
 - Network: Monad Testnet, chain ID `10143` (`0x279f`).
 - Wallet: one user-controlled Privy embedded EVM wallet acts as contract deployer and order owner.
-- Required native balance: enough testnet MON for bounded deployment and lifecycle gas.
+- Required native balance: at least `0.23 MON` of testnet gas for the declared full-sequence cap. The authenticated-wallet read on 2026-09-17 returned `0 MON`, so the browser route currently disables deployment.
 - Required USDC movement: none. Approval is capped at `1,000,000` USDC-6 units (`1 USDC`), but no transfer or execution is planned.
 - No CRE owner key, workflow deployment, receiver activation, delegated signer, sponsorship, or Aurora route is part of this plan.
 
