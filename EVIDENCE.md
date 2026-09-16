@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M3-07 / M3.7 orders, detail, recovery, and wallet controls
+- Date: 2026-09-16
+- Environment and chain ID: Windows local Next.js and Vitest; configured target Monad Testnet `10143`; no public Kairos addresses, Privy wallet, signer, or transaction accessed
+- Version/commit/source URL: Indexer provenance commit `9886a71600b979465688e016753e2b72d8c67258`; application commit `566a797d71ccde2394e2271205f77840d8eb3717`; viem `2.56.5`; Next.js `16.3.5`; React `19.3.0`
+- Command or reproducible steps: `pnpm indexer:test`; `pnpm indexer:typecheck`; `pnpm web:test`; `pnpm web:typecheck`; `pnpm web:build`; `pnpm --dir apps/web exec react-doctor --verbose --scope changed`; Playwright desktop `/orders` and mobile `/orders/1` missing-configuration screenshots; source-tree credential-prefix count and `git diff --check`.
+- Result (PASS / FAIL / BLOCKED): PASS for locally testable M3.7 behavior — indexer reported 1 file / 4 tests; web reported 9 files / 24 tests; typechecks exited `0`; React Doctor reported 100/100 for changed files; build emitted server-rendered `/orders` and `/orders/[orderId]`. Tests prove immutable index/current-chain identity matching, integer progress, cross-block Kuru display rejection, WAIT-versus-receipt provenance, and refusal to substitute sample orders. BLOCKED for live order recovery because no public policy/receiver deployment or index file exists.
+- Artifact / receipt / transaction hash: `packages/indexer/src/types.ts`, `apps/web/src/lib/order-read-model.server.ts`, `apps/web/src/app/orders`, `apps/web/src/components/orders-view.tsx`; no transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): UI value tests use typed fixtures and are not live evidence. Actual routes show only configuration blockers in the current environment. The manual-L2 summary cannot size proposals and excludes Kuru AMM vault liquidity. Decision journals are offchain records, not receipts. Wallet buttons remain disabled without the real Privy/deployment configuration.
+- Next action: M3.8 — derive inspectable execution reports from indexed fills plus public transaction receipts while showing unavailable fee/gas fields explicitly rather than estimating them.
+
+---
+
 - ID and requirement: M3-06 / M3.6 integer-safe create-order page
 - Date: 2026-09-16
 - Environment and chain ID: Windows local Next.js application; configured target Monad Testnet `10143`; no Privy account, signer, deployment, or public transaction accessed
