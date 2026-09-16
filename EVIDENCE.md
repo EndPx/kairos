@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M3-01 / M3.1 CRE receiver and access inventory
+- Date: 2026-09-16
+- Environment and chain ID: Windows local Hardhat EDR; intended external target Monad Testnet `10143`; no public transaction, deployment, or CRE-signed report
+- Version/commit/source URL: CRE CLI `v1.34.0`; `@chainlink/cre-sdk` `1.21.1`; `smartcontractkit/cre-templates` `d0223f31182c76bc36b1cc9d47b13b18efcf2bf6`; `smartcontractkit/chain-selectors` `425da86147b75ee0fdd0d95d840a0966b837056b`; Hardhat `3.16.0`; solc `0.8.28`
+- Command or reproducible steps: Presence-only environment inventory; `cre version`; authenticated account capability check without storing credentials; official template/interface and selector inspection; `pnpm contracts:compile`; `pnpm contracts:test`.
+- Result (PASS / FAIL / BLOCKED): PARTIAL PASS — Monad Testnet is present in the pinned selector registry as `2183018362218727504`; the receiver compiled and the full local suite reported 16 passing plus 5 intentionally pending fork-gated tests. Receiver cases cover one-time activation, unauthorized sender, malformed metadata/report, mismatched workflow identity, stale report, identical duplicate, changed report with replayed nonce, and successful forwarding through `KairosPolicy.execute`. BLOCKED for CRE proof — deploy access is disabled, no deployed Monad forwarder address or workflow identity is configured, and no CRE simulation has run yet.
+- Artifact / receipt / transaction hash: `packages/contracts/src/KairosCreReceiver.sol`, `packages/contracts/src/interfaces/ICreReceiver.sol`, `packages/contracts/src/interfaces/IKairosPolicyExecutor.sol`, `packages/contracts/test/KairosCreReceiver.ts`, and `docs/CRE_RECEIVER.md`; no transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): The local test signer is a forwarder fixture and the settlement adapter is the labeled M1 fixture. This does not prove a Chainlink signature, CRE simulation/deployment, public receiver address, or Kuru settlement through CRE. Privy variables are absent from the process environment, so no login or wallet action was attempted.
+- Next action: M3.2 — build a CRE-compatible TypeScript workflow that reads policy and market data, invokes the same M2 decision semantics, and emits either an auditable WAIT or the exact receiver report encoding; then run no-broadcast simulation.
+
+---
+
 - ID and requirement: M2-07 / M2 exit review and full regression
 - Date: 2026-09-16
 - Environment and chain ID: Windows local environment; Node.js `v24.18.0`; pnpm `10.21.0`; Hardhat `3.16.0`; Solidity compiler configuration `0.8.28`; Vitest `5.0.0`; TypeScript `7.0.2`; no public chain write

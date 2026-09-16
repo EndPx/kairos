@@ -1,6 +1,6 @@
 # Current status
 Updated: 2026-09-16
-Stage: M2 adaptive execution engine — COMPLETE; M3 has not started.
+Stage: M3 CRE, Privy, indexer, and application — in progress; M3.1 receiver locally verified.
 
 Completed:
 - Final user specification copied unchanged.
@@ -36,14 +36,16 @@ Completed:
 - M2.6 engine acceptance tests: schedule boundaries, shared-balance contention, the recorded empty Kuru snapshot, and repeated deterministic decisions complete the M2 scenario matrix. The engine suite reports 6 files and 24 passing tests.
 - M2 exit review: M2.1–M2.6 and ENG-01–03 map to auditable implementation and tests. The written exit condition is met while the M1 contract remains final policy authority; no public execution boundary changed.
 - M2 full regression at exit: engine 6 files / 24 tests, default contract 12 passing plus 5 intentionally pending gated-fork tests, shared 1 file / 4 tests, both TypeScript checks, and contract compilation all passed.
+- M3 access inventory: CRE CLI `v1.34.0` is installed and authenticated, but deploy access is disabled and workflow/forwarder variables are absent. Privy public client identifiers and dashboard configuration are absent from the local process environment. No secret value was printed or stored.
+- M3.1 CRE receiver: the pinned official `IReceiver` surface and 62-byte metadata layout are implemented with immutable forwarder authority, one-time policy/workflow activation, expiry and duplicate protection, ERC-165 support, and the unchanged M1 policy execution path. Four local receiver tests pass alongside the existing contract suite.
 
 Unverified:
 - Exact Kuru deployed-source/build equivalence, a public Kairos adapter deployment, and any public Kuru execution transaction.
-- CRE, Privy, Aurora, UI, and end-to-end groups assigned to later milestones.
+- Inspectable CRE workflow simulation, real Privy actions, indexer recovery, UI, and M3 end-to-end proof.
 - Full primary-track rules and prize-stacking.
 - Submission visual design and the final deployed-product evidence package.
 
 Next:
-Begin M3 only in a separate authorized task. Preserve the M2 manual-L2-only estimator boundary until same-block AMM vault modeling is independently verified.
+Implement M3.2 with the pinned CRE TypeScript SDK and the existing M2 engine semantics, then run the smallest no-broadcast CRE simulation available. Continue independent indexer and application work if external credentials remain unavailable.
 
 Do not report product ready, integration passed or tests passed based on this file.
