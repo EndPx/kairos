@@ -191,7 +191,7 @@ export function TransactionState({
   detail,
   hash,
 }: {
-  status: Extract<StatusTone, 'confirmed' | 'failed' | 'stale' | 'submitted'>;
+  status: Extract<StatusTone, 'confirmed' | 'failed' | 'stale' | 'submitted' | 'waiting'>;
   title: string;
   detail: string;
   hash?: `0x${string}`;

@@ -10,17 +10,22 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
+import type {Route} from 'next';
 import type {ReactNode} from 'react';
 
 import {WalletControl} from './wallet-control';
 
-const navigation = [
+const navigation: ReadonlyArray<{
+  href: Route | null;
+  label: string;
+  icon: typeof Blocks;
+}> = [
   {href: '/', label: 'Overview', icon: Blocks},
-  {href: null, label: 'Create order', icon: Plus},
+  {href: '/orders/new', label: 'Create order', icon: Plus},
   {href: null, label: 'Orders', icon: ClipboardList},
   {href: null, label: 'Reports', icon: FileCheck2},
   {href: '/system', label: 'System', icon: ListTree},
-] as const;
+];
 
 function NavigationLinks() {
   const pathname = usePathname();
