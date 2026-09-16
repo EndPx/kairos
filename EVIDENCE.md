@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M3-08 / M3.8 execution-report page and restart-persistent wallet attempt states
+- Date: 2026-09-16
+- Environment and chain ID: Windows local Next.js/Vitest; configured target Monad Testnet `10143`; no public Kairos addresses, Privy account, RPC order read, signer, or transaction accessed
+- Version/commit/source URL: Calculation commit `bedf0f8b0ca06ab74c58fdd793c6f84e11e7419a`; onchain report page `5eb469aec6678c980652b4cafcb728f2db421cd9`; wallet journal `9686e27ec1799c7297e772bd637463aaf94cd495`; Next.js `16.3.5`; viem `2.56.5`; Vitest `5.0.0`
+- Command or reproducible steps: `pnpm --filter @kairos/web test`; `pnpm --filter @kairos/web typecheck`; `pnpm --filter @kairos/web build`; `pnpm --dir apps/web exec react-doctor --verbose --scope changed`; Playwright Chromium desktop and Pixel 5 screenshot inspection of `/reports`; source-tree credential-fingerprint count and `git diff --check`.
+- Result (PASS / FAIL / BLOCKED): PASS for locally testable M3.8 behavior — final Vitest run reported 13 files / 35 tests; typecheck exited `0`; build emitted dynamic `/reports`; React Doctor reported 100/100 for changed files. An intermediate component run had 1 failure because its prior render was not cleaned between tests; explicit cleanup corrected test isolation and the complete suite then passed. Tests prove integer aggregation/upward price rounding, Monad gas-limit charging, zero-versus-unavailable venue fee, incomplete-enrichment behavior, public explorer link construction, strict browser-journal validation, hash-status replacement, and recovery after component restart. BLOCKED for live report evidence because no public Kairos deployment/indexed fill exists.
+- Artifact / receipt / transaction hash: `apps/web/src/app/reports/page.tsx`, `apps/web/src/lib/execution-report.ts`, `apps/web/src/components/execution-reports-view.tsx`, `apps/web/src/lib/wallet-attempt-history.ts`, `docs/M3_EXECUTION_REPORT.md`; ignored screenshots under `artifacts/m3-ui`; no public transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): Report value/component tests use typed fixtures. The runtime route currently shows a configuration blocker. Trading fee is exact only when all pinned fill-block taker fees are zero; a nonzero fee is intentionally unavailable rather than reverse-engineered from net output. Browser wallet history is local, user-controlled provenance and not chain evidence. Failed CRE executor attempts do not yet have a deployed workflow journal.
+- Next action: M3.9 — map UI-01/02, PRIVY-01, CRE-01, and DEMO-01/02 to automated evidence, run the full local regression, and state external blockers without claiming the real journey.
+
+---
+
 - ID and requirement: M3-07 / M3.7 orders, detail, recovery, and wallet controls
 - Date: 2026-09-16
 - Environment and chain ID: Windows local Next.js and Vitest; configured target Monad Testnet `10143`; no public Kairos addresses, Privy wallet, signer, or transaction accessed

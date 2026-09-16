@@ -1,6 +1,6 @@
 # Current status
 Updated: 2026-09-16
-Stage: M3 CRE, Privy, indexer, and application — in progress; M3.1–M3.7 implemented to the currently available local/configuration boundary.
+Stage: M3 CRE, Privy, indexer, and application — in progress; M3.1–M3.8 implemented to the currently available local/configuration boundary.
 
 Completed:
 - Final user specification copied unchanged.
@@ -50,14 +50,17 @@ Completed:
 - M3.7 orders/detail journey: dynamic `/orders` and `/orders/[orderId]` routes load the persisted chain-event projection on every request, verify its configured identity, and reread lifecycle, immutable policy fields, release, and available budget from one current chain block. The detail view separates current contract state, manual-L2 snapshot coverage, explicitly sourced offchain decisions, confirmed settlement events, and Privy cancel/allowance controls.
 - M3.7 truthfulness boundary: no configured index/deployment produces a visible configuration blocker instead of sample orders. Current lifecycle is never inferred from the index, invalid journal provenance fails the read, manual L2 is display-only and explicitly excludes AMM vault liquidity, and WAIT records are not rendered as receipts. Public ingestion remains blocked because no public Kairos deployment exists.
 - M3.7 local verification: indexer Vitest reported 1 file / 4 tests; web Vitest reported 9 files / 24 tests; both TypeScript checks exited `0`; React Doctor changed-scope reported 100/100; the production build emitted dynamic `/orders` and `/orders/[orderId]` routes. Missing-config desktop/mobile states were inspected; no RPC order read or public transaction occurred.
+- M3.8 execution reports: `/reports` aggregates indexed actual input/output, upward-rounded weighted average price, fill count, first-to-last fill duration, and live-policy total consistency. Each fill is enriched against its transaction, successful receipt, canonical block, and historical Kuru fee parameters; failed enrichment remains visibly incomplete.
+- M3.8 cost/failure boundary: Kuru trading fee and Monad gas are separate. Exact zero fee is shown only when every pinned taker fee is zero; nonzero fee remains unavailable because the settlement event records net output. Charged gas uses Monad's submitted-limit rule. Privy submitted/confirmed/failed/stale attempts persist in a validated local browser journal and never masquerade as onchain evidence.
+- M3.8 local verification: web Vitest reported 13 files / 35 tests; TypeScript exited `0`; the production build emitted dynamic `/reports`; React Doctor changed-scope reported 100/100. Desktop/mobile missing-configuration states were inspected. No public fill receipt, Privy action, RPC order read, or transaction occurred.
 
 Unverified:
 - Exact Kuru deployed-source/build equivalence, a public Kairos adapter deployment, and any public Kuru execution transaction.
-- Deployed CRE proof against an onchain Kairos policy/receiver, live index ingestion from those addresses, real Privy actions, execution-report product page, and M3 end-to-end proof.
+- Deployed CRE proof against an onchain Kairos policy/receiver, live index ingestion from those addresses, real Privy actions, a live execution report, and M3 end-to-end proof.
 - Full primary-track rules and prize-stacking.
 - Submission visual design and the final deployed-product evidence package.
 
 Next:
-Implement M3.8 against the indexed/onchain read model, then close the available M3.9 tests. Real Privy acceptance remains blocked until App ID, allowed origin, dashboard wallet configuration, test account, and public policy/token addresses are supplied locally.
+Complete the locally available M3.9 acceptance matrix and full regression. Real Privy/CRE journey acceptance remains blocked until App ID, allowed origin, dashboard wallet configuration, test account, public policy/token/receiver addresses, and CRE deployment access are supplied locally.
 
 Do not report product ready, integration passed or tests passed based on this file.
