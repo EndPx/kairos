@@ -59,7 +59,7 @@ Evidence is recorded separately from documentation claims in [EVIDENCE.md](EVIDE
 
 ## Status
 
-The repository is in M0: integration compatibility validation. No sponsor integration, deployment, or transaction is represented as complete without evidence. See [STATUS.md](STATUS.md) for the current milestone and next executable action.
+M2 is complete: the adaptive engine emits auditable EXECUTE and WAIT decisions from consistent policy and Kuru market snapshots, while the contract remains final policy authority. M3 application and sponsor orchestration have not started. No public deployment or transaction is represented as complete without evidence. See [STATUS.md](STATUS.md) and [docs/M2_EXIT_REVIEW.md](docs/M2_EXIT_REVIEW.md).
 
 ## Scope and safety
 

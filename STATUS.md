@@ -1,6 +1,6 @@
 # Current status
 Updated: 2026-09-16
-Stage: M2 adaptive execution engine — in progress; M2.1–M2.6 implemented and locally verified, exit review pending.
+Stage: M2 adaptive execution engine — COMPLETE; M3 has not started.
 
 Completed:
 - Final user specification copied unchanged.
@@ -34,14 +34,16 @@ Completed:
 - M2.4 decision engine: consistent policy/market snapshots now produce deterministic, traced EXECUTE or WAIT decisions over schedule, remaining budget, max fill, shared balance, allowance, and manual-L2 capacity. Proposal minimum output remains compatible with non-FOK partial fills while actual price enforcement stays onchain.
 - M2.5 freshness/retry policy: a measured Monad Testnet block sample supports a 10-second maximum age, 5-second proposal lifetime, 2-second request timeout, and bounded 3-attempt backoff. Stale, invalid, future-dated, unavailable, or retry-exhausted data returns WAIT without a proposal.
 - M2.6 engine acceptance tests: schedule boundaries, shared-balance contention, the recorded empty Kuru snapshot, and repeated deterministic decisions complete the M2 scenario matrix. The engine suite reports 6 files and 24 passing tests.
+- M2 exit review: M2.1–M2.6 and ENG-01–03 map to auditable implementation and tests. The written exit condition is met while the M1 contract remains final policy authority; no public execution boundary changed.
+- M2 full regression at exit: engine 6 files / 24 tests, default contract 12 passing plus 5 intentionally pending gated-fork tests, shared 1 file / 4 tests, both TypeScript checks, and contract compilation all passed.
 
 Unverified:
 - Exact Kuru deployed-source/build equivalence, a public Kairos adapter deployment, and any public Kuru execution transaction.
-- Formal M2 exit verdict; plus the CRE, Privy, Aurora, UI, and end-to-end groups assigned to later milestones.
+- CRE, Privy, Aurora, UI, and end-to-end groups assigned to later milestones.
 - Full primary-track rules and prize-stacking.
 - Submission visual design and the final deployed-product evidence package.
 
 Next:
-Run the full M2 plus M1 regression suites and produce the M2 exit review. Do not begin M3 in this task.
+Begin M3 only in a separate authorized task. Preserve the M2 manual-L2-only estimator boundary until same-block AMM vault modeling is independently verified.
 
 Do not report product ready, integration passed or tests passed based on this file.

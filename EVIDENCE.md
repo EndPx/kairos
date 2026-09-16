@@ -1,5 +1,5 @@
 # Evidence ledger
-No application tests, sponsor transactions or deployments have been performed by this handoff.
+Runtime tests, replays, local fixtures, and fixed-fork proofs are recorded below with their boundaries. No public Kairos deployment or public execution transaction is claimed.
 
 Add records:
 - ID and requirement:
@@ -13,6 +13,18 @@ Add records:
 - Next action:
 
 Documentation reads are context evidence only. Keep runtime proof separate.
+
+---
+
+- ID and requirement: M2-07 / M2 exit review and full regression
+- Date: 2026-09-16
+- Environment and chain ID: Windows local environment; Node.js `v24.18.0`; pnpm `10.21.0`; Hardhat `3.16.0`; Solidity compiler configuration `0.8.28`; Vitest `5.0.0`; TypeScript `7.0.2`; no public chain write
+- Version/commit/source URL: Review baseline `0faa2ad7ca2ffae18aaff7cf57ccc5e94a03c9cf`; Kuru SDK `636509c2eafd63479d3f399703354e0d09f51e18`; Kuru contracts `2060bb2736080c175d80d568bfdb6226bb5abd04`
+- Command or reproducible steps: In order: `pnpm engine:test`; `pnpm engine:typecheck`; `pnpm contracts:compile`; `pnpm contracts:test`; `pnpm test`; `pnpm typecheck`.
+- Result (PASS / FAIL / BLOCKED): PASS — all six commands exited `0`. Engine Vitest reported 6 files / 24 tests; engine typecheck passed; Hardhat reported no contracts to compile, 12 default tests passing and 5 intentionally pending fork-gated tests (17 Mocha cases total); shared Vitest reported 1 file / 4 tests; shared typecheck passed. The requirement-to-evidence review finds M2.1–M2.6 and ENG-01–03 satisfied, so M2 is COMPLETE under the written `WORKPLAN.md` exit.
+- Artifact / receipt / transaction hash: `docs/M2_EXIT_REVIEW.md`, M2 engine source/tests, and the M1 contract regression output; no transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): The previously evidenced gated fixed-fork suite was not rerun because this milestone changed only offchain engine code and documentation. Non-empty books and fees remain fixtures; the real recorded L2 snapshot is empty; AMM vault liquidity is excluded. This is not a public deployment, transaction, source-equivalence proof, audit, or execution guarantee.
+- Next action: Start M3 only as a separate milestone; retain the public execution interlock and contract-final-authority boundary.
 
 ---
 
