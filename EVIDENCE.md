@@ -148,6 +148,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M1-15 / POL-06 dust remainder
+- Date: 2026-09-16
+- Environment and chain ID: Local Hardhat EDR; fixture-only venue; no public chain accessed
+- Version/commit/source URL: `packages/contracts/test/KairosPolicyInvariants.ts`; Kairos policy at current repository revision.
+- Command or reproducible steps: `pnpm contracts:test`.
+- Result (PASS / FAIL / BLOCKED): PASS — the default suite reported 12 passing and 5 intentionally pending fork-gated tests. After an actual `45,000,000`-unit fill against a `50,000,000`-unit budget and `10,000,000` minimum, the remaining `5,000,000` units stayed in the owner wallet, order status remained ACTIVE, and a nonce-1 proposal for the dust reverted `MinimumFillNotMet` without changing nonce or balance.
+- Artifact / receipt / transaction hash: Dedicated `POL-06` invariant test; no transaction hash.
+- Limitations (fixture, fork, testnet, simulation, live): This proves contract policy and wallet-held dust only. UI presentation of the remainder is outside M1 and is not claimed.
+- Next action: Keep M1 partial until the Kuru build-equivalence artifact is obtained; do not enter M2 from this record.
+
+---
+
 - ID and requirement: M1-09 / Kuru implementation bytecode metadata probe
 - Date: 2026-09-15
 - Environment and chain ID: Monad Testnet `10143`; Foundation RPC; read-only `eth_getCode`; no transaction

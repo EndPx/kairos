@@ -11,7 +11,7 @@ The local suite runs against Hardhat's in-memory chain and explicitly labeled `M
 | POL-03 | Order whose end time is in the past derives non-active status and rejects execution | PASS |
 | POL-04 | Cancelled order rejects; ERC-20 allowance remains unchanged | PASS |
 | POL-05 | Adapter-reported actual input below `minFill` rejects atomically | PASS (fixture and fixed Kuru fork) |
-| POL-06 | A remainder below minimum is not forced by the policy; no completion is inferred | PARTIAL — covered by fill lower-bound rejection, no dedicated dust UI yet |
+| POL-06 | A remainder below minimum remains in the owner wallet; a sub-minimum follow-up rejects; the order remains active rather than falsely completed | PASS (local policy; UI rendering belongs to a later milestone) |
 | PRICE-01/02 | Actual output producing an effective price above limit rejects; USDC-6/MON-18 scaling covered in shared tests | PASS (fixture/local arithmetic and fixed Kuru fork) |
 | SET-01 | Actual input/output and unused input are measured/forwarded atomically | PASS (fixture and fixed Kuru fork) |
 | SET-02 | Pre-existing adapter balances are not attributed to owner receipt or swept | PASS (fixture and fixed Kuru fork) |
@@ -31,7 +31,7 @@ pnpm test
 pnpm typecheck
 ```
 
-At the post-fix run, compilation passed; the gated Kuru fork suite reported **5 passing** tests; the default contract suite reported **11 passing** and **5 intentionally pending** gated fork tests; shared Vitest reported **4 passing** tests; and TypeScript typecheck passed. See `docs/KURU_FORK_SETTLEMENT.md`.
+At the current run, compilation passed; the gated Kuru fork suite reported **5 passing** tests; the default contract suite reported **12 passing** and **5 intentionally pending** gated fork tests; shared Vitest reported **4 passing** tests; and TypeScript typecheck passed. See `docs/KURU_FORK_SETTLEMENT.md`.
 
 ## Remaining M1 exit gap
 

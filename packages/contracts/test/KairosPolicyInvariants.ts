@@ -69,6 +69,30 @@ describe('KairosPolicy invariants (fixture-only venue)', function () {
     expect((await policy.getOrder(0)).received).to.equal(20_000_000_000_000_000_000n);
   });
 
+  it('leaves a remainder below minFill in the owner wallet without false completion', async function () {
+    const { ethers } = await network.create();
+    const [owner, executor] = await ethers.getSigners();
+    const input = await ethers.deployContract('MockERC20', ['Mock USD Coin', 'mUSDC', 6]);
+    const output = await ethers.deployContract('MockERC20', ['Mock Monad', 'mMON', 18]);
+    const adapter = await ethers.deployContract('MockVenueAdapter', [await input.getAddress(), await output.getAddress()]);
+    const policy = await ethers.deployContract('KairosPolicy', [executor.address, '0x0000000000000000000000000000000000000001', await input.getAddress(), await output.getAddress(), await adapter.getAddress(), 6, 18, 8]);
+    const now = BigInt((await ethers.provider.getBlock('latest'))!.timestamp);
+    const budget = 50_000_000n;
+    await input.mint(owner.address, budget);
+    await input.connect(owner).approve(await policy.getAddress(), budget);
+    await policy.connect(owner).createOrder(budget, now - 9_000n, now + 1_000n, 45_000_000n, 10_000_000n, 250_000_000n);
+    await adapter.configure(45_000_000n, 20_000_000_000_000_000_000n);
+    await policy.connect(executor).execute({ orderId: 0n, nonce: 0n, validUntil: now + 100n, proposedInput: 45_000_000n, minimumOutput: 1n, snapshotId: `0x${'33'.repeat(32)}` });
+
+    expect((await policy.getOrder(0)).spent).to.equal(45_000_000n);
+    expect(await policy.statusOf(0)).to.equal(0n);
+    expect(await input.balanceOf(owner.address)).to.equal(5_000_000n);
+    await adapter.configure(5_000_000n, 1_000_000_000_000_000_000n);
+    await expect(policy.connect(executor).execute({ orderId: 0n, nonce: 1n, validUntil: now + 100n, proposedInput: 5_000_000n, minimumOutput: 1n, snapshotId: `0x${'44'.repeat(32)}` })).to.be.revertedWithCustomError(policy, 'MinimumFillNotMet');
+    expect((await policy.getOrder(0)).executionNonce).to.equal(1n);
+    expect(await input.balanceOf(owner.address)).to.equal(5_000_000n);
+  });
+
   it('rejects ambiguous same-token accounting and unsafe decimal exponents at deployment', async function () {
     const { ethers } = await network.create();
     const [executor] = await ethers.getSigners();
