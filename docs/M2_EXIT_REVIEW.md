@@ -1,7 +1,9 @@
 # M2 exit review
 
-Date: 2026-09-16  
-Reviewed baseline: `0faa2ad7ca2ffae18aaff7cf57ccc5e94a03c9cf`  
+Date: 2026-09-16
+
+Reviewed baseline: `0faa2ad7ca2ffae18aaff7cf57ccc5e94a03c9cf`
+
 Verdict: **M2 COMPLETE**
 
 ## Written exit condition
