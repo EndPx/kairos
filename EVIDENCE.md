@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M3-06 / M3.6 integer-safe create-order page
+- Date: 2026-09-16
+- Environment and chain ID: Windows local Next.js application; configured target Monad Testnet `10143`; no Privy account, signer, deployment, or public transaction accessed
+- Version/commit/source URL: Next.js `16.3.5`; React `19.3.0`; TypeScript `5.9.3`; `@kairos/shared` integer-unit implementation; feature commit `0effa5037eb6b20a2d1d9f6609d2ed0b0dd18c08`
+- Command or reproducible steps: `pnpm --filter @kairos/shared test`; `pnpm --filter @kairos/shared typecheck`; `pnpm --filter @kairos/web test`; `pnpm --filter @kairos/web typecheck`; `pnpm --filter @kairos/web build`; `pnpm --dir apps/web exec react-doctor --verbose --scope changed`; desktop and mobile screenshot inspection of `/orders/new`; source-tree credential-pattern count and `git diff --check`.
+- Result (PASS / FAIL / BLOCKED): PASS for the locally testable M3.6 scope — shared Vitest reported 1 file / 4 tests; web Vitest reported 6 files / 17 tests; both typechecks exited `0`; React Doctor reported 100/100 for changed files; the production build emitted `/orders/new`. Tests prove exact USDC-6 and price-8 conversion, rejection rather than rounding of excess precision, policy relationship/schedule rejection, approval parsing independent from policy validity, and blocked wallet actions when configuration is absent. Secret-prefix matches were zero; `.env.example` contains empty values only.
+- Artifact / receipt / transaction hash: `apps/web/src/app/orders/new`, `apps/web/src/components/create-order-form.tsx`, `apps/web/src/lib/order-form.ts`; no wallet address or transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): Form validation and transaction construction do not prove a Privy wallet modal, mined policy, Kuru execution, or complete user journey. Balance/allowance display remains unavailable until a configured wallet and deployment addresses exist. The page makes no best-price or completion guarantee.
+- Next action: M3.7 — recover indexed order history and current onchain state into orders/detail views, including cancellation and independent allowance management.
+
+---
+
 - ID and requirement: M3-05 / M3.5 Privy application integration and UI primitive gate
 - Date: 2026-09-16
 - Environment and chain ID: Windows local Next.js application; configured target Monad Testnet `10143`; no Privy account, wallet, signer, deployment, or public transaction accessed

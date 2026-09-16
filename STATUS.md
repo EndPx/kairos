@@ -1,6 +1,6 @@
 # Current status
 Updated: 2026-09-16
-Stage: M3 CRE, Privy, indexer, and application — in progress; M3.1–M3.5 implemented to the currently available local/configuration boundary.
+Stage: M3 CRE, Privy, indexer, and application — in progress; M3.1–M3.6 implemented to the currently available local/configuration boundary.
 
 Completed:
 - Final user specification copied unchanged.
@@ -45,14 +45,16 @@ Completed:
 - M3 application design gate: `DESIGN.md` records the bright execution-desk direction, responsive/scroll contracts, UI state language, research sources, accessibility gates, and primitive inventory. The `/system` showcase implements those primitives; desktop/mobile runtime checks found no horizontal overflow at 375/768/1280 px and no console error in a clean load.
 - M3.5 Privy application boundary: the web app pins `@privy-io/react-auth` `3.42.0`, explicitly supports only Monad Testnet `10143`, requests a Privy embedded EVM wallet with visible wallet transaction confirmation, and implements real calldata paths for approval, create, cancel, and revoke. Native/token balance and allowance reads share the selected chain client. The App ID and deployment addresses remain environment-only; when absent, the application presents a configuration blocker and cannot open a fake login or transaction path. No delegated signer, sponsor flag, public transaction, or wallet account was used.
 - M3.5 local verification: web TypeScript exited `0`; Vitest reported 4 files / 11 tests; React Doctor reported 100/100 across 21 files; the Next production build generated `/` and `/system`. Transaction-builder tests decode the exact approve/create/cancel arguments and prove revoke uses `approve(policy, 0)`.
+- M3.6 create-order journey: `/orders/new` fixes the initial route to buy MON with USDC through Kuru, converts USDC-6 and policy-price-8 inputs with shared integer helpers, validates cumulative schedule and policy relationships, previews linear release, and makes partial-completion/custody/allowance risks explicit. Approval remains an independently validated transaction and is neither treated as reserved budget nor required to equal total budget.
+- M3.6 local verification: shared Vitest reported 1 file / 4 tests; web Vitest reported 6 files / 17 tests; shared and web TypeScript checks exited `0`; React Doctor changed-scope reported 100/100; the production build generated `/orders/new`. Desktop and mobile screenshots were inspected. No wallet, public deployment, or transaction was accessed.
 
 Unverified:
 - Exact Kuru deployed-source/build equivalence, a public Kairos adapter deployment, and any public Kuru execution transaction.
-- Deployed CRE proof against an onchain Kairos policy/receiver, live index ingestion from those addresses, real Privy actions, create/orders/report product pages, and M3 end-to-end proof.
+- Deployed CRE proof against an onchain Kairos policy/receiver, live index ingestion from those addresses, real Privy actions, orders/detail/report product pages, and M3 end-to-end proof.
 - Full primary-track rules and prize-stacking.
 - Submission visual design and the final deployed-product evidence package.
 
 Next:
-Implement M3.6–M3.8 against the wallet boundary and indexed/onchain read model, then close the available M3.9 tests. Real Privy acceptance remains blocked until App ID, allowed origin, dashboard wallet configuration, test account, and public policy/token addresses are supplied locally.
+Implement M3.7–M3.8 against the indexed/onchain read model, then close the available M3.9 tests. Real Privy acceptance remains blocked until App ID, allowed origin, dashboard wallet configuration, test account, and public policy/token addresses are supplied locally.
 
 Do not report product ready, integration passed or tests passed based on this file.
