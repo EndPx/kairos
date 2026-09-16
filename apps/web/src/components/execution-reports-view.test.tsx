@@ -12,6 +12,7 @@ const SNAPSHOT = `0x${'3'.repeat(64)}` as const;
 afterEach(cleanup);
 
 const readyModel: ExecutionReportsReadModel = {
+  attempts: [],
   ordersModel: {
     state: 'READY',
     cursor: {blockNumber: '10', blockHash: BLOCK_HASH},
@@ -84,7 +85,32 @@ describe('ExecutionReportsView', () => {
     expect(screen.getByText('0 MON (pinned taker fee = 0 bps)')).toBeInTheDocument();
     expect(screen.getByText(/submitted gas limit × effective gas price/i)).toBeInTheDocument();
     expect(screen.getByRole('link', {name: /explorer/i})).toHaveAttribute('href', expect.stringContaining(`/tx/${HASH}`));
-    expect(screen.getByText('No inferred failures')).toBeInTheDocument();
+    expect(screen.getByText(/does not infer a failure/i)).toBeInTheDocument();
+  });
+
+  it('shows a persisted failed CRE attempt without presenting it as a settlement event', () => {
+    render(
+      <ExecutionReportsView
+        model={{
+          ...readyModel,
+          attempts: [{
+            kind: 'EXECUTION_ATTEMPT',
+            source: 'CRE_WORKFLOW',
+            recordedAt: '2026-09-16T10:00:00.000Z',
+            orderId: '7',
+            nonce: '0',
+            proposalHash: SNAPSHOT,
+            status: 'FAILED',
+            reason: 'POLICY_REVERTED',
+          }],
+        }}
+      />,
+    );
+
+    expect(screen.getByText('Nonce 0 · failed')).toBeInTheDocument();
+    expect(screen.getByText('POLICY_REVERTED')).toBeInTheDocument();
+    expect(screen.getByText('CRE WORKFLOW')).toBeInTheDocument();
+    expect(screen.getByText('None recorded')).toBeInTheDocument();
   });
 
   it('does not substitute sample reports when configuration is missing', () => {
@@ -93,6 +119,7 @@ describe('ExecutionReportsView', () => {
         model={{
           ordersModel: {state: 'CONFIG_REQUIRED', orders: [], message: 'Index path is required.'},
           reports: [],
+          attempts: [],
         }}
       />,
     );

@@ -3,6 +3,7 @@ import {formatUnits} from '@kairos/shared/units';
 import {KeyValueList, ReceiptCard, SourceBadge, StatePanel, StatusPill} from '@/components/primitives';
 import {monadTestnet} from '@/lib/chain';
 import type {ExecutionReportsReadModel} from '@/lib/execution-report';
+import type {EvidenceSource, StatusTone} from '@/components/primitives';
 
 function amount(value: string, decimals: number, symbol: string): string {
   return `${formatUnits(BigInt(value), decimals)} ${symbol}`;
@@ -18,6 +19,20 @@ function seconds(value: string | undefined): string {
 function transactionExplorer(hash: `0x${string}`): string | undefined {
   const base = monadTestnet.blockExplorers?.default.url;
   return base ? `${base.replace(/\/$/, '')}/tx/${hash}` : undefined;
+}
+
+function attemptSource(source: ExecutionReportsReadModel['attempts'][number]['source']): EvidenceSource {
+  if (source === 'CRE_SIMULATION') return 'CRE SIMULATION';
+  if (source === 'CRE_WORKFLOW') return 'CRE WORKFLOW';
+  if (source === 'LOCAL_ENGINE') return 'LOCAL ENGINE';
+  return 'REPLAY';
+}
+
+function attemptTone(status: ExecutionReportsReadModel['attempts'][number]['status']): Extract<StatusTone, 'confirmed' | 'failed' | 'stale' | 'submitted'> {
+  if (status === 'CONFIRMED') return 'confirmed';
+  if (status === 'SUBMITTED') return 'submitted';
+  if (status === 'STALE') return 'stale';
+  return 'failed';
 }
 
 export function ExecutionReportsView({model}: {model: ExecutionReportsReadModel}) {
@@ -122,11 +137,34 @@ export function ExecutionReportsView({model}: {model: ExecutionReportsReadModel}
           </section>
 
           <section className="report-failures">
-            <div className="section-heading"><p className="eyebrow">Failed transactions</p><h3>No inferred failures</h3></div>
-            <p>
-              Reverted or rejected attempts do not emit <code>ExecutionSettled</code>. Kairos does not infer a failure from missing events;
-              local wallet attempt history is reported separately when available.
-            </p>
+            <div className="section-heading"><p className="eyebrow">Executor transaction attempts</p><h3>Submitted, confirmed, failed, and stale.</h3></div>
+            {model.attemptJournalError ? (
+              <StatePanel state="error" title="Attempt journal unavailable">{model.attemptJournalError}</StatePanel>
+            ) : model.attempts.some((attempt) => attempt.orderId === order.orderId) ? (
+              <div className="receipt-grid">
+                {model.attempts.filter((attempt) => attempt.orderId === order.orderId).map((attempt) => (
+                  <ReceiptCard
+                    key={`${attempt.orderId}-${attempt.nonce}-${attempt.proposalHash}`}
+                    eyebrow="Execution attempt"
+                    title={`Nonce ${attempt.nonce} · ${attempt.status.toLowerCase()}`}
+                    source={attemptSource(attempt.source)}
+                    status={attemptTone(attempt.status)}
+                    explorerHref={attempt.transactionHash ? transactionExplorer(attempt.transactionHash) : undefined}
+                    items={[
+                      {label: 'Reason', value: attempt.reason},
+                      {label: 'Recorded', value: new Date(attempt.recordedAt).toISOString()},
+                      {label: 'Proposal', value: `${attempt.proposalHash.slice(0, 12)}…${attempt.proposalHash.slice(-8)}`},
+                      {label: 'Public hash', value: attempt.transactionHash ?? 'None recorded'},
+                    ]}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p>
+                No attempt record exists. Kairos does not infer a failure from a missing <code>ExecutionSettled</code> event;
+                local wallet attempts are reported separately below.
+              </p>
+            )}
           </section>
         </article>
       ))}

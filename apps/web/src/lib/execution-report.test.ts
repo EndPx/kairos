@@ -2,7 +2,12 @@ import {describe, expect, it} from 'vitest';
 
 import type {IndexedFill} from '../../../../packages/indexer/src/types';
 
-import {buildExecutionReport, type FillChainEvidence} from './execution-report';
+import {
+  buildExecutionReport,
+  latestExecutionAttempts,
+  validateExecutionAttemptJournal,
+  type FillChainEvidence,
+} from './execution-report';
 
 const HASH_A = `0x${'11'.repeat(32)}` as const;
 const HASH_B = `0x${'22'.repeat(32)}` as const;
@@ -76,5 +81,38 @@ describe('buildExecutionReport', () => {
     expect(report.indexMatchesPolicy).toBe(false);
     expect(report.durationSeconds).toBeUndefined();
     expect(report.tradingFee.status).toBe('UNAVAILABLE');
+  });
+});
+
+describe('execution attempt journal', () => {
+  const attempt = {
+    kind: 'EXECUTION_ATTEMPT',
+    source: 'CRE_WORKFLOW',
+    recordedAt: '2026-09-16T10:00:00.000Z',
+    orderId: '7',
+    nonce: '0',
+    proposalHash: SNAPSHOT,
+    status: 'SUBMITTED',
+    reason: 'REPORT_ACCEPTED_FOR_SUBMISSION',
+    transactionHash: HASH_A,
+  } as const;
+
+  it('requires hashes for submitted and confirmed attempts and rejects invalid provenance', () => {
+    expect(validateExecutionAttemptJournal([attempt])).toEqual([attempt]);
+    expect(() => validateExecutionAttemptJournal([{...attempt, transactionHash: undefined}])).toThrow(/invalid/i);
+    expect(() => validateExecutionAttemptJournal([{...attempt, source: 'UNKNOWN'}])).toThrow(/invalid/i);
+  });
+
+  it('selects the latest state for one proposal after restart', () => {
+    const failed = {
+      ...attempt,
+      recordedAt: '2026-09-16T10:00:02.000Z',
+      status: 'FAILED' as const,
+      reason: 'POLICY_REVERTED',
+    };
+    const latest = latestExecutionAttempts([failed, attempt]);
+
+    expect(latest).toHaveLength(1);
+    expect(latest[0]).toMatchObject({status: 'FAILED', reason: 'POLICY_REVERTED'});
   });
 });

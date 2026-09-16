@@ -1,7 +1,7 @@
 import {mulDivCeil, pow10} from '@kairos/shared/units';
-import type {Hex} from 'viem';
+import {isHash, type Hex} from 'viem';
 
-import type {IndexedFill} from '../../../../packages/indexer/src/types';
+import type {ExecutionAttemptRecord, IndexedFill} from '../../../../packages/indexer/src/types';
 
 import type {OrderViewModel, OrdersReadModel} from './order-read-model';
 
@@ -41,6 +41,8 @@ export interface ExecutionReportOrder {
 }
 
 export interface ExecutionReportsReadModel {
+  readonly attemptJournalError?: string;
+  readonly attempts: readonly ExecutionAttemptRecord[];
   readonly ordersModel: OrdersReadModel;
   readonly reports: readonly ExecutionReportOrder[];
 }
@@ -56,6 +58,52 @@ function unsigned(value: string, field: string): bigint {
 
 function sum(values: readonly bigint[]): bigint {
   return values.reduce((total, value) => total + value, 0n);
+}
+
+export function validateExecutionAttemptJournal(value: unknown): ExecutionAttemptRecord[] {
+  if (!Array.isArray(value)) throw new Error('Execution attempt journal must be an array.');
+  const sources = new Set(['CRE_SIMULATION', 'CRE_WORKFLOW', 'LOCAL_ENGINE', 'REPLAY']);
+  const statuses = new Set(['SUBMITTED', 'CONFIRMED', 'FAILED', 'STALE']);
+  for (const item of value) {
+    if (typeof item !== 'object' || item === null) throw new Error('Execution attempt must be an object.');
+    const record = item as Record<string, unknown>;
+    if (
+      record.kind !== 'EXECUTION_ATTEMPT' ||
+      typeof record.source !== 'string' ||
+      !sources.has(record.source) ||
+      typeof record.recordedAt !== 'string' ||
+      !Number.isFinite(Date.parse(record.recordedAt)) ||
+      typeof record.orderId !== 'string' ||
+      !/^(0|[1-9][0-9]*)$/.test(record.orderId) ||
+      typeof record.nonce !== 'string' ||
+      !/^(0|[1-9][0-9]*)$/.test(record.nonce) ||
+      typeof record.proposalHash !== 'string' ||
+      !isHash(record.proposalHash) ||
+      typeof record.status !== 'string' ||
+      !statuses.has(record.status) ||
+      typeof record.reason !== 'string' ||
+      record.reason.length === 0 ||
+      record.reason.length > 240 ||
+      (record.transactionHash !== undefined &&
+        (typeof record.transactionHash !== 'string' || !isHash(record.transactionHash))) ||
+      (['SUBMITTED', 'CONFIRMED'].includes(record.status) && record.transactionHash === undefined)
+    ) {
+      throw new Error('Execution attempt journal record has invalid provenance, identity, or status.');
+    }
+  }
+  return value as ExecutionAttemptRecord[];
+}
+
+export function latestExecutionAttempts(
+  records: readonly ExecutionAttemptRecord[],
+): readonly ExecutionAttemptRecord[] {
+  const latest = new Map<string, ExecutionAttemptRecord>();
+  for (const record of records) {
+    const key = `${record.orderId}:${record.nonce}:${record.proposalHash.toLowerCase()}`;
+    const current = latest.get(key);
+    if (!current || Date.parse(record.recordedAt) >= Date.parse(current.recordedAt)) latest.set(key, record);
+  }
+  return [...latest.values()].sort((left, right) => Date.parse(right.recordedAt) - Date.parse(left.recordedAt));
 }
 
 export function buildExecutionReport(

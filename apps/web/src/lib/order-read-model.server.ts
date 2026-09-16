@@ -10,8 +10,10 @@ import {kairosPolicyAbi, kuruReadAbi} from './abi';
 import {DEFAULT_MONAD_RPC_URL, monadTestnet} from './chain';
 import {
   buildExecutionReport,
+  latestExecutionAttempts,
   type ExecutionReportsReadModel,
   type FillChainEvidence,
+  validateExecutionAttemptJournal,
 } from './execution-report';
 import {summarizeKuruManualBook} from './kuru-market-summary';
 import {
@@ -281,7 +283,16 @@ async function readFillEvidence(
 
 export async function loadExecutionReportsReadModel(): Promise<ExecutionReportsReadModel> {
   const ordersModel = await loadOrdersReadModel();
-  if (ordersModel.state !== 'READY') return {ordersModel, reports: []};
+  if (ordersModel.state !== 'READY') return {ordersModel, reports: [], attempts: []};
+
+  let attempts = [] as ExecutionReportsReadModel['attempts'];
+  let attemptJournalError: string | undefined;
+  try {
+    const value = await readOptionalJson<unknown>(process.env.KAIROS_EXECUTION_ATTEMPT_JOURNAL_PATH, []);
+    attempts = latestExecutionAttempts(validateExecutionAttemptJournal(value));
+  } catch {
+    attemptJournalError = 'The execution attempt journal is malformed or unavailable. No attempt state is shown.';
+  }
 
   const rpcUrl = process.env.MONAD_RPC_URL || process.env.NEXT_PUBLIC_MONAD_RPC_URL || DEFAULT_MONAD_RPC_URL;
   const client = createPublicClient({chain: monadTestnet, transport: http(rpcUrl)});
@@ -304,5 +315,5 @@ export async function loadExecutionReportsReadModel(): Promise<ExecutionReportsR
       };
     }),
   );
-  return {ordersModel, reports};
+  return {ordersModel, reports, attempts, attemptJournalError};
 }

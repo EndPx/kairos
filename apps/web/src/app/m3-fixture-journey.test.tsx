@@ -125,7 +125,7 @@ describe('M3 labeled fixture journey', () => {
       gasUsed: '310000',
       takerFeeBps: '0',
     }], live.spent, live.received);
-    const reportsModel: ExecutionReportsReadModel = {ordersModel, reports: [{order: orders[0]!, report}]};
+    const reportsModel: ExecutionReportsReadModel = {ordersModel, reports: [{order: orders[0]!, report}], attempts: []};
 
     const detail = render(<OrderDetail order={orders[0]!} model={ordersModel} />);
     expect(screen.getByText('CAPACITY_BELOW_MINIMUM')).toBeInTheDocument();
