@@ -8,7 +8,7 @@ The report page combines three sources without merging their authority:
 - The current policy read provides authoritative cumulative spent and received totals. A mismatch is shown as index lag, not silently reconciled.
 - Each indexed fill transaction is enriched from its public transaction, successful receipt, canonical block, and Kuru `getMarketParams()` read at that fill block.
 
-The page does not infer a failed transaction from an absent settlement event. Privy wallet attempts are stored in a versioned browser-local journal and remain labeled `LOCAL WALLET`; malformed local data fails closed. This journal survives a page or application restart on the same browser profile, but it is not trusted as onchain evidence.
+The page does not infer a failed transaction from an absent settlement event. Privy wallet attempts are stored in a versioned browser-local journal and remain labeled `LOCAL WALLET`; malformed local data fails closed. CRE/executor transitions use a separate server-side execution-attempt journal and retain `CRE WORKFLOW`, `CRE SIMULATION`, `LOCAL ENGINE`, or `REPLAY` provenance. The UI selects the latest transition for each order/nonce/proposal tuple and rejects a malformed journal rather than showing partial untrusted records. Neither journal is trusted as onchain settlement evidence.
 
 ## Integer accounting
 
@@ -23,6 +23,8 @@ The page does not infer a failed transaction from an absent settlement event. Pr
 If a transaction, receipt, block, or historical market-parameter read cannot be matched to the indexed successful fill block, that fill remains visible but receipt enrichment is marked incomplete. The application does not fabricate a block hash, fee, duration, or gas value.
 
 Explorer links are derived from the pinned viem Monad Testnet chain definition. A rejected wallet request has no explorer link because no public transaction hash exists.
+
+The execution-attempt journal is an application ingestion boundary, not a claim that deployed CRE execution-history ingestion exists. A live producer remains blocked on deployed workflow identity and an officially verified execution-history source.
 
 ## Current boundary
 

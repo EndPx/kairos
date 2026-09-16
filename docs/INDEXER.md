@@ -26,6 +26,8 @@ The `ViemChainSource` subtracts a configurable confirmation depth from the lates
 
 Only decoded contract logs enter `PersistedIndexState`. CRE/engine WAIT and EXECUTE decisions are not chain events. `DecisionJournal` stores them in a separate file and requires `kind: OFFCHAIN_DECISION` plus an explicit `source` on every record. Optional constraint values are persisted as decimal strings for inspectable decision traces. The UI must label those records as offchain decisions and must not display them as receipts or fills.
 
+Executor submission states are a third provenance domain. `ExecutionAttemptJournal` stores `SUBMITTED`, `CONFIRMED`, `FAILED`, and `STALE` transitions keyed by order, nonce, and proposal hash. The application validates every record and presents only the latest transition for a proposal. A submitted or confirmed record requires a public transaction hash; a pre-submission failure may legitimately have none. These records never create a fill or modify indexed spend/output. In the current environment no deployed CRE observer produces this journal, so the boundary is locally tested but not live-populated.
+
 Event-derived `ACTIVE` is not sufficient to infer wall-clock expiry. The application must read `statusOf` from the policy at its current pinned block before presenting current lifecycle state. The index projection preserves mined history; it does not fabricate an expiry event that the contract never emitted.
 
 ## Configuration
@@ -38,7 +40,8 @@ Only variable names belong in environment files:
 - `NEXT_PUBLIC_KAIROS_RECEIVER_ADDRESS`;
 - `KAIROS_DEPLOYMENT_BLOCK`;
 - `KAIROS_INDEX_PATH`; and
-- `KAIROS_DECISION_JOURNAL_PATH`.
+- `KAIROS_DECISION_JOURNAL_PATH`; and
+- `KAIROS_EXECUTION_ATTEMPT_JOURNAL_PATH`.
 
 No public Kairos policy or receiver deployment exists yet, so the viem source has not been run against a Kairos public address. Local tests use ABI-encoded logs rather than an invented address.
 
@@ -49,4 +52,4 @@ pnpm indexer:typecheck
 pnpm indexer:test
 ```
 
-The test suite covers canonical out-of-order ingestion, fill/report/cancellation projection, process restart without replay, block-hash mismatch rebuild, and strict separation of offchain decisions.
+The test suite covers canonical out-of-order ingestion, fill/report/cancellation projection, process restart without replay, block-hash mismatch rebuild, and strict separation of offchain decisions and executor-attempt transitions from confirmed chain state.

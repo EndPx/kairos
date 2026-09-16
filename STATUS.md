@@ -56,10 +56,12 @@ Completed:
 - M3.9 local journey: an explicitly labeled fixture test preserves one policy from integer form parsing and exact approval/create calldata through recovered indexed/live state, separated CRE-simulation WAIT provenance, and a receipt-enriched execution report. It is regression coverage, not a real sponsor journey.
 - M3 full local regression: contract compile passed; contract output listed 16 passing cases and 5 intentionally pending gated-fork cases; shared 4, engine 24, CRE workflow 5, indexer 4, and web 36 tests passed. Shared/engine/workflow/indexer/web TypeScript checks and the production web build passed.
 - M3 acceptance review: UI-02 and DEMO-02 pass at the implementation boundary; UI-01 and CRE-01 are partial; PRIVY-01 and DEMO-01 are blocked. `docs/M3_ACCEPTANCE_REVIEW.md` therefore records **M3 PARTIAL**, not complete.
+- M3 failed-attempt recovery: executor/CRE `SUBMITTED`, `CONFIRMED`, `FAILED`, and `STALE` transitions now have a dedicated atomic journal, separate from decision traces and chain events. The report UI validates provenance, collapses transitions to the latest proposal status after restart, and never converts an attempt into settlement accounting. Indexer reports 5 tests and web reports 39 tests; both typechecks, the web build, and React Doctor changed-scope 100/100 pass.
 
 Unverified:
 - Exact Kuru deployed-source/build equivalence, a public Kairos adapter deployment, and any public Kuru execution transaction.
 - Deployed CRE proof against an onchain Kairos policy/receiver, live index ingestion from those addresses, real Privy actions, a live execution report, and M3 end-to-end proof.
+- A verified deployed CRE execution-history source that can populate the new executor-attempt journal without manual database edits.
 - Full primary-track rules and prize-stacking.
 - Submission visual design and the final deployed-product evidence package.
 

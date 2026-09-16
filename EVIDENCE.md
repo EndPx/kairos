@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M3-10 / restart-persistent failed executor-attempt provenance
+- Date: 2026-09-16
+- Environment and chain ID: Windows local Vitest/Next.js; configured target Monad Testnet `10143`; no deployed CRE workflow, public Kairos address, RPC transaction, signer, or broadcast accessed
+- Version/commit/source URL: Indexer commit `88fed6b16c3e6c4a4bd55c23c375f2f44512c588`; application commit `02f83aae0a9a3c8d8474e9f54ce1366158ac4e89`; viem `2.56.5`; Next.js `16.3.5`
+- Command or reproducible steps: `pnpm indexer:test`; `pnpm indexer:typecheck`; `pnpm web:test`; `pnpm web:typecheck`; `pnpm web:build`; `pnpm --dir apps/web exec react-doctor --verbose --scope changed`; source-tree credential-fingerprint scan; `git diff --check`.
+- Result (PASS / FAIL / BLOCKED): PASS for the local boundary — indexer reported 1 file / 5 tests; web reported 14 files / 39 tests; both typechecks and the production build exited `0`; React Doctor changed-scope reported 100/100. Tests prove attempt transition persistence across a new journal instance, strict record validation, required public hashes for submitted/confirmed states, latest-state selection per proposal, failed CRE UI provenance, and separation from confirmed chain events. BLOCKED for live population because no deployed workflow identity or verified CRE execution-history producer is available.
+- Artifact / receipt / transaction hash: `packages/indexer/src/store.ts`, `packages/indexer/src/types.ts`, `apps/web/src/lib/execution-report.ts`, `apps/web/src/components/execution-reports-view.tsx`; no public transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): Journal records in tests are explicit fixtures. The journal is not manually populated in the runtime and does not improve CRE-01 by itself. It cannot create a fill, change order accounting, or prove a failed public transaction.
+- Next action: After a deployed CRE workflow and official execution-history source exist, implement the producer that writes these typed transitions and prove restart recovery from actual execution identifiers.
+
+---
+
 - ID and requirement: M3-09 / M3.9 application acceptance review and full local regression
 - Date: 2026-09-16
 - Environment and chain ID: Windows local Node.js/Hardhat/Vitest/Next.js; target Monad Testnet `10143`; default contract suite did not enable the separately gated fixed fork; no Privy account, deployment, signer, broadcast, or public Kairos transaction accessed
