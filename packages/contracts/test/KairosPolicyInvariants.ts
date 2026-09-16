@@ -72,9 +72,15 @@ describe('KairosPolicy invariants (fixture-only venue)', function () {
   it('rejects ambiguous same-token accounting and unsafe decimal exponents at deployment', async function () {
     const { ethers } = await network.create();
     const [executor] = await ethers.getSigners();
-    const token = await ethers.deployContract('MockERC20', ['Mock USD Coin', 'mUSDC', 6]);
-    const adapter = await ethers.deployContract('MockVenueAdapter', [await token.getAddress(), await token.getAddress()]);
-    const args = [executor.address, '0x0000000000000000000000000000000000000001', await token.getAddress(), await token.getAddress(), await adapter.getAddress(), 6, 6, 8];
-    await expect(ethers.deployContract('KairosPolicy', args)).to.be.revertedWithCustomError(await ethers.getContractFactory('KairosPolicy'), 'InvalidAddress');
+    const input = await ethers.deployContract('MockERC20', ['Mock USD Coin', 'mUSDC', 6]);
+    const output = await ethers.deployContract('MockERC20', ['Mock Monad', 'mMON', 18]);
+    const sameTokenAdapter = await ethers.deployContract('MockVenueAdapter', [await input.getAddress(), await input.getAddress()]);
+    const policyFactory = await ethers.getContractFactory('KairosPolicy');
+    const sameTokenArgs = [executor.address, '0x0000000000000000000000000000000000000001', await input.getAddress(), await input.getAddress(), await sameTokenAdapter.getAddress(), 6, 6, 8];
+    await expect(policyFactory.deploy(...sameTokenArgs)).to.be.revertedWithCustomError(policyFactory, 'InvalidAddress');
+
+    const validAdapter = await ethers.deployContract('MockVenueAdapter', [await input.getAddress(), await output.getAddress()]);
+    const unsafeDecimalsArgs = [executor.address, '0x0000000000000000000000000000000000000001', await input.getAddress(), await output.getAddress(), await validAdapter.getAddress(), 6, 18, 78];
+    await expect(policyFactory.deploy(...unsafeDecimalsArgs)).to.be.revertedWithCustomError(policyFactory, 'InvalidDecimals');
   });
 });
