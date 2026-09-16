@@ -120,7 +120,25 @@ export interface EngineDecision {
   readonly evaluatedAt: UnixSeconds;
   readonly policyBlockHash: Hex;
   readonly marketBlockHash: Hex;
+  readonly freshness: SnapshotFreshness;
   readonly constraints: DecisionConstraintTrace;
   readonly capacity: LiquidityCapacity;
   readonly proposal?: ExecutionProposal;
 }
+
+export interface SnapshotFreshness {
+  readonly status: 'FRESH' | 'STALE' | 'INVALID';
+  readonly ageSeconds: bigint;
+  readonly maxAgeSeconds: bigint;
+}
+
+export interface DataUnavailableDecision {
+  readonly kind: 'WAIT';
+  readonly reason: 'STALE_MARKET_DATA';
+  readonly evaluatedAt: UnixSeconds;
+  readonly dataStatus: 'UNAVAILABLE';
+  readonly attempts: number;
+  readonly retryDelaysMs: readonly number[];
+}
+
+export type AdaptiveDecision = EngineDecision | DataUnavailableDecision;

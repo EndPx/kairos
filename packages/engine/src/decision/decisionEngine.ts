@@ -7,6 +7,7 @@ import {
   type ExecutionProposal,
 } from '@kairos/shared';
 import { estimateManualBuyCapacity } from '../capacity/manualBookCapacity.js';
+import { DEFAULT_FRESHNESS_POLICY, evaluateSnapshotFreshness, type FreshnessPolicy } from '../freshness/freshnessPolicy.js';
 import type {
   DecisionConstraintTrace,
   EngineDecision,
@@ -19,7 +20,7 @@ export interface DecideExecutionInput {
   readonly policy: PolicyStateSnapshot;
   readonly market: KuruMarketSnapshot;
   readonly evaluatedAt: bigint;
-  readonly proposalValidUntil: bigint;
+  readonly freshnessPolicy?: FreshnessPolicy;
 }
 
 const ZERO_CAPACITY: LiquidityCapacity = {
@@ -62,6 +63,12 @@ function wait(
   input: DecideExecutionInput,
   capacity: LiquidityCapacity = ZERO_CAPACITY,
   constraints: DecisionConstraintTrace = emptyConstraints(input.policy),
+  freshness = evaluateSnapshotFreshness(
+    input.policy,
+    input.market,
+    input.evaluatedAt,
+    input.freshnessPolicy ?? DEFAULT_FRESHNESS_POLICY,
+  ),
 ): EngineDecision {
   return {
     kind: 'WAIT',
@@ -69,6 +76,7 @@ function wait(
     evaluatedAt: unixSeconds(input.evaluatedAt),
     policyBlockHash: input.policy.blockHash,
     marketBlockHash: input.market.identity.blockHash,
+    freshness,
     constraints,
     capacity,
   };
@@ -87,6 +95,13 @@ function snapshotsAgree(policy: PolicyStateSnapshot, market: KuruMarketSnapshot)
 export function decideExecution(input: DecideExecutionInput): EngineDecision {
   const { policy, market } = input;
   if (!snapshotsAgree(policy, market)) return wait('INCONSISTENT_SNAPSHOT', input);
+  const freshness = evaluateSnapshotFreshness(
+    policy,
+    market,
+    input.evaluatedAt,
+    input.freshnessPolicy ?? DEFAULT_FRESHNESS_POLICY,
+  );
+  if (freshness.status !== 'FRESH') return wait('STALE_MARKET_DATA', input, ZERO_CAPACITY, emptyConstraints(policy), freshness);
   if (policy.status === 'CANCELLED') return wait('CANCELLED', input);
   if (policy.status === 'EXPIRED') return wait('EXPIRED', input);
   if (policy.status === 'COMPLETED') return wait('COMPLETED', input);
@@ -124,9 +139,8 @@ export function decideExecution(input: DecideExecutionInput): EngineDecision {
     const reason: DecisionReason = capacity.stopReason === 'PRICE_LIMIT' ? 'PRICE_OUT_OF_BOUNDS' : 'INSUFFICIENT_LIQUIDITY';
     return wait(reason, input, capacity, constraints);
   }
-  if (input.proposalValidUntil <= input.evaluatedAt) return wait('STALE_MARKET_DATA', input, capacity, constraints);
-
-  const validUntil = input.proposalValidUntil < policy.order.endTime ? input.proposalValidUntil : policy.order.endTime;
+  const requestedValidUntil = input.evaluatedAt + (input.freshnessPolicy ?? DEFAULT_FRESHNESS_POLICY).proposalValiditySeconds;
+  const validUntil = requestedValidUntil < policy.order.endTime ? requestedValidUntil : policy.order.endTime;
   if (validUntil <= input.evaluatedAt) return wait('EXPIRED', input, capacity, constraints);
 
   const proposal: ExecutionProposal = {
@@ -143,6 +157,7 @@ export function decideExecution(input: DecideExecutionInput): EngineDecision {
     evaluatedAt: unixSeconds(input.evaluatedAt),
     policyBlockHash: policy.blockHash,
     marketBlockHash: market.identity.blockHash,
+    freshness,
     constraints,
     capacity,
     proposal,

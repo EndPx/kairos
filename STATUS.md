@@ -32,14 +32,15 @@ Completed:
 - M2.2 liquidity capacity: the manual-ask estimator walks integer levels, applies conservative quote/output rounding and Kuru's aggregate output-fee ceiling, enforces cumulative effective-average price, and emits an auditable per-level trace. Thin/deep, partial input, average-price, and nonzero-fee fixtures pass.
 - M2.3 policy-state reader: an ethers-backed adapter pins all policy, wallet, allowance, and market reads to one canonical block; consumes contract-derived lifecycle/release values; rejects inconsistent snapshots; and labels balance/allowance as shared wallet capacity rather than per-order reservations.
 - M2.4 decision engine: consistent policy/market snapshots now produce deterministic, traced EXECUTE or WAIT decisions over schedule, remaining budget, max fill, shared balance, allowance, and manual-L2 capacity. Proposal minimum output remains compatible with non-FOK partial fills while actual price enforcement stays onchain.
+- M2.5 freshness/retry policy: a measured Monad Testnet block sample supports a 10-second maximum age, 5-second proposal lifetime, 2-second request timeout, and bounded 3-attempt backoff. Stale, invalid, future-dated, unavailable, or retry-exhausted data returns WAIT without a proposal.
 
 Unverified:
 - Exact Kuru deployed-source/build equivalence, a public Kairos adapter deployment, and any public Kuru execution transaction.
-- M2.5–M2.6 freshness/retry and final engine acceptance behavior; plus the CRE, Privy, Aurora, UI, and end-to-end groups assigned to later milestones.
+- M2.6 final engine acceptance closure; plus the CRE, Privy, Aurora, UI, and end-to-end groups assigned to later milestones.
 - Full primary-track rules and prize-stacking.
 - Submission visual design and the final deployed-product evidence package.
 
 Next:
-Implement M2.5 evidence-backed freshness, request timeout, retry/backoff, and proposal-validity policy; missing or stale data must fail closed.
+Complete M2.6 acceptance closure with explicit schedule-boundary and balance-contention scenarios, run the full M2 plus M1 regression suites, and produce an M2 exit review.
 
 Do not report product ready, integration passed or tests passed based on this file.

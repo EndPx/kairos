@@ -12,7 +12,12 @@ const payload = (...values: bigint[]) => `0x${values.map(word).join('')}` as con
 function market(asks: ReadonlyArray<readonly [bigint, bigint]> = [[5_000_000n, 4_000_000_000_000n]]) {
   return parseKuruL2Snapshot({
     payload: payload(KURU_FIXED_IDENTITY.blockNumber, 0n, ...asks.flatMap(([price, size]) => [price, size])),
-    identity: { ...KURU_FIXED_IDENTITY, kind: 'FIXTURE' },
+    identity: {
+      ...KURU_FIXED_IDENTITY,
+      kind: 'FIXTURE',
+      blockTimestamp: unixSeconds(1_000n),
+      observedAt: unixSeconds(1_001n),
+    },
     marketState: 'ACTIVE',
     params: KURU_MARKET_PARAMS,
     policyPriceDecimals: 8,
@@ -57,7 +62,7 @@ function policy(overrides: Partial<PolicyStateSnapshot> = {}): PolicyStateSnapsh
 }
 
 const decide = (state = policy(), book = market()) =>
-  decideExecution({ policy: state, market: book, evaluatedAt: 1_010n, proposalValidUntil: 1_020n });
+  decideExecution({ policy: state, market: book, evaluatedAt: 1_010n });
 
 describe('adaptive decision engine', () => {
   it('selects the minimum constraint and emits an auditable proposal', () => {
@@ -77,6 +82,7 @@ describe('adaptive decision engine', () => {
     expect(decision.proposal?.nonce).toBe(1n);
     expect(decision.proposal?.snapshotId).toBe(KURU_FIXED_IDENTITY.blockHash);
     expect(decision.proposal?.minOutput).toBe(83_333_333_333_333_333_334n);
+    expect(decision.proposal?.validUntil).toBe(1_015n);
   });
 
   it('emits deterministic lifecycle and market WAIT reasons', () => {

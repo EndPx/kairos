@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M2-05 / M2.5 freshness and retry policy
+- Date: 2026-09-16
+- Environment and chain ID: Monad Testnet `10143` Foundation RPC read-only cadence probe plus local Vitest retry/freshness fixtures; no signer or transaction
+- Version/commit/source URL: Latest sampled block `62972221`; 24 sequential block reads / 23 timestamp intervals; engine freshness/retry implementation at repository working revision; Vitest `5.0.0`; TypeScript `7.0.2`
+- Command or reproducible steps: `eth_blockNumber`; attempted JSON-RPC batch `eth_getBlockByNumber` (rejected with `Restricted JSON RPC method`); 24 bounded individual `eth_getBlockByNumber` calls; `pnpm engine:test`; `pnpm engine:typecheck`; `pnpm test`; `pnpm typecheck`.
+- Result (PASS / FAIL / BLOCKED): PASS — the valid sample had min/p50 `0s`, p95/max `1s`; final suites reported 5 engine files / 20 tests and 1 shared file / 4 tests, with both typechecks exit `0`. Stale/future timestamps and exhausted API retries yield WAIT without a proposal; transient failures retry at `250ms` and `500ms` before a fresh decision. The first strict typecheck run failed because an optional policy was explicitly passed as `undefined`; conditional spread fixed it and the full rerun passed.
+- Artifact / receipt / transaction hash: `packages/engine/src/freshness/freshnessPolicy.ts`, `packages/engine/src/freshness/retry.ts`, `packages/engine/src/decision/adaptiveEvaluation.ts`, `packages/engine/test/freshnessRetry.test.ts`, and `docs/M2_FRESHNESS_RETRY.md`; no transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): The 24-block cadence sample is not a network SLA. JSON-RPC batch is unavailable on the tested public endpoint. Retry tests inject failures and zero-duration sleeps; they prove policy behavior, not third-party uptime. Freshness never guarantees unchanged market state.
+- Next action: M2.6 — close ENG-01–03 and the full M2 scenario matrix, then run M1/M2 regressions and write the M2 exit review.
+
+---
+
 - ID and requirement: M2-04 / M2.4 deterministic decision engine
 - Date: 2026-09-16
 - Environment and chain ID: Local deterministic fixtures using the selected Kuru integer parameters; no chain call or transaction
