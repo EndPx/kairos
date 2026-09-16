@@ -33,6 +33,8 @@ pnpm typecheck
 
 At the current run, compilation passed; the gated Kuru fork suite reported **5 passing** tests; the default contract suite reported **12 passing** and **5 intentionally pending** gated fork tests; shared Vitest reported **4 passing** tests; and TypeScript typecheck passed. See `docs/KURU_FORK_SETTLEMENT.md`.
 
-## Remaining M1 exit gap
+## M1 exit interpretation
 
-The policy-correctness portion and Kuru adapter behavior are now evidenced locally against a fixed fork of the selected deployment. M1 remains conservatively partial because exact deployed-source/build equivalence is unavailable and no executable adapter has been deployed publicly. `KuruAdapterBoundary` remains execution-disabled; the fixed-fork test uses `KuruAdapter` bound to local chain `31337`.
+The policy-correctness portion and Kuru adapter behavior are evidenced locally against a fixed fork of the selected deployment. `docs/M1_EXIT_REVIEW.md` records M1 as complete because the written `WORKPLAN.md` exit expressly accepts documented-fork adapter evidence and does not require exact source/build equivalence or a public deployment.
+
+Exact deployed-source/build equivalence remains unresolved and is still required before reconsidering the public execution interlock. `KuruAdapterBoundary` remains execution-disabled; the fixed-fork test uses `KuruAdapter` bound to local chain `31337`.

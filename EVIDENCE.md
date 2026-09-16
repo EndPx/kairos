@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M1-16 / M1 exit review
+- Date: 2026-09-16
+- Environment and chain ID: Documentation and artifact review; existing local Hardhat EDR policy evidence and fixed fork of Monad Testnet `10143` on local chain `31337`; no new chain call or transaction
+- Version/commit/source URL: Reviewed repository revision `2135f0e5cce07f5a3df4445a01b18318b9fccf2a`; fixed source block `62944132`, full hash `0xb5a5a55678513ced1b7a43da8bed39a2d3b3e9284c34c0dc6e033ed12c914098`; Kuru contracts `2060bb2736080c175d80d568bfdb6226bb5abd04`; SDK/ABI `636509c2eafd63479d3f399703354e0d09f51e18`
+- Command or reproducible steps: Inspected `WORKPLAN.md`, `docs/ACCEPTANCE_TESTS.md`, `docs/PRODUCT_SPEC_FINAL.md`, M1 implementation/tests, M1 evidence records, the fixed-fork artifact, and every repository clause mentioning source/build equivalence. Mapped M1.1–M1.8 and all M1-scoped acceptance IDs in `docs/M1_EXIT_REVIEW.md`. Existing test results were used because no code or artifact mismatch required a rerun.
+- Result (PASS / FAIL / BLOCKED): PASS — M1 COMPLETE under the written exit criteria. Policy correctness is independently evidenced by local tests, and the restricted application adapter path is evidenced against the selected deployed Kuru bytecode on a documented fixed fork. Exact deployed-source/build equivalence is not stated as an M1 exit criterion.
+- Artifact / receipt / transaction hash: `docs/M1_EXIT_REVIEW.md`; prior artifacts `packages/contracts/src/KuruAdapter.sol`, `packages/contracts/test/KuruForkIntegration.ts`, and `docs/KURU_FORK_SETTLEMENT.md`; no public transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): The fork used controlled local balances and liquidity. This is not source equivalence, a security audit, a public deployment, a public transaction, or proof of live liquidity. The public execution interlock remains in force pending exact build provenance and a separate deployment review.
+- Next action: Begin M2 only as a separate task; independently obtain the exact Kuru compiler input/deployment manifest before reconsidering public adapter enablement.
+
+---
+
 - ID and requirement: M0-01 / Repository baseline
 - Date: 2026-09-15
 - Environment and chain ID: Windows 11; Node.js v24.18.0; npm 11.8.0; pnpm 10.21.0; Git 2.42.0.windows.2; no chain accessed

@@ -1,6 +1,6 @@
 # Current status
-Updated: 2026-09-15
-Stage: M1 policy and execution core — in progress; Kuru adapter integration remains blocked pending deployment/source and settlement proof.
+Updated: 2026-09-16
+Stage: M1 policy and execution core — COMPLETE by the written WORKPLAN exit criteria; M2 has not started.
 
 Completed:
 - Final user specification copied unchanged.
@@ -27,13 +27,15 @@ Completed:
 - Kuru fixed-block fork foundation: a read-only Hardhat EDR fork of Monad Testnet block `62944132` now reproduces the selected proxy, implementation bytecode, market parameters, empty source book/vault state, and official Margin Account linkage. No settlement or source-equivalence claim is made yet.
 - Kuru behavioral settlement on the fixed fork: 5 adapter tests prove partial actual input/output, refund, native MON forwarding, Kuru minOut/FOK reverts, policy minFill/effective-price rollback, nonce/allowance behavior, pre-existing balance isolation, zero new residual, and no active resting taker order. All liquidity/balance mutations are local-only and documented.
 - M1 local acceptance closure: a dedicated dust test proves a remainder below `minFill` stays in the owner wallet, cannot be force-filled, and does not create a false completed status.
+- M1 exit review: all M1.1–M1.8 requirements and the M1-scoped acceptance IDs map to local policy evidence or the documented fixed-fork Kuru proof. `WORKPLAN.md` allows selected-deployment or documented-fork adapter evidence and does not require exact deployed-source/build equivalence for M1 closure. M1 is COMPLETE; the stronger source-equivalence/public-deployment gate remains unchanged.
 
 Unverified:
-- All runtime integrations, exact environment compatibility, deployed ABIs, available credentials.
+- Exact Kuru deployed-source/build equivalence, a public Kairos adapter deployment, and any public Kuru execution transaction.
+- M2 adaptive-engine behavior and the CRE, Privy, Aurora, UI, and end-to-end acceptance groups assigned to later milestones.
 - Full primary-track rules and prize-stacking.
-- Project stack, codebase and visual design.
+- Submission visual design and the final deployed-product evidence package.
 
 Next:
-Obtain Kuru's exact standard-JSON compiler input/output or deployment manifest for implementation `0x72cae0...c9374`, including the missing Solady revision/source hashes, then compare runtime bytecode and review whether the public execution interlock can be replaced. M1 remains conservatively partial; do not enter M2.
+Begin M2 only in a separately authorized task, starting with the verified Kuru L2/market-parameter normalization boundary. In parallel, obtain Kuru's exact standard-JSON compiler input/output or deployment manifest for implementation `0x72cae0...c9374`, including the missing Solady revision/source hashes, before considering removal of the public execution interlock.
 
 Do not report product ready, integration passed or tests passed based on this file.
