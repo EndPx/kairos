@@ -127,7 +127,7 @@ describe('KairosCreReceiver', function () {
 
     await expect(receiver.connect(forwarder).onReport(metadata, report))
       .to.emit(receiver, 'ReportForwarded')
-      .withArgs(ethers.keccak256(report), workflowId, 0n, 0n, snapshotId);
+      .withArgs(ethers.keccak256(report), workflowId, 0n, 0n, snapshotId, '0x0000');
     expect((await policy.getOrder(0)).executionNonce).to.equal(1n);
     await expect(receiver.connect(forwarder).onReport(metadata, report)).to.be.revertedWithCustomError(
       receiver,
@@ -145,8 +145,11 @@ describe('KairosCreReceiver', function () {
   });
 
   it('forwards a valid report through the unchanged Kairos policy settlement path', async function () {
-    const { forwarder, receiver, policy, metadata, report } = await deployFixture();
-    await receiver.connect(forwarder).onReport(metadata, report);
+    const { ethers, forwarder, receiver, policy, metadata, report } = await deployFixture();
+    const productionMetadata = `${metadata}1234`;
+    await expect(receiver.connect(forwarder).onReport(productionMetadata, report))
+      .to.emit(receiver, 'ReportForwarded')
+      .withArgs(ethers.keccak256(report), workflowId, 0n, 0n, snapshotId, '0x1234');
     const order = await policy.getOrder(0);
     expect(order.spent).to.equal(40_000_000n);
     expect(order.received).to.equal(20_000_000_000_000_000_000n);

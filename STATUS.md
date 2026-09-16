@@ -37,7 +37,7 @@ Completed:
 - M2 exit review: M2.1–M2.6 and ENG-01–03 map to auditable implementation and tests. The written exit condition is met while the M1 contract remains final policy authority; no public execution boundary changed.
 - M2 full regression at exit: engine 6 files / 24 tests, default contract 12 passing plus 5 intentionally pending gated-fork tests, shared 1 file / 4 tests, both TypeScript checks, and contract compilation all passed.
 - M3 access inventory: CRE CLI `v1.34.0` is installed and authenticated, but deploy access is disabled and workflow/forwarder variables are absent. Privy public client identifiers and dashboard configuration are absent from the local process environment. No secret value was printed or stored.
-- M3.1 CRE receiver: the pinned official `IReceiver` surface and 62-byte metadata layout are implemented with immutable forwarder authority, one-time policy/workflow activation, expiry and duplicate protection, ERC-165 support, and the unchanged M1 policy execution path. Four local receiver tests pass alongside the existing contract suite.
+- M3.1 CRE receiver: the pinned official `IReceiver` surface and production 64-byte metadata layout are implemented with immutable forwarder authority, one-time policy/workflow activation, expiry and duplicate protection, ERC-165 support, and the unchanged M1 policy execution path. The receiver also accepts the documented 62-byte alternate-tooling form; four local receiver tests pass alongside the existing contract suite.
 
 Unverified:
 - Exact Kuru deployed-source/build equivalence, a public Kairos adapter deployment, and any public Kuru execution transaction.

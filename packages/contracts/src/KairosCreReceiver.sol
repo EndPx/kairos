@@ -14,7 +14,8 @@ import {IKairosPolicyExecutor} from "./interfaces/IKairosPolicyExecutor.sol";
  * workflow identity. No setter can later weaken provenance checks.
  */
 contract KairosCreReceiver is ICreReceiver, ReentrancyGuard {
-    uint256 private constant METADATA_LENGTH = 62;
+    uint256 private constant PACKED_IDENTITY_LENGTH = 62;
+    uint256 private constant PRODUCTION_METADATA_LENGTH = 64;
     uint256 private constant REPORT_LENGTH = 192;
 
     error InvalidAddress();
@@ -52,7 +53,8 @@ contract KairosCreReceiver is ICreReceiver, ReentrancyGuard {
         bytes32 indexed workflowId,
         uint256 indexed orderId,
         uint64 nonce,
-        bytes32 snapshotId
+        bytes32 snapshotId,
+        bytes2 reportId
     );
 
     constructor(address trustedForwarder_, address activationAuthority_) {
@@ -86,7 +88,9 @@ contract KairosCreReceiver is ICreReceiver, ReentrancyGuard {
     function onReport(bytes calldata metadata, bytes calldata report) external override nonReentrant {
         if (msg.sender != trustedForwarder) revert Unauthorized();
         if (!activated) revert NotActivated();
-        if (metadata.length != METADATA_LENGTH) revert InvalidMetadataLength(metadata.length);
+        if (metadata.length != PACKED_IDENTITY_LENGTH && metadata.length != PRODUCTION_METADATA_LENGTH) {
+            revert InvalidMetadataLength(metadata.length);
+        }
         if (report.length != REPORT_LENGTH) revert InvalidReportLength(report.length);
 
         (bytes32 workflowId, bytes10 workflowName, address workflowOwner) = _decodeMetadata(metadata);
@@ -105,7 +109,8 @@ contract KairosCreReceiver is ICreReceiver, ReentrancyGuard {
         processedReports[reportHash] = true;
 
         policy.execute(proposal);
-        emit ReportForwarded(reportHash, workflowId, proposal.orderId, proposal.nonce, proposal.snapshotId);
+        bytes2 reportId = metadata.length == PRODUCTION_METADATA_LENGTH ? bytes2(metadata[62:64]) : bytes2(0);
+        emit ReportForwarded(reportHash, workflowId, proposal.orderId, proposal.nonce, proposal.snapshotId, reportId);
     }
 
     function supportsInterface(bytes4 interfaceId) external pure override returns (bool) {

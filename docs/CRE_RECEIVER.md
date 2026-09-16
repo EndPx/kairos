@@ -2,7 +2,9 @@
 
 ## Pinned interface source
 
-Kairos follows the Chainlink CRE `IReceiver` and metadata layout from `smartcontractkit/cre-templates` revision `d0223f31182c76bc36b1cc9d47b13b18efcf2bf6`. The interface is `onReport(bytes metadata, bytes report)` plus ERC-165 support. Forwarder metadata is packed as `bytes32 workflowId`, `bytes10 workflowName`, and `address workflowOwner` (62 bytes total).
+Kairos follows the Chainlink CRE `IReceiver` and metadata layout from `smartcontractkit/cre-templates` revision `d0223f31182c76bc36b1cc9d47b13b18efcf2bf6` and the current official consumer-contract guide reviewed 2026-09-16. The interface is `onReport(bytes metadata, bytes report)` plus ERC-165 support.
+
+The identity is packed as `bytes32 workflowId`, `bytes10 workflowName`, and `address workflowOwner` (62 bytes). Production `KeystoneForwarder` delivery appends the two-byte `reportId`, so `metadata.length` is 64. Kairos accepts the 64-byte production form and the 62-byte alternate-tooling form, decodes identity from the first 62 bytes, and records the optional report ID in its event.
 
 The reference template permits mutable validation fields. Kairos deliberately narrows that design:
 
@@ -26,6 +28,8 @@ The workflow report is a static ABI tuple matching `KairosPolicy.Proposal`:
 ```
 
 The receiver requires the canonical 192-byte encoding, nonzero proposal fields, and a future `validUntil`. It records `keccak256(report)` before forwarding; a revert from the policy also reverts this marker. Identical delivery is rejected explicitly, while a different report that reuses the same order nonce is rejected by the policy.
+
+CRE simulation uses a `MockForwarder` that does not provide production metadata. Kairos does not weaken the production receiver for that environment. A no-broadcast workflow simulation can prove acquisition, decision, and report generation; receiver execution requires a separately authorized simulation/test deployment configured for the appropriate forwarder and evidence boundary.
 
 ## Evidence boundary
 
