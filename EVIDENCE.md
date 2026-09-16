@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M3-05 / M3.5 Privy application integration and UI primitive gate
+- Date: 2026-09-16
+- Environment and chain ID: Windows local Next.js application; configured target Monad Testnet `10143`; no Privy account, wallet, signer, deployment, or public transaction accessed
+- Version/commit/source URL: Next.js `16.3.5`; React `19.3.0`; TypeScript `5.9.3` for `apps/web`; viem `2.56.5`; `@privy-io/react-auth` `3.42.0`; implementation commits `c8c46d0`, `a72c5c2`, and `7e383a2`
+- Command or reproducible steps: `pnpm web:typecheck`; `pnpm web:test`; `pnpm --filter @kairos/web run doctor`; `pnpm web:build`. Runtime layout probe loaded `/system` in clean Chromium contexts at widths 375, 768, and 1280, checked console errors and document/body scroll widths, and separately inspected mobile/desktop screenshots. A production server HTML probe counted `react-grab`, `react-scan`, and `kairosDevTool` markers.
+- Result (PASS / FAIL / BLOCKED): PARTIAL PASS — typecheck exited `0`; Vitest reported 4 files / 11 tests; React Doctor reported 100/100 across 21 files; Next production build generated `/` and `/system`; all three runtime widths reported zero console errors and no horizontal overflow; production HTML contained zero development-tool markers. Exact transaction-builder tests decode approval, zero-allowance revoke, bounded create-order fields, and cancellation calldata. BLOCKED for PRIVY-01 because the local App ID, dashboard allowed origin/settings, test account, and public policy/token deployment addresses are unavailable.
+- Artifact / receipt / transaction hash: `DESIGN.md`, `apps/web`, `.env.example`; no wallet address or transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): `/system` values are explicitly labeled `FIXTURE`, `FORK`, or `CRE SIMULATION`. Calldata tests do not open a Privy modal or broadcast. The runtime configuration gate deliberately renders `Wallet not configured` instead of substituting a mock. No delegated signer or gas sponsorship is enabled.
+- Next action: M3.6 — implement integer-safe create-order validation and authorization/schedule/risk summary against this wallet boundary, while keeping real actions blocked until local configuration exists.
+
+---
+
 - ID and requirement: M3-04 / M3.4 event index and refresh/restart recovery
 - Date: 2026-09-16
 - Environment and chain ID: Windows local Node.js/Vitest; intended external chain Monad Testnet `10143`; ABI-encoded event fixtures only because no public Kairos policy/receiver exists

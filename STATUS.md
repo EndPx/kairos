@@ -1,6 +1,6 @@
 # Current status
 Updated: 2026-09-16
-Stage: M3 CRE, Privy, indexer, and application — in progress; M3.1–M3.3 locally implemented with bounded CRE simulation proof.
+Stage: M3 CRE, Privy, indexer, and application — in progress; M3.1–M3.5 implemented to the currently available local/configuration boundary.
 
 Completed:
 - Final user specification copied unchanged.
@@ -42,14 +42,17 @@ Completed:
 - M3.3 local CRE proof: two no-broadcast simulations compile to the same workflow binary. A real fixed-block Kuru read fails closed as stale in `915ms`; an explicitly fixture-backed executable path produces a signed CRE report in `753ms` with `submitted:false`. Both are below the measured five-second proposal-validity window, but only the latter creates a report and it is not public integration evidence.
 - CRE deployment remains blocked. Deployment access was not enabled; an interactive access-status command submitted an empty access request during authentication verification. No deployment, broadcast, contract call, or public transaction occurred, and no further access action will be taken without explicit authorization.
 - M3.4 event index/recovery: a viem RPC log source, deterministic projector, atomic JSON checkpoint store, cursor-hash reorg detection/full rebuild, and separate offchain decision journal are implemented. Four tests prove event ordering, fill/report/cancel projection, restart without replay, reorg recovery, and provenance separation. Public Kairos-address ingestion remains blocked on deployment rather than replaced by fake addresses.
+- M3 application design gate: `DESIGN.md` records the bright execution-desk direction, responsive/scroll contracts, UI state language, research sources, accessibility gates, and primitive inventory. The `/system` showcase implements those primitives; desktop/mobile runtime checks found no horizontal overflow at 375/768/1280 px and no console error in a clean load.
+- M3.5 Privy application boundary: the web app pins `@privy-io/react-auth` `3.42.0`, explicitly supports only Monad Testnet `10143`, requests a Privy embedded EVM wallet with visible wallet transaction confirmation, and implements real calldata paths for approval, create, cancel, and revoke. Native/token balance and allowance reads share the selected chain client. The App ID and deployment addresses remain environment-only; when absent, the application presents a configuration blocker and cannot open a fake login or transaction path. No delegated signer, sponsor flag, public transaction, or wallet account was used.
+- M3.5 local verification: web TypeScript exited `0`; Vitest reported 4 files / 11 tests; React Doctor reported 100/100 across 21 files; the Next production build generated `/` and `/system`. Transaction-builder tests decode the exact approve/create/cancel arguments and prove revoke uses `approve(policy, 0)`.
 
 Unverified:
 - Exact Kuru deployed-source/build equivalence, a public Kairos adapter deployment, and any public Kuru execution transaction.
-- Deployed CRE proof against an onchain Kairos policy/receiver, live index ingestion from those addresses, real Privy actions, UI, and M3 end-to-end proof.
+- Deployed CRE proof against an onchain Kairos policy/receiver, live index ingestion from those addresses, real Privy actions, create/orders/report product pages, and M3 end-to-end proof.
 - Full primary-track rules and prize-stacking.
 - Submission visual design and the final deployed-product evidence package.
 
 Next:
-Complete the required frontend-skill research and write `DESIGN.md`, then implement M3.5–M3.9 without claiming real Privy actions until local App ID/origin/test-account configuration is available.
+Implement M3.6–M3.8 against the wallet boundary and indexed/onchain read model, then close the available M3.9 tests. Real Privy acceptance remains blocked until App ID, allowed origin, dashboard wallet configuration, test account, and public policy/token addresses are supplied locally.
 
 Do not report product ready, integration passed or tests passed based on this file.
