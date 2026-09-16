@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M2-06 / M2.6 engine acceptance tests and ENG-01–03 closure
+- Date: 2026-09-16
+- Environment and chain ID: Windows local Vitest fixtures plus replay of a recorded Monad Testnet `10143` read at block `62944132`; no signer, deployment, or transaction
+- Version/commit/source URL: Kuru SDK `636509c2eafd63479d3f399703354e0d09f51e18`; Kuru contracts `2060bb2736080c175d80d568bfdb6226bb5abd04`; Vitest `5.0.0`; TypeScript `7.0.2`
+- Command or reproducible steps: `pnpm engine:test`; `pnpm engine:typecheck`.
+- Result (PASS / FAIL / BLOCKED): PASS — the engine suite reported 6 files / 24 tests and typecheck exited `0`. The new acceptance cases prove that `4,999,999` released units remain WAIT while `5,000,000` may execute, shared wallet balance contention changes a previously executable decision to WAIT, the recorded real empty Kuru snapshot produces `INSUFFICIENT_LIQUIDITY` with no proposal, and 25 identical evaluations serialize to identical decision data. Earlier focused tests cover thin/deep books (ENG-01), stale/API failure (ENG-02), capacity below minimum (ENG-03), effective-average price, fees, decimals, rounding, lifecycle, allowance, and malformed snapshots.
+- Artifact / receipt / transaction hash: `packages/engine/test/engineAcceptance.test.ts` plus the M2.1–M2.5 engine tests; no transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): Non-empty books and fees remain explicit fixtures; the real replay is an empty manual book. The tests emit decisions only and do not submit transactions or prove public liquidity. The contract remains final policy authority.
+- Next action: Run the complete engine/shared/contract regression sequence and decide M2 exit against `WORKPLAN.md` without starting M3.
+
+---
+
 - ID and requirement: M2-05 / M2.5 freshness and retry policy
 - Date: 2026-09-16
 - Environment and chain ID: Monad Testnet `10143` Foundation RPC read-only cadence probe plus local Vitest retry/freshness fixtures; no signer or transaction

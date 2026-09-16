@@ -1,6 +1,6 @@
 # Current status
 Updated: 2026-09-16
-Stage: M2 adaptive execution engine — in progress; M2.1 market-data adapter implemented and locally verified.
+Stage: M2 adaptive execution engine — in progress; M2.1–M2.6 implemented and locally verified, exit review pending.
 
 Completed:
 - Final user specification copied unchanged.
@@ -33,14 +33,15 @@ Completed:
 - M2.3 policy-state reader: an ethers-backed adapter pins all policy, wallet, allowance, and market reads to one canonical block; consumes contract-derived lifecycle/release values; rejects inconsistent snapshots; and labels balance/allowance as shared wallet capacity rather than per-order reservations.
 - M2.4 decision engine: consistent policy/market snapshots now produce deterministic, traced EXECUTE or WAIT decisions over schedule, remaining budget, max fill, shared balance, allowance, and manual-L2 capacity. Proposal minimum output remains compatible with non-FOK partial fills while actual price enforcement stays onchain.
 - M2.5 freshness/retry policy: a measured Monad Testnet block sample supports a 10-second maximum age, 5-second proposal lifetime, 2-second request timeout, and bounded 3-attempt backoff. Stale, invalid, future-dated, unavailable, or retry-exhausted data returns WAIT without a proposal.
+- M2.6 engine acceptance tests: schedule boundaries, shared-balance contention, the recorded empty Kuru snapshot, and repeated deterministic decisions complete the M2 scenario matrix. The engine suite reports 6 files and 24 passing tests.
 
 Unverified:
 - Exact Kuru deployed-source/build equivalence, a public Kairos adapter deployment, and any public Kuru execution transaction.
-- M2.6 final engine acceptance closure; plus the CRE, Privy, Aurora, UI, and end-to-end groups assigned to later milestones.
+- Formal M2 exit verdict; plus the CRE, Privy, Aurora, UI, and end-to-end groups assigned to later milestones.
 - Full primary-track rules and prize-stacking.
 - Submission visual design and the final deployed-product evidence package.
 
 Next:
-Complete M2.6 acceptance closure with explicit schedule-boundary and balance-contention scenarios, run the full M2 plus M1 regression suites, and produce an M2 exit review.
+Run the full M2 plus M1 regression suites and produce the M2 exit review. Do not begin M3 in this task.
 
 Do not report product ready, integration passed or tests passed based on this file.
