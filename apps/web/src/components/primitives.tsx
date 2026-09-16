@@ -47,10 +47,12 @@ export function StatusPill({status, children}: {status: StatusTone; children?: R
 }
 
 export type EvidenceSource =
+  | 'CRE WORKFLOW'
   | 'CRE SIMULATION'
   | 'FIXTURE'
   | 'FORK'
   | 'LIVE READ'
+  | 'LOCAL ENGINE'
   | 'ONCHAIN'
   | 'REPLAY';
 
@@ -240,7 +242,7 @@ export function DecisionTrace({
   decision: 'EXECUTE' | 'WAIT';
   reason: string;
   source: EvidenceSource;
-  snapshot: string;
+  snapshot?: string;
   items: ReadonlyArray<{label: string; value: ReactNode}>;
 }) {
   return (
@@ -256,7 +258,7 @@ export function DecisionTrace({
       <KeyValueList items={items} />
       <footer>
         <SourceBadge source={source} />
-        <code title={snapshot}>{snapshot.slice(0, 12)}…{snapshot.slice(-8)}</code>
+        {snapshot ? <code title={snapshot}>{snapshot.slice(0, 12)}…{snapshot.slice(-8)}</code> : <span className="muted-note">No snapshot ID</span>}
       </footer>
     </article>
   );

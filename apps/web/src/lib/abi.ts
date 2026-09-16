@@ -12,5 +12,7 @@ export const kairosPolicyAbi = parseAbi([
   'function createOrder(uint128 budget, uint64 startTime, uint64 endTime, uint128 maxPerFill, uint128 minFill, uint128 maxEffectivePrice) returns (uint256 orderId)',
   'function getOrder(uint256 orderId) view returns ((address owner, uint128 budget, uint128 spent, uint128 received, uint64 startTime, uint64 endTime, uint128 maxPerFill, uint128 minFill, uint128 maxEffectivePrice, uint64 executionNonce, bool cancelled))',
   'function nextOrderId() view returns (uint256)',
+  'function releasedBudget(uint256 orderId, uint256 timestamp) view returns (uint256)',
+  'function availableToSpend(uint256 orderId, uint256 timestamp) view returns (uint256)',
   'function statusOf(uint256 orderId) view returns (uint8)',
 ]);
