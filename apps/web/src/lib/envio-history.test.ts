@@ -1,7 +1,7 @@
-import {describe, expect, it} from 'vitest';
+import {afterEach, describe, expect, it, vi} from 'vitest';
 import type {Address} from 'viem';
 
-import {parseEnvioHistory} from './envio-history';
+import {fetchEnvioHistory, parseEnvioHistory} from './envio-history';
 
 const POLICY = '0x1111111111111111111111111111111111111111' as Address;
 const OTHER_POLICY = '0x2222222222222222222222222222222222222222' as Address;
@@ -9,6 +9,8 @@ const OWNER = '0x3333333333333333333333333333333333333333';
 const HASH_A = `0x${'aa'.repeat(32)}`;
 const HASH_B = `0x${'bb'.repeat(32)}`;
 const HASH_C = `0x${'cc'.repeat(32)}`;
+
+afterEach(() => vi.unstubAllGlobals());
 
 function payload(policy = POLICY) {
   return {
@@ -98,5 +100,13 @@ describe('Envio HyperIndex history parser', () => {
     const malformed = payload();
     malformed.Order[0]!.totalActualInput = '1.5';
     expect(() => parseEnvioHistory(malformed, POLICY)).toThrow('Order[0].totalActualInput must be an unsigned integer.');
+  });
+
+  it('fails closed when the GraphQL endpoint is unavailable', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('unavailable', {status: 503})));
+
+    await expect(fetchEnvioHistory('https://index.example/graphql', POLICY)).rejects.toThrow(
+      'Envio GraphQL returned HTTP 503.',
+    );
   });
 });

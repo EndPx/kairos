@@ -68,6 +68,27 @@ describe('OrdersList', () => {
     expect(screen.queryByText(/order #/i)).not.toBeInTheDocument();
   });
 
+  it('withholds partial history while Envio is still syncing', () => {
+    const model: OrdersReadModel = {
+      state: 'SYNCING',
+      orders: [],
+      message: 'Envio is still syncing.',
+      indexSync: {
+        source: 'ENVIO_HYPERINDEX',
+        eventsProcessed: '4',
+        isReady: false,
+        progressBlock: '100',
+        sourceBlock: '103',
+        lagBlocks: '3',
+      },
+    };
+    render(<OrdersList model={model} />);
+
+    expect(screen.getByText(/envio history is syncing/i)).toBeInTheDocument();
+    expect(screen.getByText(/progress 100; source head 103/i)).toBeInTheDocument();
+    expect(screen.queryByText(/order #/i)).not.toBeInTheDocument();
+  });
+
   it('keeps offchain WAIT provenance separate from a confirmed settlement receipt', () => {
     render(<OrderDetail order={fixtureModel.orders[0]!} model={fixtureModel} />);
 
