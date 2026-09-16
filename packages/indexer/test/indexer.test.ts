@@ -193,6 +193,7 @@ describe('Kairos event index and recovery', () => {
     const journal = new DecisionJournal(join(directory, 'decisions.json'));
     await journal.append({
       kind: 'OFFCHAIN_DECISION',
+      source: 'REPLAY',
       recordedAt: '2026-09-16T00:00:00Z',
       orderId: '1',
       decision: 'WAIT',
@@ -201,6 +202,7 @@ describe('Kairos event index and recovery', () => {
     });
 
     expect(await journal.load()).toHaveLength(1);
+    expect((await journal.load())[0]?.source).toBe('REPLAY');
     expect(JSON.stringify(await index.load())).not.toContain('STALE_MARKET_DATA');
   });
 });

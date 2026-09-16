@@ -24,7 +24,7 @@ The `ViemChainSource` subtracts a configurable confirmation depth from the lates
 
 ## Provenance boundary
 
-Only decoded contract logs enter `PersistedIndexState`. CRE/engine WAIT and EXECUTE decisions are not chain events. `DecisionJournal` stores them in a separate file and requires `kind: OFFCHAIN_DECISION` on every record. The UI must label those records as offchain decisions and must not display them as receipts or fills.
+Only decoded contract logs enter `PersistedIndexState`. CRE/engine WAIT and EXECUTE decisions are not chain events. `DecisionJournal` stores them in a separate file and requires `kind: OFFCHAIN_DECISION` plus an explicit `source` on every record. Optional constraint values are persisted as decimal strings for inspectable decision traces. The UI must label those records as offchain decisions and must not display them as receipts or fills.
 
 Event-derived `ACTIVE` is not sufficient to infer wall-clock expiry. The application must read `statusOf` from the policy at its current pinned block before presenting current lifecycle state. The index projection preserves mined history; it does not fabricate an expiry event that the contract never emitted.
 

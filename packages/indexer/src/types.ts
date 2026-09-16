@@ -108,10 +108,20 @@ export interface RawChainLog extends ChainPosition {
 
 export interface OffchainDecisionRecord {
   readonly kind: 'OFFCHAIN_DECISION';
+  readonly source: 'CRE_SIMULATION' | 'CRE_WORKFLOW' | 'LOCAL_ENGINE' | 'REPLAY';
   readonly recordedAt: string;
   readonly orderId: string;
   readonly decision: 'EXECUTE' | 'WAIT';
   readonly reason: string;
   readonly snapshotId?: Hex;
   readonly proposalHash?: Hex;
+  readonly constraints?: {
+    readonly releasedAvailable: string;
+    readonly remainingBudget: string;
+    readonly maxPerFill: string;
+    readonly walletBalance: string;
+    readonly tokenAllowance: string;
+    readonly estimatedLiquidityCapacity: string;
+    readonly selectedInput: string;
+  };
 }
