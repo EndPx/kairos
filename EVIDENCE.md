@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M3-04 / M3.4 event index and refresh/restart recovery
+- Date: 2026-09-16
+- Environment and chain ID: Windows local Node.js/Vitest; intended external chain Monad Testnet `10143`; ABI-encoded event fixtures only because no public Kairos policy/receiver exists
+- Version/commit/source URL: viem `2.56.5`; TypeScript `7.0.2`; Vitest `5.0.0`; event ABIs match the repository `KairosPolicy` and `KairosCreReceiver` contracts
+- Command or reproducible steps: `pnpm indexer:typecheck`; `pnpm indexer:test`.
+- Result (PASS / FAIL / BLOCKED): PASS for local M3.4 scope — typecheck exited `0`; Vitest reported 1 file / 4 tests. The tests decode ABI logs and prove canonical event ordering, order/fill/report/cancellation projection, a new store instance recovering its checkpoint without replay, cursor-block hash mismatch causing a deployment-block rebuild, and offchain WAIT records remaining absent from the chain-event state. BLOCKED for live Kairos ingestion because no public policy/receiver addresses or deployment block exist.
+- Artifact / receipt / transaction hash: `packages/indexer`, `docs/INDEXER.md`; no transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): Event fixtures are exact ABI encodings, not public logs. The projection preserves mined history but does not infer time-based expiry; the application must read current `statusOf`. Atomic JSON storage is selected for one initial deployment and is not claimed as a high-volume multi-policy database.
+- Next action: M3.5 — build Privy application integration with truthful configuration gates, then connect application reads to the index projection and current pinned contract state.
+
+---
+
 - ID and requirement: M3-03 / M3.3 inspectable CRE simulation and latency proof
 - Date: 2026-09-16
 - Environment and chain ID: Windows local CRE simulator; Monad Testnet `10143` read-only Foundation RPC; no `--broadcast`, deployment, or public transaction

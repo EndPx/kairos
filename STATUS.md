@@ -41,14 +41,15 @@ Completed:
 - M3.2 CRE workflow: the pinned SDK workflow reads one block, obtains Kuru L2/parameters/state and optionally the deployed Kairos policy at that exact block, invokes the unchanged M2 parser/decision engine, produces the receiver's exact 192-byte proposal report, and performs at most one guarded submission attempt. Fixture policy/L2 modes are explicit and appear in every trace.
 - M3.3 local CRE proof: two no-broadcast simulations compile to the same workflow binary. A real fixed-block Kuru read fails closed as stale in `915ms`; an explicitly fixture-backed executable path produces a signed CRE report in `753ms` with `submitted:false`. Both are below the measured five-second proposal-validity window, but only the latter creates a report and it is not public integration evidence.
 - CRE deployment remains blocked. Deployment access was not enabled; an interactive access-status command submitted an empty access request during authentication verification. No deployment, broadcast, contract call, or public transaction occurred, and no further access action will be taken without explicit authorization.
+- M3.4 event index/recovery: a viem RPC log source, deterministic projector, atomic JSON checkpoint store, cursor-hash reorg detection/full rebuild, and separate offchain decision journal are implemented. Four tests prove event ordering, fill/report/cancel projection, restart without replay, reorg recovery, and provenance separation. Public Kairos-address ingestion remains blocked on deployment rather than replaced by fake addresses.
 
 Unverified:
 - Exact Kuru deployed-source/build equivalence, a public Kairos adapter deployment, and any public Kuru execution transaction.
-- Deployed CRE proof against an onchain Kairos policy/receiver, real Privy actions, indexer recovery, UI, and M3 end-to-end proof.
+- Deployed CRE proof against an onchain Kairos policy/receiver, live index ingestion from those addresses, real Privy actions, UI, and M3 end-to-end proof.
 - Full primary-track rules and prize-stacking.
 - Submission visual design and the final deployed-product evidence package.
 
 Next:
-Implement M3.4 event indexing and restart recovery without conflating offchain decisions with onchain events. Then complete the required frontend-skill research and design contract before M3.5–M3.9 application work.
+Complete the required frontend-skill research and write `DESIGN.md`, then implement M3.5–M3.9 without claiming real Privy actions until local App ID/origin/test-account configuration is available.
 
 Do not report product ready, integration passed or tests passed based on this file.

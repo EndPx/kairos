@@ -13,6 +13,8 @@
     "engine:typecheck": "pnpm --filter @kairos/engine typecheck",
     "workflow:test": "pnpm --filter @kairos/cre-workflow test",
     "workflow:typecheck": "pnpm --filter @kairos/cre-workflow typecheck",
+    "indexer:test": "pnpm --filter @kairos/indexer test",
+    "indexer:typecheck": "pnpm --filter @kairos/indexer typecheck",
     "test": "pnpm --filter @kairos/shared test",
     "typecheck": "pnpm --filter @kairos/shared typecheck"
   },
