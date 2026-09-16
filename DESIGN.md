@@ -1,6 +1,6 @@
 # Kairos application design system
 
-Status: approved implementation direction for M3.5-M3.9  
+Status: approved implementation direction for M3.5-M3.9
 Updated: 2026-09-16
 
 ## 0. Product and user contract
