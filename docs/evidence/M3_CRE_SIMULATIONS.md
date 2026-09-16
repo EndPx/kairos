@@ -1,8 +1,11 @@
 # M3 CRE simulation artifacts
 
-Date: 2026-09-16  
-Environment: Windows, CRE CLI `v1.34.0`, Bun `1.3.8`, `@chainlink/cre-sdk` `1.21.1`, workflow TypeScript `5.9.3`  
-Network reads: Monad Testnet chain ID `10143` through the public Foundation RPC  
+Date: 2026-09-16
+
+Environment: Windows, CRE CLI `v1.34.0`, Bun `1.3.8`, `@chainlink/cre-sdk` `1.21.1`, workflow TypeScript `5.9.3`
+
+Network reads: Monad Testnet chain ID `10143` through the public Foundation RPC
+
 Broadcast: disabled; no public transaction or deployment
 
 ## Historical failures retained
