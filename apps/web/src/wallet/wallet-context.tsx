@@ -28,6 +28,11 @@ import {
   type CreateOrderArguments,
   type UnsignedKairosTransaction,
 } from '@/lib/transactions';
+import {
+  WALLET_ATTEMPT_EVENT,
+  persistWalletAttempt,
+  type WalletAttemptPhase,
+} from '@/lib/wallet-attempt-history';
 
 const receiptTimeoutMs = 60_000;
 const publicClient = createPublicClient({chain: monadTestnet, transport: http()});
@@ -182,6 +187,28 @@ export function PrivyWalletBridge({children}: {children: ReactNode}) {
     }
   }, [wallet]);
 
+  const recordTransaction = useCallback(
+    (next: WalletTransactionState) => {
+      setTransaction(next);
+      if (
+        !address ||
+        !next.action ||
+        !['confirmed', 'failed', 'stale', 'submitted'].includes(next.phase)
+      ) return;
+      persistWalletAttempt(window.localStorage, {
+        action: next.action,
+        address,
+        chainId: MONAD_TESTNET_CHAIN_ID,
+        detail: next.detail ?? 'No additional wallet detail was recorded.',
+        hash: next.hash,
+        phase: next.phase as WalletAttemptPhase,
+        recordedAt: new Date().toISOString(),
+      });
+      window.dispatchEvent(new Event(WALLET_ATTEMPT_EVENT));
+    },
+    [address],
+  );
+
   const runTransaction = useCallback(
     async (
       action: NonNullable<WalletTransactionState['action']>,
@@ -189,13 +216,13 @@ export function PrivyWalletBridge({children}: {children: ReactNode}) {
     ): Promise<Hash> => {
       if (!wallet || !address) throw new Error('No Privy embedded EVM wallet is available.');
 
-      setTransaction({action, phase: 'wallet_prompt', detail: 'Waiting for wallet confirmation.'});
+      recordTransaction({action, phase: 'wallet_prompt', detail: 'Waiting for wallet confirmation.'});
       let submittedHash: Hash | undefined;
       try {
         await switchToMonad();
         const {hash} = await sendTransaction(unsignedTransaction, {address});
         submittedHash = hash;
-        setTransaction({action, phase: 'submitted', hash, detail: 'Submitted onchain; waiting for a receipt.'});
+        recordTransaction({action, phase: 'submitted', hash, detail: 'Submitted onchain; waiting for a receipt.'});
 
         const receipt = await publicClient.waitForTransactionReceipt({
           hash,
@@ -203,23 +230,23 @@ export function PrivyWalletBridge({children}: {children: ReactNode}) {
           timeout: receiptTimeoutMs,
         });
         if (receipt.status !== 'success') {
-          setTransaction({action, phase: 'failed', hash, detail: 'The transaction receipt reports a revert.'});
+          recordTransaction({action, phase: 'failed', hash, detail: 'The transaction receipt reports a revert.'});
           throw new Error('Transaction reverted.');
         }
 
-        setTransaction({action, phase: 'confirmed', hash, detail: 'Confirmed with one block receipt.'});
+        recordTransaction({action, phase: 'confirmed', hash, detail: 'Confirmed with one block receipt.'});
         await refreshBalances();
         return hash;
       } catch (caught) {
         if (caught instanceof WaitForTransactionReceiptTimeoutError) {
-          setTransaction({
+          recordTransaction({
             action,
             phase: 'stale',
             hash: submittedHash,
             detail: 'Receipt lookup timed out. Recheck this hash before retrying.',
           });
         } else if (!(caught instanceof Error && caught.message === 'Transaction reverted.')) {
-          setTransaction({
+          recordTransaction({
             action,
             phase: 'failed',
             detail: 'The wallet request was rejected or the transaction could not be submitted.',
@@ -228,7 +255,7 @@ export function PrivyWalletBridge({children}: {children: ReactNode}) {
         throw caught;
       }
     },
-    [address, refreshBalances, sendTransaction, switchToMonad, wallet],
+    [address, recordTransaction, refreshBalances, sendTransaction, switchToMonad, wallet],
   );
 
   const setAllowance = useCallback(

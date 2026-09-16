@@ -53,6 +53,7 @@ export type EvidenceSource =
   | 'FORK'
   | 'LIVE READ'
   | 'LOCAL ENGINE'
+  | 'LOCAL WALLET'
   | 'ONCHAIN'
   | 'REPLAY';
 
@@ -265,15 +266,17 @@ export function DecisionTrace({
 }
 
 export function ReceiptCard({
+  eyebrow = 'Settlement receipt',
   title,
   source,
   status,
   items,
   explorerHref,
 }: {
+  eyebrow?: string;
   title: string;
   source: EvidenceSource;
-  status: Extract<StatusTone, 'confirmed' | 'failed'>;
+  status: Extract<StatusTone, 'confirmed' | 'failed' | 'stale' | 'submitted'>;
   items: ReadonlyArray<{label: string; value: ReactNode}>;
   explorerHref?: string;
 }) {
@@ -281,7 +284,7 @@ export function ReceiptCard({
     <article className="receipt-card">
       <header>
         <div>
-          <p className="eyebrow">Settlement receipt</p>
+          <p className="eyebrow">{eyebrow}</p>
           <h3>{title}</h3>
         </div>
         <StatusPill status={status} />

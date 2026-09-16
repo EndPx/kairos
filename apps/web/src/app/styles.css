@@ -1138,6 +1138,17 @@ code {
   gap: 20px;
 }
 
+.wallet-attempts {
+  display: grid;
+  gap: 16px;
+  padding-top: 30px;
+  border-top: 1px solid var(--line);
+}
+
+.wallet-attempts > .source-badge {
+  justify-self: start;
+}
+
 .execution-report {
   padding: 26px;
   border: 1px solid var(--line);
