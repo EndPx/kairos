@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M3-09 / M3.9 application acceptance review and full local regression
+- Date: 2026-09-16
+- Environment and chain ID: Windows local Node.js/Hardhat/Vitest/Next.js; target Monad Testnet `10143`; default contract suite did not enable the separately gated fixed fork; no Privy account, deployment, signer, broadcast, or public Kairos transaction accessed
+- Version/commit/source URL: Reviewed revision and fixture-journey commit `3f9019bcf4ac63aed74c1e080d8c9759c4379ee5`; acceptance review `docs/M3_ACCEPTANCE_REVIEW.md`; dependency pins remain in workspace manifests/lockfile
+- Command or reproducible steps: Sequentially ran `pnpm contracts:compile`; `pnpm contracts:test`; `pnpm test`; `pnpm typecheck`; `pnpm engine:test`; `pnpm engine:typecheck`; `pnpm workflow:test`; `pnpm workflow:typecheck`; `pnpm indexer:test`; `pnpm indexer:typecheck`; `pnpm web:test`; `pnpm web:typecheck`; `pnpm web:build`.
+- Result (PASS / FAIL / BLOCKED): PASS for the full locally available regression — contract output listed 16 passing and 5 intentionally pending gated-fork cases, with Hardhat final summary `21 passing (21 mocha)`; shared 1 file / 4 tests; engine 6 / 24; workflow 1 / 5; indexer 1 / 4; web 14 / 36. All TypeScript checks and the production build exited `0`; build routes include dynamic `/orders`, `/orders/[orderId]`, and `/reports`. BLOCKED acceptance: PRIVY-01 and DEMO-01; PARTIAL: UI-01 and CRE-01. M3 remains PARTIAL.
+- Artifact / receipt / transaction hash: `apps/web/src/app/m3-fixture-journey.test.tsx`, `docs/M3_ACCEPTANCE_REVIEW.md`; no public transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): The cross-layer journey is explicitly a typed fixture and does not submit a wallet transaction. The real Kuru CRE simulation returned a stale WAIT; the executing CRE report uses explicit fixtures and `submitted:false`. Default regression intentionally leaves the separately gated fixed-fork tests pending because this turn changed no M1 adapter code and did not claim a new fork run. No public index state exists for application restart proof.
+- Next action: User supplies local Privy/deployment/CRE configuration and specific deployment/broadcast authorization; then run actual approve/create/cancel/revoke, deployed CRE report delivery, live index restart, and complete-journey evidence before changing M3 to COMPLETE.
+
+---
+
 - ID and requirement: M3-08 / M3.8 execution-report page and restart-persistent wallet attempt states
 - Date: 2026-09-16
 - Environment and chain ID: Windows local Next.js/Vitest; configured target Monad Testnet `10143`; no public Kairos addresses, Privy account, RPC order read, signer, or transaction accessed

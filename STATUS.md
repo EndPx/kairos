@@ -1,6 +1,6 @@
 # Current status
 Updated: 2026-09-16
-Stage: M3 CRE, Privy, indexer, and application — in progress; M3.1–M3.8 implemented to the currently available local/configuration boundary.
+Stage: M3 CRE, Privy, indexer, and application — PARTIAL; M3.1–M3.9 are implemented to the available local/configuration boundary, but the written M3 exit is externally blocked.
 
 Completed:
 - Final user specification copied unchanged.
@@ -53,6 +53,9 @@ Completed:
 - M3.8 execution reports: `/reports` aggregates indexed actual input/output, upward-rounded weighted average price, fill count, first-to-last fill duration, and live-policy total consistency. Each fill is enriched against its transaction, successful receipt, canonical block, and historical Kuru fee parameters; failed enrichment remains visibly incomplete.
 - M3.8 cost/failure boundary: Kuru trading fee and Monad gas are separate. Exact zero fee is shown only when every pinned taker fee is zero; nonzero fee remains unavailable because the settlement event records net output. Charged gas uses Monad's submitted-limit rule. Privy submitted/confirmed/failed/stale attempts persist in a validated local browser journal and never masquerade as onchain evidence.
 - M3.8 local verification: web Vitest reported 13 files / 35 tests; TypeScript exited `0`; the production build emitted dynamic `/reports`; React Doctor changed-scope reported 100/100. Desktop/mobile missing-configuration states were inspected. No public fill receipt, Privy action, RPC order read, or transaction occurred.
+- M3.9 local journey: an explicitly labeled fixture test preserves one policy from integer form parsing and exact approval/create calldata through recovered indexed/live state, separated CRE-simulation WAIT provenance, and a receipt-enriched execution report. It is regression coverage, not a real sponsor journey.
+- M3 full local regression: contract compile passed; contract output listed 16 passing cases and 5 intentionally pending gated-fork cases; shared 4, engine 24, CRE workflow 5, indexer 4, and web 36 tests passed. Shared/engine/workflow/indexer/web TypeScript checks and the production web build passed.
+- M3 acceptance review: UI-02 and DEMO-02 pass at the implementation boundary; UI-01 and CRE-01 are partial; PRIVY-01 and DEMO-01 are blocked. `docs/M3_ACCEPTANCE_REVIEW.md` therefore records **M3 PARTIAL**, not complete.
 
 Unverified:
 - Exact Kuru deployed-source/build equivalence, a public Kairos adapter deployment, and any public Kuru execution transaction.
@@ -61,6 +64,6 @@ Unverified:
 - Submission visual design and the final deployed-product evidence package.
 
 Next:
-Complete the locally available M3.9 acceptance matrix and full regression. Real Privy/CRE journey acceptance remains blocked until App ID, allowed origin, dashboard wallet configuration, test account, public policy/token/receiver addresses, and CRE deployment access are supplied locally.
+External action required for M3 completion: configure the Privy public identifiers and exact allowed origin locally, enable embedded EVM wallet creation for a test account, provide deployed policy/receiver/token/market addresses, and obtain verified CRE deploy access/forwarder/workflow identity. Any deployment or public transaction still requires specific authorization. Do not begin M4 within the M3 goal.
 
 Do not report product ready, integration passed or tests passed based on this file.
