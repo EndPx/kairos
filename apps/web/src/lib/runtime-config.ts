@@ -11,6 +11,7 @@ export const runtimeConfig = {
   receiverAddress: optionalAddress(process.env.NEXT_PUBLIC_KAIROS_RECEIVER_ADDRESS),
   inputTokenAddress: optionalAddress(process.env.NEXT_PUBLIC_USDC_ADDRESS),
   marketAddress: optionalAddress(process.env.NEXT_PUBLIC_KURU_MARKET_ADDRESS),
+  limitedDeployment: process.env.NEXT_PUBLIC_ENABLE_LIMITED_DEPLOYMENT === 'true',
 } as const;
 
 export const walletConfiguration = {

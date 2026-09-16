@@ -13,6 +13,8 @@ import {usePathname} from 'next/navigation';
 import type {Route} from 'next';
 import type {ReactNode} from 'react';
 
+import {runtimeConfig} from '@/lib/runtime-config';
+
 import {WalletControl} from './wallet-control';
 
 const navigation: ReadonlyArray<{
@@ -25,6 +27,9 @@ const navigation: ReadonlyArray<{
   {href: '/orders', label: 'Orders', icon: ClipboardList},
   {href: '/reports' as Route, label: 'Reports', icon: FileCheck2},
   {href: '/system', label: 'System', icon: ListTree},
+  ...(runtimeConfig.limitedDeployment
+    ? [{href: '/system/limited-deployment' as Route, label: 'Limited deployment', icon: RadioTower}]
+    : []),
 ];
 
 function NavigationLinks() {

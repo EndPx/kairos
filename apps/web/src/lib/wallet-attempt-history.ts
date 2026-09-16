@@ -4,7 +4,13 @@ export const WALLET_ATTEMPT_STORAGE_KEY = 'kairos.wallet-attempts.v1';
 export const WALLET_ATTEMPT_EVENT = 'kairos:wallet-attempts';
 const MAX_ATTEMPTS = 50;
 
-export type WalletAttemptAction = 'approve' | 'cancel' | 'create' | 'revoke';
+export type WalletAttemptAction =
+  | 'approve'
+  | 'cancel'
+  | 'create'
+  | 'deploy_adapter'
+  | 'deploy_policy'
+  | 'revoke';
 export type WalletAttemptPhase = 'confirmed' | 'failed' | 'stale' | 'submitted';
 
 export interface WalletAttemptRecord {
@@ -21,7 +27,9 @@ function isRecord(value: unknown): value is WalletAttemptRecord {
   if (typeof value !== 'object' || value === null) return false;
   const record = value as Record<string, unknown>;
   return (
-    ['approve', 'cancel', 'create', 'revoke'].includes(String(record.action)) &&
+    ['approve', 'cancel', 'create', 'deploy_adapter', 'deploy_policy', 'revoke'].includes(
+      String(record.action),
+    ) &&
     typeof record.address === 'string' &&
     isAddress(record.address) &&
     Number.isSafeInteger(record.chainId) &&

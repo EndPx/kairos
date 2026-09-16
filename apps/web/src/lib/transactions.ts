@@ -4,9 +4,10 @@ import {erc20Abi, kairosPolicyAbi} from './abi';
 import {MONAD_TESTNET_CHAIN_ID} from './chain';
 
 export interface UnsignedKairosTransaction {
-  readonly to: Address;
+  readonly to?: Address;
   readonly data: Hex;
   readonly chainId: number;
+  readonly gasLimit?: bigint;
 }
 
 export interface CreateOrderArguments {

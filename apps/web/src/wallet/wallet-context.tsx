@@ -7,6 +7,7 @@ import {
   http,
   type Address,
   type Hash,
+  type TransactionReceipt,
 } from 'viem';
 import {
   createContext,
@@ -31,6 +32,7 @@ import {
 import {
   WALLET_ATTEMPT_EVENT,
   persistWalletAttempt,
+  type WalletAttemptAction,
   type WalletAttemptPhase,
 } from '@/lib/wallet-attempt-history';
 
@@ -46,7 +48,7 @@ export type TransactionPhase =
   | 'wallet_prompt';
 
 export interface WalletTransactionState {
-  readonly action?: 'approve' | 'cancel' | 'create' | 'revoke';
+  readonly action?: WalletAttemptAction;
   readonly detail?: string;
   readonly hash?: Hash;
   readonly phase: TransactionPhase;
@@ -72,6 +74,11 @@ export interface WalletSession {
   cancelOrder(orderId: bigint): Promise<Hash>;
   clearTransaction(): void;
   createOrder(order: CreateOrderArguments): Promise<Hash>;
+  deployContract(
+    action: 'deploy_adapter' | 'deploy_policy',
+    transaction: UnsignedKairosTransaction,
+    expectedAddress: Address,
+  ): Promise<Hash>;
   login(): void;
   logout(): Promise<void>;
   refreshBalances(): Promise<void>;
@@ -98,6 +105,7 @@ const unconfiguredSession: WalletSession = {
   cancelOrder: unavailable,
   clearTransaction: () => undefined,
   createOrder: unavailable,
+  deployContract: unavailable,
   login: () => undefined,
   logout: async () => undefined,
   refreshBalances: async () => undefined,
@@ -211,9 +219,9 @@ export function PrivyWalletBridge({children}: {children: ReactNode}) {
 
   const runTransaction = useCallback(
     async (
-      action: NonNullable<WalletTransactionState['action']>,
+      action: WalletAttemptAction,
       unsignedTransaction: UnsignedKairosTransaction,
-    ): Promise<Hash> => {
+    ): Promise<{hash: Hash; receipt: TransactionReceipt}> => {
       if (!wallet || !address) throw new Error('No Privy embedded EVM wallet is available.');
 
       recordTransaction({action, phase: 'wallet_prompt', detail: 'Waiting for wallet confirmation.'});
@@ -236,7 +244,7 @@ export function PrivyWalletBridge({children}: {children: ReactNode}) {
 
         recordTransaction({action, phase: 'confirmed', hash, detail: 'Confirmed with one block receipt.'});
         await refreshBalances();
-        return hash;
+        return {hash, receipt};
       } catch (caught) {
         if (caught instanceof WaitForTransactionReceiptTimeoutError) {
           recordTransaction({
@@ -263,10 +271,11 @@ export function PrivyWalletBridge({children}: {children: ReactNode}) {
       if (!runtimeConfig.inputTokenAddress || !runtimeConfig.policyAddress) {
         throw new Error('Token and policy addresses are required for approval.');
       }
-      return runTransaction(
+      const {hash} = await runTransaction(
         amount === 0n ? 'revoke' : 'approve',
         buildApprovalTransaction(runtimeConfig.inputTokenAddress, runtimeConfig.policyAddress, amount),
       );
+      return hash;
     },
     [runTransaction],
   );
@@ -274,7 +283,11 @@ export function PrivyWalletBridge({children}: {children: ReactNode}) {
   const createOrder = useCallback(
     async (order: CreateOrderArguments) => {
       if (!runtimeConfig.policyAddress) throw new Error('Policy address is required to create an order.');
-      return runTransaction('create', buildCreateOrderTransaction(runtimeConfig.policyAddress, order));
+      const {hash} = await runTransaction(
+        'create',
+        buildCreateOrderTransaction(runtimeConfig.policyAddress, order),
+      );
+      return hash;
     },
     [runTransaction],
   );
@@ -282,7 +295,31 @@ export function PrivyWalletBridge({children}: {children: ReactNode}) {
   const cancelOrder = useCallback(
     async (orderId: bigint) => {
       if (!runtimeConfig.policyAddress) throw new Error('Policy address is required to cancel an order.');
-      return runTransaction('cancel', buildCancelOrderTransaction(runtimeConfig.policyAddress, orderId));
+      const {hash} = await runTransaction(
+        'cancel',
+        buildCancelOrderTransaction(runtimeConfig.policyAddress, orderId),
+      );
+      return hash;
+    },
+    [runTransaction],
+  );
+
+  const deployContract = useCallback(
+    async (
+      action: 'deploy_adapter' | 'deploy_policy',
+      unsignedTransaction: UnsignedKairosTransaction,
+      expectedAddress: Address,
+    ): Promise<Hash> => {
+      const {hash, receipt} = await runTransaction(action, unsignedTransaction);
+      if (
+        !receipt.contractAddress ||
+        receipt.contractAddress.toLowerCase() !== expectedAddress.toLowerCase()
+      ) {
+        throw new Error('Deployment receipt does not match the precomputed contract address.');
+      }
+      const code = await publicClient.getBytecode({address: expectedAddress});
+      if (!code || code === '0x') throw new Error('Deployment receipt has no contract bytecode.');
+      return hash;
     },
     [runTransaction],
   );
@@ -305,6 +342,7 @@ export function PrivyWalletBridge({children}: {children: ReactNode}) {
       cancelOrder,
       clearTransaction: () => setTransaction({phase: 'idle'}),
       createOrder,
+      deployContract,
       login,
       logout,
       refreshBalances,
@@ -319,6 +357,7 @@ export function PrivyWalletBridge({children}: {children: ReactNode}) {
     cancelOrder,
     chainId,
     createOrder,
+    deployContract,
     error,
     login,
     logout,
