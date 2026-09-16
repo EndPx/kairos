@@ -4,10 +4,11 @@ import {readFile} from 'node:fs/promises';
 
 import {createPublicClient, http, type Hex} from 'viem';
 
-import type {OffchainDecisionRecord, PersistedIndexState} from '../../../../packages/indexer/src/types';
+import type {OffchainDecisionRecord} from '../../../../packages/indexer/src/types';
 
 import {kairosPolicyAbi, kuruReadAbi} from './abi';
 import {DEFAULT_MONAD_RPC_URL, monadTestnet} from './chain';
+import {fetchEnvioHistory} from './envio-history';
 import {
   buildExecutionReport,
   latestExecutionAttempts,
@@ -17,7 +18,7 @@ import {
 } from './execution-report';
 import {summarizeKuruManualBook} from './kuru-market-summary';
 import {
-  mergeIndexedOrders,
+  mergeOrderHistory,
   type LivePolicyOrder,
   type MarketSnapshotView,
   type OrdersReadModel,
@@ -186,34 +187,53 @@ async function readLiveOrder(
 }
 
 export async function loadOrdersReadModel(): Promise<OrdersReadModel> {
-  const indexPath = process.env.KAIROS_INDEX_PATH;
-  if (!indexPath || !runtimeConfig.policyAddress || !runtimeConfig.receiverAddress || !runtimeConfig.marketAddress) {
+  const envioEndpoint = process.env.ENVIO_GRAPHQL_URL;
+  if (!envioEndpoint || !runtimeConfig.policyAddress || !runtimeConfig.marketAddress) {
     return {
       state: 'CONFIG_REQUIRED',
       orders: [],
-      message: 'Index path and public policy, receiver, and market addresses must be configured.',
+      message: 'Envio GraphQL and public policy and market addresses must be configured.',
     };
   }
 
   try {
-    const state = await readJson<PersistedIndexState>(indexPath);
-    if (
-      state.schemaVersion !== 1 ||
-      state.chainId !== String(monadTestnet.id) ||
-      state.policyAddress.toLowerCase() !== runtimeConfig.policyAddress.toLowerCase() ||
-      state.receiverAddress.toLowerCase() !== runtimeConfig.receiverAddress.toLowerCase()
-    ) {
-      return {state: 'READ_FAILED', orders: [], message: 'The persisted index identity does not match application configuration.'};
+    const history = await fetchEnvioHistory(
+      envioEndpoint,
+      runtimeConfig.policyAddress,
+      process.env.ENVIO_GRAPHQL_ADMIN_SECRET,
+    );
+    const lagBlocks =
+      history.meta.progressBlock &&
+      history.meta.sourceBlock &&
+      BigInt(history.meta.sourceBlock) >= BigInt(history.meta.progressBlock)
+        ? (BigInt(history.meta.sourceBlock) - BigInt(history.meta.progressBlock)).toString()
+        : undefined;
+    const indexSync = {
+      source: 'ENVIO_HYPERINDEX' as const,
+      eventsProcessed: history.meta.eventsProcessed,
+      isReady: history.meta.isReady,
+      lagBlocks,
+      progressBlock: history.meta.progressBlock,
+      sourceBlock: history.meta.sourceBlock,
+    };
+    if (!history.meta.isReady || !history.meta.progressBlock) {
+      return {
+        state: 'SYNCING',
+        orders: [],
+        indexSync,
+        message: `Envio is still syncing${history.meta.progressBlock ? ` at block ${history.meta.progressBlock}` : ''}. Partial history is not shown.`,
+      };
     }
 
     const decisionPath = process.env.KAIROS_DECISION_JOURNAL_PATH;
     const decisions = validateDecisionJournal(await readOptionalJson<unknown>(decisionPath, []));
     const rpcUrl = process.env.MONAD_RPC_URL || process.env.NEXT_PUBLIC_MONAD_RPC_URL || DEFAULT_MONAD_RPC_URL;
     const client = createPublicClient({chain: monadTestnet, transport: http(rpcUrl)});
-    const block = await client.getBlock();
+    const comparisonBlock = BigInt(history.meta.progressBlock);
+    const block = await client.getBlock({blockNumber: comparisonBlock});
     if (!block.hash) throw new Error('Latest block has no hash.');
     const entries = await Promise.all(
-      Object.keys(state.orders).map(async (orderId) => [orderId, await readLiveOrder(client, orderId, block.number, block.timestamp)] as const),
+      history.orders.map(async (order) => [order.orderId, await readLiveOrder(client, order.orderId, block.number, block.timestamp)] as const),
     );
     const liveOrders = Object.fromEntries(entries);
     let market: MarketSnapshotView | undefined;
@@ -223,11 +243,12 @@ export async function loadOrdersReadModel(): Promise<OrdersReadModel> {
     } catch {
       marketError = 'The manual Kuru L2 snapshot could not be read at the pinned policy block.';
     }
-    const orders = mergeIndexedOrders(state, liveOrders, decisions);
+    const orders = mergeOrderHistory(history.orders, liveOrders, decisions);
     return {
       state: orders.length === 0 ? 'EMPTY' : 'READY',
       orders,
-      cursor: state.cursor ?? undefined,
+      cursor: {blockNumber: history.meta.progressBlock, blockHash: block.hash},
+      indexSync,
       market,
       marketError,
       policyBlock: {
@@ -240,7 +261,7 @@ export async function loadOrdersReadModel(): Promise<OrdersReadModel> {
     return {
       state: 'READ_FAILED',
       orders: [],
-      message: 'Indexed state or the pinned onchain read could not be recovered. No stale lifecycle is shown.',
+      message: 'Envio history or the pinned onchain comparison read could not be recovered. No fixture or stale lifecycle is shown.',
     };
   }
 }

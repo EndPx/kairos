@@ -19,7 +19,7 @@ export default async function OrderDetailPage({params}: {params: Promise<{orderI
         <PageHeader
           eyebrow={`Order / ${orderId}`}
           title="Every limit and receipt, in context."
-          description="Current contract state, indexed settlement history, wallet authorization, market coverage, and offchain decisions are shown with separate provenance."
+          description="Pinned contract state, Envio settlement history, wallet authorization, market coverage, and offchain decisions are shown with separate provenance."
           actions={model.state === 'READY' || model.state === 'EMPTY' ? <SourceBadge source="LIVE READ" /> : undefined}
         />
         {order ? (
@@ -28,6 +28,8 @@ export default async function OrderDetailPage({params}: {params: Promise<{orderI
           <StatePanel state="missing" title="Order source is not configured">{model.message}</StatePanel>
         ) : model.state === 'READ_FAILED' ? (
           <StatePanel state="error" title="Order recovery failed">{model.message}</StatePanel>
+        ) : model.state === 'SYNCING' ? (
+          <StatePanel state="loading" title="Envio history is syncing">{model.message}</StatePanel>
         ) : (
           <StatePanel state="empty" title="Order not found">No indexed OrderCreated event exists for this ID.</StatePanel>
         )}

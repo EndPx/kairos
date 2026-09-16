@@ -11,9 +11,9 @@ export default async function OrdersPage() {
     <AppShell>
       <div className="page-stack">
         <PageHeader
-          eyebrow="Orders / recovered chain state"
+          eyebrow="Orders / Envio HyperIndex history"
           title="Policies, not promises."
-          description="Lifecycle is reread from the contract. Confirmed fills come from the persisted event index; offchain decisions remain visibly separate."
+          description="Lifecycle is reread from the contract at the Envio comparison block. Confirmed fills come from HyperIndex; offchain decisions remain visibly separate."
           actions={model.state === 'READY' || model.state === 'EMPTY' ? <SourceBadge source="ONCHAIN" /> : undefined}
         />
         <OrdersList model={model} />

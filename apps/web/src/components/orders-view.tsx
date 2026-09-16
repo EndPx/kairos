@@ -64,6 +64,14 @@ export function OrdersList({model}: {model: OrdersReadModel}) {
       </StatePanel>
     );
   }
+  if (model.state === 'SYNCING') {
+    return (
+      <StatePanel state="loading" title="Envio history is syncing">
+        {model.message} Progress {model.indexSync?.progressBlock ?? 'not available'}; source head{' '}
+        {model.indexSync?.sourceBlock ?? 'not available'}.
+      </StatePanel>
+    );
+  }
   if (model.state === 'EMPTY') {
     return (
       <StatePanel state="empty" title="No indexed orders">
@@ -76,8 +84,10 @@ export function OrdersList({model}: {model: OrdersReadModel}) {
     <div className="orders-list">
       <div className="orders-provenance">
         <SourceBadge source="ONCHAIN" />
-        <span>Index cursor {model.cursor?.blockNumber ?? 'unavailable'}</span>
-        <span>Policy read {model.policyBlock?.blockNumber ?? 'unavailable'}</span>
+        <span>Envio HyperIndex progress {model.indexSync?.progressBlock ?? 'unavailable'}</span>
+        <span>Source head {model.indexSync?.sourceBlock ?? 'unavailable'}</span>
+        <span>Lag {model.indexSync?.lagBlocks ?? 'unknown'} blocks</span>
+        <span>Policy comparison read {model.policyBlock?.blockNumber ?? 'unavailable'}</span>
       </div>
       {model.orders.map((order) => {
         const progress = progressBasisPoints(order.spent, order.budget);
@@ -155,7 +165,7 @@ export function OrderDetail({order, model}: {order: OrderViewModel; model: Order
           {label: 'Available by schedule', value: amount(order.availableToSpend, 6, 'USDC')},
           {label: 'Execution nonce', value: order.executionNonce},
         ]} />
-        <footer><SourceBadge source="LIVE READ" /><span>Block {model.policyBlock?.blockNumber}</span></footer>
+        <footer><SourceBadge source="LIVE READ" /><span>Envio comparison block {model.policyBlock?.blockNumber}</span></footer>
       </section>
 
       <section className="detail-card">

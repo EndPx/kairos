@@ -43,6 +43,9 @@ export function ExecutionReportsView({model}: {model: ExecutionReportsReadModel}
   if (source.state === 'READ_FAILED') {
     return <StatePanel state="error" title="Execution report recovery failed">{source.message}</StatePanel>;
   }
+  if (source.state === 'SYNCING') {
+    return <StatePanel state="loading" title="Envio history is syncing">{source.message} Partial reports are not shown.</StatePanel>;
+  }
   if (source.state === 'EMPTY') {
     return <StatePanel state="empty" title="No indexed orders">A report is created only from indexed settlement events.</StatePanel>;
   }
@@ -51,7 +54,8 @@ export function ExecutionReportsView({model}: {model: ExecutionReportsReadModel}
     <div className="reports-stack">
       <div className="orders-provenance">
         <SourceBadge source="ONCHAIN" />
-        <span>Index cursor {source.cursor?.blockNumber ?? 'unavailable'}</span>
+        <span>Envio HyperIndex progress {source.indexSync?.progressBlock ?? 'unavailable'}</span>
+        <span>Lag {source.indexSync?.lagBlocks ?? 'unknown'} blocks</span>
         <span>Receipts and market fees are pinned to each fill block</span>
       </div>
       {model.reports.map(({order, report}) => (

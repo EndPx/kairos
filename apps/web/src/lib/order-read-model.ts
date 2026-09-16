@@ -41,11 +41,19 @@ export interface OrderViewModel extends LivePolicyOrder {
 
 export interface OrdersReadModel {
   readonly cursor?: {readonly blockHash: Hex; readonly blockNumber: string};
+  readonly indexSync?: {
+    readonly eventsProcessed: string;
+    readonly isReady: boolean;
+    readonly lagBlocks?: string;
+    readonly progressBlock?: string;
+    readonly sourceBlock?: string;
+    readonly source: 'ENVIO_HYPERINDEX';
+  };
   readonly market?: MarketSnapshotView;
   readonly marketError?: string;
   readonly orders: readonly OrderViewModel[];
   readonly policyBlock?: {readonly blockHash: Hex; readonly blockNumber: string; readonly blockTimestamp: string};
-  readonly state: 'CONFIG_REQUIRED' | 'EMPTY' | 'READY' | 'READ_FAILED';
+  readonly state: 'CONFIG_REQUIRED' | 'EMPTY' | 'READY' | 'READ_FAILED' | 'SYNCING';
   readonly message?: string;
 }
 
@@ -63,7 +71,15 @@ export function mergeIndexedOrders(
   liveOrders: Readonly<Record<string, LivePolicyOrder>>,
   decisions: readonly OffchainDecisionRecord[],
 ): readonly OrderViewModel[] {
-  return Object.values(state.orders)
+  return mergeOrderHistory(Object.values(state.orders), liveOrders, decisions);
+}
+
+export function mergeOrderHistory(
+  indexedOrders: readonly IndexedOrder[],
+  liveOrders: Readonly<Record<string, LivePolicyOrder>>,
+  decisions: readonly OffchainDecisionRecord[],
+): readonly OrderViewModel[] {
+  return indexedOrders
     .map((indexed) => {
       const live = liveOrders[indexed.orderId];
       if (!live) throw new Error(`Missing current chain state for order ${indexed.orderId}.`);

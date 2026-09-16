@@ -14,7 +14,7 @@ export default async function ReportsPage() {
         <PageHeader
           eyebrow="Reports / confirmed execution"
           title="What actually settled."
-          description="Actual input and output come from Kairos settlement events. Gas receipts and Kuru fee parameters are read at each fill block; unavailable evidence stays unavailable."
+          description="Actual input and output come from Kairos settlement events indexed by Envio. Gas receipts and Kuru fee parameters are read at each fill block; unavailable evidence stays unavailable."
           actions={model.ordersModel.state === 'READY' ? <SourceBadge source="ONCHAIN" /> : undefined}
         />
         <ExecutionReportsView model={model} />
