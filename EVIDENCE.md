@@ -16,6 +16,30 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M3-ENVIO-02 / production application query boundary, lag, and unavailable states
+- Date: 2026-09-17
+- Environment and chain ID: Windows Node `v24.18.0`; Next.js `16.3.5`; Monad Testnet identity `10143`; no Envio endpoint, API token, public Kairos deployment, or transaction used
+- Version/commit/source URL: application implementation commit `bd58adfd37abd26841a5f1304bc1a771fd357fbe`; outage/sync tests commit `35c5d52ffca4163286f12cb6f5560dc37763771e`; official `_meta` contract from `https://docs.envio.dev/docs/HyperIndex/observability`
+- Command or reproducible steps: `pnpm web:test`; `pnpm web:typecheck`; `pnpm web:build`; `pnpm exec react-doctor --verbose --scope changed` from `apps/web`; browser inspection of `http://localhost:3000/orders` and `/reports` with no `ENVIO_GRAPHQL_URL`
+- Result (PASS / FAIL / BLOCKED): PASS for the code boundary — final full Vitest run reported 16 files / 47 tests; TypeScript exited `0`; the production build compiled and emitted dynamic orders/detail/reports routes; changed-scope React Doctor reported 100/100. Browser runtime showed explicit Envio configuration blockers and no substituted orders/reports. The full React Doctor scan exited `1` with score 49 because it flagged a generated bundle plus three pre-existing files; a value-name-only audit found no configured environment value, Privy secret prefix, private-key variable, or Aurora variable in that bundle. BLOCKED for a live GraphQL query because no endpoint exists.
+- Artifact / receipt / transaction hash: `apps/web/src/lib/envio-history.ts`, `apps/web/src/lib/envio-history.test.ts`, `apps/web/src/lib/order-read-model.server.ts`; commits above; no receipt or transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): Parser and UI tests use explicit GraphQL fixtures. `_meta` lag, HTTP failure, policy identity, integer units, and no-fallback behavior are tested, but no Envio service response or real Kairos event has been observed. Production contract reads are implemented at the Envio progress block but cannot run without ENVIO-02.
+- Next action: After an authorized policy deployment, configure `ENVIO_GRAPHQL_URL` from the verified pipeline and capture `_meta`, order history, pinned policy state, and browser routes at one named comparison block.
+
+---
+
+- ID and requirement: M3-ENVIO-01 / public HyperIndex implementation and deterministic handler proof
+- Date: 2026-09-17
+- Environment and chain ID: Windows host with Ubuntu 24.04 WSL; disposable `/tmp` package copy; checksum-pinned Node `v22.23.2`; pnpm `10.21.0`; target Monad Testnet `10143`; no API token or live data source used
+- Version/commit/source URL: `envio` `3.12.0`; implementation commit `ca8ec654f2674d789ddd0eb116b6e8262eab2ba3`; official configuration, schema, event-handler, testing, reorg, observability, and Monad Testnet documentation reviewed 2026-09-17
+- Command or reproducible steps: compared checked-in event ABI JSON with Hardhat artifacts using PowerShell JSON canonicalization (`Policy event ABI exact: True`; `Receiver event ABI exact: True`); ran `wsl -d Ubuntu-24.04 -- bash scripts/verify-envio-wsl.sh packages/envio-indexer` using WSL paths; then `pnpm test` and `pnpm typecheck` for shared regression
+- Result (PASS / FAIL / BLOCKED): PASS for ENVIO-01 and local handler semantics — both lifecycle and execution configs codegenerated; Vitest reported 2 files / 7 tests; generated TypeScript exited `0`; shared regression reported 1 file / 4 tests and TypeScript exit `0`. Tests prove create, cancel, cumulative actual settlement, quantity-weighted price, replay idempotence, and CRE correlation only when receiver binding, transaction, nonce, and snapshot match. Native Windows `envio codegen` failed before config parsing with `Cannot read properties of null (reading 'runCli')`; Docker was not available because the local WSL configuration prevented its engine from becoming ready, so the documented disposable Ubuntu path was used instead.
+- Artifact / receipt / transaction hash: `packages/envio-indexer/config.yaml`, `config.execution.yaml`, `schema.graphql`, event ABIs, `src/handlers/kairos.ts`, tests, and `scripts/verify-envio-wsl.sh`; no receipt or transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): `createTestIndexer()` uses labeled simulated events and sentinel addresses only for code generation. No sentinel is a deployment identity. Reorg support is enabled and documented but has not been observed against a running Kairos pipeline. No Cloud/self-hosted service, public event, fill analytics, or CRE delivery is claimed.
+- Next action: Obtain an authorized public policy deployment and actual start block, set `ENVIO_API_TOKEN` locally, and start the lifecycle-only pipeline before adding any receiver deployment identity.
+
+---
+
 - ID and requirement: M3-ENVIO-00 / Envio scope, Monad Testnet capability, and implementation prerequisites
 - Date: 2026-09-17
 - Environment and chain ID: Official documentation and local toolchain inspection; target Monad Testnet `10143`; browser balance refresh was a read-only public RPC operation; no Envio API call, contract deployment, signature, or transaction occurred

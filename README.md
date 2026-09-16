@@ -54,6 +54,7 @@ Evidence is recorded separately from documentation claims in [EVIDENCE.md](EVIDE
 - [Technical decisions](docs/DECISIONS.md)
 - [Integration validation](docs/INTEGRATION_VALIDATION.md)
 - [Acceptance tests](docs/ACCEPTANCE_TESTS.md)
+- [Envio HyperIndex integration](docs/ENVIO.md)
 - [Workplan](WORKPLAN.md)
 - [Current status](STATUS.md)
 - [Sources and provenance](docs/SOURCES.md)

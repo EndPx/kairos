@@ -1,8 +1,10 @@
 # Event index and restart recovery
 
-## Selected strategy
+## Production and reference strategies
 
-Kairos uses a direct viem JSON-RPC log scanner and a local atomically replaced JSON projection. This is one deliberate indexer, not a collection of provider integrations. It fits the initial single-policy/single-market scope and remains replaceable behind `ChainSource` and `IndexStore` interfaces.
+Kairos now selects Envio HyperIndex as the production mined-history source. The public configuration, schema, handlers, verification command, and live deployment boundary are documented in [ENVIO.md](ENVIO.md).
+
+The direct viem JSON-RPC scanner and atomically replaced JSON projection remain as a local migration oracle. They prove deterministic projection, checkpoint recovery, and reorg rebuild semantics without silently standing in for Envio or public testnet ingestion.
 
 The scanner reads only the configured immutable policy and CRE receiver addresses. It ingests:
 
@@ -30,7 +32,7 @@ Executor submission states are a third provenance domain. `ExecutionAttemptJourn
 
 Event-derived `ACTIVE` is not sufficient to infer wall-clock expiry. The application must read `statusOf` from the policy at its current pinned block before presenting current lifecycle state. The index projection preserves mined history; it does not fabricate an expiry event that the contract never emitted.
 
-## Configuration
+## Legacy oracle configuration
 
 Only variable names belong in environment files:
 
@@ -43,7 +45,7 @@ Only variable names belong in environment files:
 - `KAIROS_DECISION_JOURNAL_PATH`; and
 - `KAIROS_EXECUTION_ATTEMPT_JOURNAL_PATH`.
 
-No public Kairos policy or receiver deployment exists yet, so the viem source has not been run against a Kairos public address. Local tests use ABI-encoded logs rather than an invented address.
+These variables apply only to the legacy local projector and offchain journals. The production application history path uses the server-only Envio variables documented in [ENVIO.md](ENVIO.md). No public Kairos policy or receiver deployment exists yet, so neither source has indexed public Kairos events. Local tests use ABI-encoded logs rather than an invented address.
 
 ## Verification
 

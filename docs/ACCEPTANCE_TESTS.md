@@ -38,6 +38,18 @@ All statuses start NOT RUN. Each item must point to EVIDENCE.md before claiming 
 | ENVIO-04 | Settlement aggregate correctness | Integer actual input/output/refund and quantity-weighted effective price match named receipts and contract state at a comparison block |
 | ENVIO-05 | Recovery and unavailable states | Duplicate processing, ordering, reorgs, indexing lag, and endpoint failure are handled without silent fixture fallback |
 
+### M3-Envio implementation status — 2026-09-17
+
+| ID | Status | Current evidence boundary |
+|---|---|---|
+| ENVIO-01 | PASS (repository implementation) | `envio` `3.12.0` is pinned; public lifecycle/execution configs, exact event ABIs, `schema.graphql`, typed handlers, and generated-type verification are committed |
+| ENVIO-02 | BLOCKED | No authorized public Kairos deployment, actual address/start block, API token, or live indexed event exists |
+| ENVIO-03 | PASS (implementation), BLOCKED (live query) | Application routes use the server-only Envio GraphQL boundary and pinned comparison-block reads; runtime endpoint evidence awaits ENVIO-02 |
+| ENVIO-04 | PARTIAL | Fixture handler tests prove integer cumulative accounting and weighted price; named public receipts/state comparison does not exist |
+| ENVIO-05 | PARTIAL | Handler replay guard, Envio reorg configuration, `_meta` lag state, endpoint-failure tests, and no-fixture UI states pass; live reorg/restart behavior awaits a pipeline |
+
+M3-Envio remains **PARTIAL** because its exit requires real Monad Testnet ingestion and reproducible end-to-end evidence.
+
 Use unit/property or invariant tests for accounting and policy; adapter integration tests on the selected deployment/fork; E2E tests for user journeys.
 Fix failures before broadening features. Do not equate test mocks with completed sponsor acceptance.
 Final definition of done remains section 19 of PRODUCT_SPEC_FINAL.md.
