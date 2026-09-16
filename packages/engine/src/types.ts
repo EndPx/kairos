@@ -1,4 +1,4 @@
-import type { Address, PriceUnits, TokenAmount, UnixSeconds } from '@kairos/shared';
+import type { Address, OrderPolicy, OrderStatus, PriceUnits, TokenAmount, UnixSeconds } from '@kairos/shared';
 
 export type Hex = `0x${string}`;
 export type SnapshotKind = 'FIXED_REPLAY' | 'LIVE_READ' | 'FORK' | 'FIXTURE';
@@ -77,4 +77,20 @@ export interface LiquidityCapacity {
   readonly trace: readonly CapacityTraceStep[];
   readonly includedSources: readonly ['MANUAL_L2'];
   readonly excludedSources: readonly ['KURU_AMM_VAULT'];
+}
+
+export interface PolicyStateSnapshot {
+  readonly policy: Address;
+  readonly blockNumber: bigint;
+  readonly blockHash: Hex;
+  readonly blockTimestamp: UnixSeconds;
+  readonly order: OrderPolicy;
+  readonly status: OrderStatus;
+  readonly releasedBudget: TokenAmount;
+  readonly availableToSpend: TokenAmount;
+  readonly remainingBudget: TokenAmount;
+  readonly walletBalance: TokenAmount;
+  readonly tokenAllowance: TokenAmount;
+  readonly marketState: MarketState;
+  readonly balanceScope: 'WALLET_SHARED_NOT_RESERVED';
 }

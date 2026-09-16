@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M2-03 / M2.3 policy-state reader
+- Date: 2026-09-16
+- Environment and chain ID: Local Vitest source adapter tests; ethers `6.17.0`; no deployed Kairos policy or public chain transaction
+- Version/commit/source URL: `KairosPolicy.sol` M1 read surface; pinned Kuru source `2060bb2736080c175d80d568bfdb6226bb5abd04` plus the read-only `marketState()` runtime probe; Vitest `5.0.0`; TypeScript `7.0.2`
+- Command or reproducible steps: `pnpm install --frozen-lockfile=false`; `pnpm engine:test`; `pnpm engine:typecheck`.
+- Result (PASS / FAIL / BLOCKED): PASS — final run reported 3 Vitest files / 11 tests and typecheck exit `0`. Tests prove one block tag across policy/balance/allowance/market reads, no cross-order balance reservation, and rejection of inconsistent budget state. The first typecheck run failed with `TS2722` for dynamic ethers method properties; the implementation was changed to explicit `getFunction(...)` calls and the complete rerun passed.
+- Artifact / receipt / transaction hash: `packages/engine/src/policy/policyStateReader.ts`, `packages/engine/test/policyStateReader.test.ts`, and `docs/M2_POLICY_READER.md`; no transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): The ethers source is production-shaped but tested with a deterministic read-source fixture because no public Kairos policy deployment is authorized. Kuru `marketState()` is source- and runtime-probed but absent from the pinned SDK ABI; a failed getter returns `UNKNOWN` for fail-closed handling.
+- Next action: M2.4 — compute the minimum of contract availability, remaining budget, max-per-fill, wallet balance, allowance, and evidenced capacity, then emit deterministic EXECUTE/WAIT traces.
+
+---
+
 - ID and requirement: M2-02 / M2.2 liquidity-capacity calculation
 - Date: 2026-09-16
 - Environment and chain ID: Local Vitest integer fixtures derived from the selected Kuru USDC/MON parameters; no chain call or transaction

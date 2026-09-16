@@ -30,14 +30,15 @@ Completed:
 - M1 exit review: all M1.1–M1.8 requirements and the M1-scoped acceptance IDs map to local policy evidence or the documented fixed-fork Kuru proof. `WORKPLAN.md` allows selected-deployment or documented-fork adapter evidence and does not require exact deployed-source/build equivalence for M1 closure. M1 is COMPLETE; the stronger source-equivalence/public-deployment gate remains unchanged.
 - M2.1 market-data adapter: the engine package decodes ABI `bytes`, parses Kuru's integer L2 layout, preserves full snapshot provenance, validates identity/tick/order invariants, and conservatively excludes separately sourced AMM vault liquidity. A recorded raw RPC response from fixed block `62944132` is covered by a replay test.
 - M2.2 liquidity capacity: the manual-ask estimator walks integer levels, applies conservative quote/output rounding and Kuru's aggregate output-fee ceiling, enforces cumulative effective-average price, and emits an auditable per-level trace. Thin/deep, partial input, average-price, and nonzero-fee fixtures pass.
+- M2.3 policy-state reader: an ethers-backed adapter pins all policy, wallet, allowance, and market reads to one canonical block; consumes contract-derived lifecycle/release values; rejects inconsistent snapshots; and labels balance/allowance as shared wallet capacity rather than per-order reservations.
 
 Unverified:
 - Exact Kuru deployed-source/build equivalence, a public Kairos adapter deployment, and any public Kuru execution transaction.
-- M2.3–M2.6 policy reader, decisions, freshness/retry, and engine acceptance behavior; plus the CRE, Privy, Aurora, UI, and end-to-end groups assigned to later milestones.
+- M2.4–M2.6 decisions, freshness/retry, and engine acceptance behavior; plus the CRE, Privy, Aurora, UI, and end-to-end groups assigned to later milestones.
 - Full primary-track rules and prize-stacking.
 - Submission visual design and the final deployed-product evidence package.
 
 Next:
-Implement M2.3 policy-state reader with one pinned block identity for order, lifecycle, release, balance, allowance, and market-state reads; do not reserve wallet capacity per order.
+Implement M2.4 deterministic decision engine over contract-derived policy state and M2 capacity, emitting auditable EXECUTE or WAIT results without weakening contract authority.
 
 Do not report product ready, integration passed or tests passed based on this file.
