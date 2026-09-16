@@ -1,0 +1,21 @@
+{
+  "name": "@kairos/cre-workflow",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --project tsconfig.json"
+  },
+  "dependencies": {
+    "@chainlink/cre-sdk": "1.21.1",
+    "@kairos/engine": "workspace:*",
+    "@kairos/shared": "workspace:*",
+    "viem": "2.56.5",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "vitest": "5.0.0"
+  }
+}

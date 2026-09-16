@@ -1,6 +1,6 @@
 # Current status
 Updated: 2026-09-16
-Stage: M3 CRE, Privy, indexer, and application — in progress; M3.1 receiver locally verified.
+Stage: M3 CRE, Privy, indexer, and application — in progress; M3.1–M3.3 locally implemented with bounded CRE simulation proof.
 
 Completed:
 - Final user specification copied unchanged.
@@ -38,14 +38,17 @@ Completed:
 - M2 full regression at exit: engine 6 files / 24 tests, default contract 12 passing plus 5 intentionally pending gated-fork tests, shared 1 file / 4 tests, both TypeScript checks, and contract compilation all passed.
 - M3 access inventory: CRE CLI `v1.34.0` is installed and authenticated, but deploy access is disabled and workflow/forwarder variables are absent. Privy public client identifiers and dashboard configuration are absent from the local process environment. No secret value was printed or stored.
 - M3.1 CRE receiver: the pinned official `IReceiver` surface and production 64-byte metadata layout are implemented with immutable forwarder authority, one-time policy/workflow activation, expiry and duplicate protection, ERC-165 support, and the unchanged M1 policy execution path. The receiver also accepts the documented 62-byte alternate-tooling form; four local receiver tests pass alongside the existing contract suite.
+- M3.2 CRE workflow: the pinned SDK workflow reads one block, obtains Kuru L2/parameters/state and optionally the deployed Kairos policy at that exact block, invokes the unchanged M2 parser/decision engine, produces the receiver's exact 192-byte proposal report, and performs at most one guarded submission attempt. Fixture policy/L2 modes are explicit and appear in every trace.
+- M3.3 local CRE proof: two no-broadcast simulations compile to the same workflow binary. A real fixed-block Kuru read fails closed as stale in `915ms`; an explicitly fixture-backed executable path produces a signed CRE report in `753ms` with `submitted:false`. Both are below the measured five-second proposal-validity window, but only the latter creates a report and it is not public integration evidence.
+- CRE deployment remains blocked. Deployment access was not enabled; an interactive access-status command submitted an empty access request during authentication verification. No deployment, broadcast, contract call, or public transaction occurred, and no further access action will be taken without explicit authorization.
 
 Unverified:
 - Exact Kuru deployed-source/build equivalence, a public Kairos adapter deployment, and any public Kuru execution transaction.
-- Inspectable CRE workflow simulation, real Privy actions, indexer recovery, UI, and M3 end-to-end proof.
+- Deployed CRE proof against an onchain Kairos policy/receiver, real Privy actions, indexer recovery, UI, and M3 end-to-end proof.
 - Full primary-track rules and prize-stacking.
 - Submission visual design and the final deployed-product evidence package.
 
 Next:
-Implement M3.2 with the pinned CRE TypeScript SDK and the existing M2 engine semantics, then run the smallest no-broadcast CRE simulation available. Continue independent indexer and application work if external credentials remain unavailable.
+Implement M3.4 event indexing and restart recovery without conflating offchain decisions with onchain events. Then complete the required frontend-skill research and design contract before M3.5–M3.9 application work.
 
 Do not report product ready, integration passed or tests passed based on this file.

@@ -16,6 +16,30 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M3-03 / M3.3 inspectable CRE simulation and latency proof
+- Date: 2026-09-16
+- Environment and chain ID: Windows local CRE simulator; Monad Testnet `10143` read-only Foundation RPC; no `--broadcast`, deployment, or public transaction
+- Version/commit/source URL: CRE CLI `v1.34.0`; Bun `1.3.8`; `@chainlink/cre-sdk` `1.21.1`; workflow TypeScript `5.9.3`; binary hash `bbdff3d5dfa03450836e5d87355b3944f04d3719c4c132824571f496028e36b9`
+- Command or reproducible steps: `cre workflow simulate workflows/kairos -T staging-settings`; `cre workflow simulate workflows/kairos -T fixture-execute-settings`, run through a local `subst` drive because the Windows CLI did not quote the repository path when spawning its compiler.
+- Result (PASS / FAIL / BLOCKED): PARTIAL PASS — both final commands exited `0`. The real fixed-block Kuru replay returned `WAIT / STALE_MARKET_DATA`, block hash `0xb5a5...c914098`, age `11288s`, and elapsed `915ms`. The explicitly fixture-backed executable run returned `EXECUTE`, generated a 192-byte CRE report, used a five-second validity window, completed in `753ms`, and reported `submitted:false`. Historical path, TypeScript-resolution, runtime URL-schema, and chain-clock-lead failures are retained in the artifact. BLOCKED for deployment: no public policy/receiver addresses, trusted forwarder/workflow identity, enabled deployment access, or authorized broadcast exists. An interactive `cre account access` status check submitted an empty deployment-access request; no deployment or transaction followed.
+- Artifact / receipt / transaction hash: `docs/evidence/M3_CRE_SIMULATIONS.md`; binary/config hashes in that artifact; no transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): The WAIT run uses real Kuru RPC data but fixture policy state. The EXECUTE run uses both fixture policy and fixture L2 while retaining real latest block/market parameter/state reads. Report generation is not receiver execution, settlement, continuous automation, deployed-workflow proof, or public chain evidence.
+- Next action: M3.4 — implement event ingestion/recovery, then revisit deployed CRE proof only after exact addresses, forwarder/workflow identity, account access, signer/gas constraints, and specific broadcast authorization exist.
+
+---
+
+- ID and requirement: M3-02 / M3.2 deterministic CRE workflow
+- Date: 2026-09-16
+- Environment and chain ID: Local TypeScript/Vitest plus CRE-compatible WASM compilation; intended chain Monad Testnet `10143`; no public write
+- Version/commit/source URL: `@chainlink/cre-sdk` `1.21.1`; SDK source `8a9e735c9046fef4356046b0d4b4c760089630df`; templates `d0223f31182c76bc36b1cc9d47b13b18efcf2bf6`; chain selectors `425da86147b75ee0fdd0d95d840a0966b837056b`; TypeScript `5.9.3`; Vitest `5.0.0`
+- Command or reproducible steps: `pnpm workflow:typecheck`; `pnpm workflow:test`.
+- Result (PASS / FAIL / BLOCKED): PASS for implementation/unit scope — both commands exited `0`; Vitest reported 1 file / 5 tests. Tests prove executable proposal encoding, 192-byte receiver compatibility, WAIT on empty/stale data, deterministic traces, and config rejection. The workflow implements exact-block RPC policy reads, live Kuru reads, identical consensus, the unchanged M2 engine, report generation, and single-attempt write semantics. `RPC_POLICY + RPC_L2` remains runtime-blocked until public Kairos deployments exist.
+- Artifact / receipt / transaction hash: `workflows/kairos`, `project.yaml`, `docs/CRE_WORKFLOW.md`; no transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): Unit tests and fixture modes are not sponsor-integration evidence. AMM vault liquidity remains excluded. The report can be generated while `submitReports:false`; that is not an onchain execution.
+- Next action: Run and preserve no-broadcast CRE simulator evidence for a real Kuru WAIT and a clearly labeled executable fixture report.
+
+---
+
 - ID and requirement: M3-01 / M3.1 CRE receiver and access inventory
 - Date: 2026-09-16
 - Environment and chain ID: Windows local Hardhat EDR; intended external target Monad Testnet `10143`; no public transaction, deployment, or CRE-signed report

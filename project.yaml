@@ -1,0 +1,9 @@
+staging-settings:
+  rpcs:
+    - chain-name: monad-testnet
+      url: https://rpc-testnet.monadinfra.com
+
+fixture-execute-settings:
+  rpcs:
+    - chain-name: monad-testnet
+      url: https://rpc-testnet.monadinfra.com

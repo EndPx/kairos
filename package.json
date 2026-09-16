@@ -11,6 +11,8 @@
     "contracts:test": "pnpm --filter @kairos/contracts test",
     "engine:test": "pnpm --filter @kairos/engine test",
     "engine:typecheck": "pnpm --filter @kairos/engine typecheck",
+    "workflow:test": "pnpm --filter @kairos/cre-workflow test",
+    "workflow:typecheck": "pnpm --filter @kairos/cre-workflow typecheck",
     "test": "pnpm --filter @kairos/shared test",
     "typecheck": "pnpm --filter @kairos/shared typecheck"
   },
@@ -21,5 +23,14 @@
     "hardhat": "3.16.0",
     "typescript": "7.0.2",
     "vitest": "5.0.0"
+  },
+  "pnpm": {
+    "packageExtensions": {
+      "@chainlink/cre-sdk@1.21.1": {
+        "dependencies": {
+          "typescript": "5.9.3"
+        }
+      }
+    }
   }
 }

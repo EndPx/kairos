@@ -9,3 +9,4 @@ artifacts/
 cache/
 typechain-types/
 packages/contracts/types/
+.cre_build_tmp.js
