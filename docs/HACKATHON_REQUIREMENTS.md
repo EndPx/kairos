@@ -35,6 +35,13 @@ Bonus: multiple source chains, Connect composability, Confidential Intents.
 Connect is not mandatory. Funding user wallet is compatible with no Kairos escrow if subsequent app usage is shown.
 Winner support includes engineering office hours, roadmap session, features/distribution and business support; see raw text for full bundle.
 
+## Envio — Best Use of Envio
+$1,000 single prize, all tracks. User supplied the bounty text on 2026-09-17; portal eligibility and final judging remain external.
+Meaningfully use HyperIndex, HyperSync, or HyperRPC so real onchain data drives a core product feature. A package installation or unused endpoint does not qualify.
+Judging emphasizes depth, live/correct product data, originality, and implementation craft. Non-trivial schemas, derived aggregates, and multichain or analytical use score above a single-event token index.
+Required submission artifacts: public configuration/schema/handlers or HyperSync client code; a deployed Envio Cloud or reproducibly self-hosted pipeline; an application/API that consumes the data; and a short end-to-end demo.
+Kairos selects HyperIndex for order/fill/report history and integer execution aggregates. Create/cancel may be the first real proof, but fill analytics and CRE correlation remain unproven until actual public events exist.
+
 ## Submission
 Aurora references standard requirements: public repo, technical demo video, pitch video, live product link.
 Full primary-track rules, team eligibility, prior-work policy, video durations, prize-stacking rules and primary prize split remain unverified.
@@ -47,3 +54,4 @@ Kuru: actual fills + target-user narrative + honest test/use evidence + continua
 Privy: visible wallet transaction actions.
 CRE: workflow source + successful CLI output or deployment details + external/onchain connection.
 Aurora: source/destination receipts + actual use in Kairos + settlement/refund handling.
+Envio: public HyperIndex source + live Monad Testnet events + frontend consumption + receipt/state aggregate comparison.

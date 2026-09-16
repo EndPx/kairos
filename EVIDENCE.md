@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M3-ENVIO-00 / Envio scope, Monad Testnet capability, and implementation prerequisites
+- Date: 2026-09-17
+- Environment and chain ID: Official documentation and local toolchain inspection; target Monad Testnet `10143`; browser balance refresh was a read-only public RPC operation; no Envio API call, contract deployment, signature, or transaction occurred
+- Version/commit/source URL: official `https://envio.dev/chains/monad-testnet` and HyperIndex overview/configuration/schema/handler/testing/Cloud documentation reviewed 2026-09-17; npm registry reported `envio` `3.12.0`; Node `v24.18.0`; pnpm `10.21.0`; Docker `29.4.3`
+- Command or reproducible steps: official documentation reads; `pnpm view envio version`; `docker --version`; `wsl --status`; compiled Solidity source/artifact event inspection; browser reload of `/system/limited-deployment`
+- Result (PASS / FAIL / BLOCKED): PASS for compatibility and scoped planning. The official chain directory identifies Monad Testnet `10143` as first-class for HyperIndex, HyperSync, and HyperRPC. Compiled Kairos contracts expose three policy events and two receiver events suitable for schema design. The authenticated wallet balance refreshed from the previous `0 MON` observation to `5 MON`, removing the local gas blocker. BLOCKED for ENVIO-01–05 runtime proof: no Envio project, token, deployed Kairos address/start block, pipeline, indexed event, GraphQL consumer, or aggregate comparison exists yet. No transaction was authorized by the Envio scope decision.
+- Artifact / receipt / transaction hash: `WORKPLAN.md` M3-Envio; `docs/ACCEPTANCE_TESTS.md` ENVIO-01–05; compiled artifacts under `packages/contracts/artifacts`; no transaction hash or Envio endpoint
+- Limitations (fixture, fork, testnet, simulation, live): Official product support is documentation-level compatibility, not a working Kairos indexer. The observed npm version is not a selected pin until installed and tested. The wallet balance read is live testnet state but is not a deployment or lifecycle proof. Create/cancel may form initial live data; fill analytics and CRE correlation remain unproven until their actual events exist.
+- Next action: Implement M3-E.2 schema/handlers with a pinned Envio version and fixture tests derived from the exact compiled event fields, then bind configuration only after an authorized public deployment supplies addresses and start blocks.
+
+---
+
 - ID and requirement: M3-12 / browser-prepared, execution-disabled Privy lifecycle target
 - Date: 2026-09-17
 - Environment and chain ID: Windows local Next.js runtime with an authenticated Privy embedded EVM wallet on Monad Testnet `10143`; Foundation RPC reads for pending nonce, native balance, and bytecode; no wallet prompt, deployment, signature, token approval, contract call, or broadcast occurred

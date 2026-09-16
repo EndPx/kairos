@@ -40,10 +40,11 @@ Aurora Intents provides the cross-chain funding journey: funds settle to the use
 | [Chainlink CRE](https://docs.chain.link/cre) | Market/policy orchestration and signed onchain reports |
 | [Privy](https://docs.privy.io/) | Embedded wallet login and user-signed wallet actions |
 | [Aurora Intents](https://docs.intents.aurora.dev/) | Cross-chain funding into the user wallet |
+| [Envio HyperIndex](https://docs.envio.dev/docs/HyperIndex/overview) | Onchain order/fill history and derived execution aggregates |
 
 ## Hackathon submission evidence
 
-Kairos targets Onchain Finance & Trading and the Kuru, Privy, CRE, and Aurora sponsor bounties. The complete proof matrix is in [docs/ACCEPTANCE_TESTS.md](docs/ACCEPTANCE_TESTS.md).
+Kairos targets Onchain Finance & Trading and the Kuru, Privy, CRE, Aurora, and Envio sponsor bounties. The complete proof matrix is in [docs/ACCEPTANCE_TESTS.md](docs/ACCEPTANCE_TESTS.md).
 
 Evidence is recorded separately from documentation claims in [EVIDENCE.md](EVIDENCE.md). The current compatibility register is [docs/ENVIRONMENT_MATRIX.md](docs/ENVIRONMENT_MATRIX.md). A capability is not considered complete until it has reproducible runtime evidence.
 
@@ -59,7 +60,7 @@ Evidence is recorded separately from documentation claims in [EVIDENCE.md](EVIDE
 
 ## Status
 
-M2 is complete: the adaptive engine emits auditable EXECUTE and WAIT decisions from consistent policy and Kuru market snapshots, while the contract remains final policy authority. M3 application and sponsor orchestration have not started. No public deployment or transaction is represented as complete without evidence. See [STATUS.md](STATUS.md) and [docs/M2_EXIT_REVIEW.md](docs/M2_EXIT_REVIEW.md).
+M1 and M2 are complete. M3 is partial at its documented local/simulation boundary, and M3-Envio is now in progress as a separate onchain-history submilestone. No public deployment or transaction is represented as complete without evidence. See [STATUS.md](STATUS.md), [docs/M2_EXIT_REVIEW.md](docs/M2_EXIT_REVIEW.md), and [docs/M3_ACCEPTANCE_REVIEW.md](docs/M3_ACCEPTANCE_REVIEW.md).
 
 ## Scope and safety
 

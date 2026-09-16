@@ -118,6 +118,34 @@ Implement refresh/restart, unit/status clarity, and complete-user-journey tests 
 ### M3 exit
 Users can complete the policy-authorized journey with real Privy actions and inspectable CRE proof; state survives application restart.
 
+## M3-Envio — HyperIndex onchain history and aggregates
+
+This sponsor-specific submilestone extends M3 without changing the status or exit criteria of M1, M2, or the existing M3 items. Envio becomes the production source for mined onchain history; the policy contract remains the authority for current transaction-critical state.
+
+### M3-E.1 Event and deployment identity
+Derive indexed events from the compiled policy and receiver ABIs. Bind the indexer to Monad Testnet `10143`, explicit deployed contract addresses, and their actual deployment start blocks. Keep lifecycle-only and execution-capable deployments as separate evidence identities.
+
+### M3-E.2 HyperIndex schema and handlers
+Pin the Envio version and add public `config.yaml`, `schema.graphql`, and typed handlers. Model Order, Fill, and integer execution aggregates from event fields that actually exist. Add CRE report entities or correlations only when the receiver events contain sufficient identity fields.
+
+### M3-E.3 Deterministic aggregation
+Compute cumulative actual input, actual output, returned input, fill count, and quantity-weighted effective price from `ExecutionSettled` integer units. Preserve block, transaction, log, nonce, and snapshot provenance. Never derive settlement facts from a report alone.
+
+### M3-E.4 Ordering, duplicates, reorgs, and lag
+Use verified HyperIndex ordering, entity IDs, and reorg behavior. Make event processing idempotent, expose index health/head metadata, and render lag or unavailable-data states instead of substituting fixtures.
+
+### M3-E.5 Application data boundary
+Replace the production JSON event-history source for `/orders`, `/orders/[orderId]`, and `/reports` with the Envio query boundary. Retain pinned contract reads for current lifecycle, release, wallet balance, allowance, and other values required before transactions. Keep WAIT decisions and execution-attempt records in explicitly offchain journals.
+
+### M3-E.6 Deployment and live proof
+Run locally or deploy to Envio Cloud only with an approved free plan and credential kept outside Git. Index real Monad Testnet events from a valid Kairos deployment, compare aggregates with receipts and contract state at a named block, and capture a reproducible frontend query path.
+
+### M3-E.7 End-to-end tests and demo evidence
+Test handlers, duplicate delivery, out-of-order fixtures, integer aggregation, endpoint failure, indexing lag, and frontend empty/error/ready states. Record a real create/cancel flow as the minimum initial proof; do not claim fill analytics or CRE correlation until those events exist publicly.
+
+### M3-Envio exit
+The public repository contains the Envio configuration, schema, and handlers; a live or reproducibly self-hosted pipeline indexes real Monad Testnet Kairos events; core application history consumes it; integer aggregates match named receipts and contract state; and an end-to-end demo is reproducible without fixture substitution.
+
 ## M4 — Aurora funding journey
 
 ### M4.1 Funding API integration

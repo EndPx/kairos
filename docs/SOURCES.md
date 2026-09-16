@@ -57,6 +57,17 @@ Do not assume sponsorship/batching on selected network. If a .md URL fails, try 
 - https://intents.aurora.dev/ — product overview. Read.
 API examples require revalidation against endpoint reference, not blind copying. Exact token IDs, route, account key, destination, and refund handling remain unproven. Do not assume Connect and Deposits share support matrices.
 
+## Envio
+- https://envio.dev/chains/monad-testnet — official chain page; reviewed 2026-09-17. It identifies Monad Testnet chain ID `10143` as first-class for HyperIndex, HyperSync, and HyperRPC and publishes the testnet service endpoints.
+- https://docs.envio.dev/docs/HyperIndex/overview — official HyperIndex architecture, GraphQL, reorg, HyperSync, and hosting overview; reviewed 2026-09-17.
+- https://docs.envio.dev/docs/HyperIndex/quickstart — official Node/pnpm/Docker/Windows prerequisites and generated `config.yaml`, schema, and handler workflow; reviewed 2026-09-17.
+- https://docs.envio.dev/docs/HyperIndex/configuration-file — official chain, contract, event, start-block, field-selection, and data-source configuration; reviewed 2026-09-17.
+- https://docs.envio.dev/docs/HyperIndex/schema — official entity schema reference; reviewed 2026-09-17.
+- https://docs.envio.dev/docs/HyperIndex/event-handlers — official typed handler reference; reviewed 2026-09-17.
+- https://docs.envio.dev/docs/HyperIndex/testing — official handler/indexer testing reference; reviewed 2026-09-17.
+- https://docs.envio.dev/docs/HyperIndex/hosted-service — official Envio Cloud/self-hosting boundary; reviewed 2026-09-17.
+Use HyperIndex for mined history and derived entities, not as a substitute for current policy reads or offchain WAIT provenance. Pin the package version before implementation and keep `ENVIO_API_TOKEN` outside Git.
+
 ## Monad and event
 - https://docs.monad.xyz/developer-essentials/getting-started — official starting point supplied by bounty.
 - https://developers.monad.xyz/ — developer portal.

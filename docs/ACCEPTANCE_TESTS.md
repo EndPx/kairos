@@ -32,8 +32,12 @@ All statuses start NOT RUN. Each item must point to EVIDENCE.md before claiming 
 | UI-02 | Units/status | Token quantities, estimated USD, gas/trading fees, WAIT/revert clearly separated |
 | DEMO-01 | Complete journey | User can operate product without manual database edits |
 | DEMO-02 | Evidence provenance | Real transactions, fixtures and replays labeled separately |
+| ENVIO-01 | Public HyperIndex implementation | Repository contains pinned `config.yaml`, `schema.graphql`, and typed handlers derived from actual contract events |
+| ENVIO-02 | Real testnet ingestion | Pipeline indexes real events from explicit Monad Testnet contract addresses and deployment start blocks |
+| ENVIO-03 | Core application consumption | `/orders`, order detail, and `/reports` use Envio history/aggregates while transaction-critical current state remains pinned contract reads |
+| ENVIO-04 | Settlement aggregate correctness | Integer actual input/output/refund and quantity-weighted effective price match named receipts and contract state at a comparison block |
+| ENVIO-05 | Recovery and unavailable states | Duplicate processing, ordering, reorgs, indexing lag, and endpoint failure are handled without silent fixture fallback |
 
 Use unit/property or invariant tests for accounting and policy; adapter integration tests on the selected deployment/fork; E2E tests for user journeys.
 Fix failures before broadening features. Do not equate test mocks with completed sponsor acceptance.
 Final definition of done remains section 19 of PRODUCT_SPEC_FINAL.md.
-
