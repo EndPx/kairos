@@ -3,6 +3,15 @@ import { defineConfig } from 'hardhat/config';
 
 export default defineConfig({
   plugins: [hardhatToolboxMochaEthers],
+  chainDescriptors: {
+    10143: {
+      name: 'Monad Testnet',
+      chainType: 'generic',
+      hardforkHistory: {
+        prague: { blockNumber: 0 },
+      },
+    },
+  },
   solidity: {
     version: '0.8.28',
     settings: {

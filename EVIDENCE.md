@@ -112,6 +112,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M1-12 / Fixed-block Kuru fork foundation
+- Date: 2026-09-16
+- Environment and chain ID: Source Monad Testnet `10143`; isolated Hardhat EDR chain `31337`; source block `62944132`, hash `0xb5a5a55678513ced1b7a43da8bed39a2d3b3e9284c34c0dc6e033ed12c914098`; no public transaction
+- Version/commit/source URL: Kuru contracts `2060bb2736080c175d80d568bfdb6226bb5abd04`; SDK/ABI `636509c2eafd63479d3f399703354e0d09f51e18`; Hardhat `3.16.0`; Foundation RPC.
+- Command or reproducible steps: `pnpm --filter @kairos/contracts kuru:fork:probe`. The first run failed because EDR lacked chain `10143` hardfork activation history. After adding the explicit generic/Prague chain descriptor, the command exited `0` and printed the fixed source block/hash, market/implementation, bytecode length, market params, L2/vault state, and Margin Account linkage.
+- Result (PASS / FAIL / BLOCKED): PASS for fixed-block fork capability and deployed-bytecode reads. The proxy resolves to the already recorded 35,548-byte implementation; market orientation/precision values reproduce; official Testnet Margin Account `0xd029C2D98ff85D8F64799017fE00a59B1159CE02` reports the market verified. BLOCKED for settlement and source equivalence: the fork source book and vault have no liquidity, and five metadata-CID gateway retries returned `403` or timed out.
+- Artifact / receipt / transaction hash: `packages/contracts/scripts/kuru-fork-probe.ts`, `packages/contracts/hardhat.config.ts`, and updated compatibility/environment records; no transaction hash.
+- Limitations (fixture, fork, testnet, simulation, live): The command forks real Testnet bytecode/state but makes no state changes. The explicit Prague-at-zero descriptor is an EDR compatibility setting, not a verified Monad hardfork-history statement. No adapter call, controlled balance, impersonation, or liquidity mutation occurred in this record.
+- Next action: On the same fixed fork, label and apply local-only USDC balance and native-liquidity mutations, then execute the application adapter through Kairos policy while keeping all public writes disabled.
+
+---
+
 - ID and requirement: M1-09 / Kuru implementation bytecode metadata probe
 - Date: 2026-09-15
 - Environment and chain ID: Monad Testnet `10143`; Foundation RPC; read-only `eth_getCode`; no transaction

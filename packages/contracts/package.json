@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "compile": "hardhat compile",
-    "test": "hardhat test"
+    "test": "hardhat test",
+    "kuru:fork:probe": "hardhat run scripts/kuru-fork-probe.ts"
   }
 }

@@ -107,6 +107,16 @@ The implementation runtime bytecode is 35,548 bytes and ends with a 51-byte Soli
 
 The compiler value aligns with the pinned repository configuration (`0.8.30`), which is useful corroboration but still not proof that the current GitHub revision is the deployed build. Attempts to retrieve that CID's metadata from public gateways were rate-limited (`429`) or denied/not found (`403`/`404`) during this probe. The CID should be retried from a reliable gateway or supplied by Kuru alongside the full compiler input and deployment manifest.
 
+### Reproducible local fork probe
+
+On 2026-09-16, `packages/contracts/scripts/kuru-fork-probe.ts` successfully created a local Hardhat EDR fork from the public Foundation RPC at source block `62944132` (`0x3c07384`), hash `0xb5a5a55678513ced1b7a43da8bed39a2d3b3e9284c34c0dc6e033ed12c914098`. The source chain is Monad Testnet `10143`; the isolated local execution chain is `31337`.
+
+Hardhat initially rejected the fork because chain `10143` had no configured hardfork activation history. Adding an explicit generic-chain descriptor with Prague active from block zero made the bytecode readable and executable by EDR. This is a local execution-engine configuration, not a claim about Monad's complete hardfork history.
+
+The fixed-block probe reproduced the selected proxy parameters, 35,548-byte implementation runtime, native-MON/USDC orientation, empty 64-byte L2 payload, and zero vault bid/ask sizes. It also confirmed that the current official Testnet Margin Account `0xd029C2D98ff85D8F64799017fE00a59B1159CE02` recognizes the selected market. No fork state was changed by this probe.
+
+The implementation metadata CID was retried through ipfs.io, dweb.link, Pinata, w3s.link, and 4everland on 2026-09-16. The tested gateways returned HTTP `403` or timed out, so compiler-input/source equivalence remains unproven.
+
 ## Compatibility conclusion
 
 **Partially verified.** The official SDK ABI is behaviorally compatible with the selected proxy for both essential read functions, and the returned parameters establish native-MON/USDC orientation, precisions, bounds, and current fee values. The exact deployed implementation source/bytecode equivalence and all write-path settlement semantics remain unproven. Kairos must not mark the Kuru adapter integrated or execute market orders from this evidence alone.

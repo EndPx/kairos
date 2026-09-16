@@ -24,6 +24,7 @@ Completed:
 - Kuru source-provenance follow-up: Explorer/Sourcify source paths remain unavailable, but implementation bytecode carries solc `0.8.30` metadata and an IPFS CID. The CID content was unavailable through tested public gateways, so exact build identity remains unverified.
 - Policy accounting hardening: same-token input/output configurations, unsafe decimal exponents, and non-exact input receipt are rejected before an adapter can run; local suite now has 11 contract tests.
 - Regression-baseline verification at `c6032ea1bc8954ad97d80a08e6fa2c1ecab7d00d`: compile, 11 Hardhat tests, 4 Vitest tests, and shared TypeScript typecheck passed on Node.js `24.18.0` / pnpm `10.21.0`. The historically recorded constructor-revert failure did not reproduce; its record remains in the evidence ledger. M1 remains partial because Kuru adapter proof is still absent.
+- Kuru fixed-block fork foundation: a read-only Hardhat EDR fork of Monad Testnet block `62944132` now reproduces the selected proxy, implementation bytecode, market parameters, empty source book/vault state, and official Margin Account linkage. No settlement or source-equivalence claim is made yet.
 
 Unverified:
 - All runtime integrations, exact environment compatibility, deployed ABIs, available credentials.
@@ -31,6 +32,6 @@ Unverified:
 - Project stack, codebase and visual design.
 
 Next:
-Obtain Kuru's full compiler input/deployment manifest or accessible metadata CID content, then compare source hashes and request explicit authorization for the bounded settlement experiment. M1 remains partial until adapter behavior is proven against the selected deployment or documented fork.
+Use controlled, explicitly labeled local-fork balances and liquidity to exercise the application Kuru adapter against the selected bytecode. Independently obtain Kuru's compiler input/deployment manifest or accessible metadata CID content. M1 remains partial until settlement behavior is proven and remaining evidence limits are recorded.
 
 Do not report product ready, integration passed or tests passed based on this file.
