@@ -125,3 +125,15 @@ export interface OffchainDecisionRecord {
     readonly selectedInput: string;
   };
 }
+
+export interface ExecutionAttemptRecord {
+  readonly kind: 'EXECUTION_ATTEMPT';
+  readonly source: 'CRE_SIMULATION' | 'CRE_WORKFLOW' | 'LOCAL_ENGINE' | 'REPLAY';
+  readonly recordedAt: string;
+  readonly orderId: string;
+  readonly nonce: string;
+  readonly proposalHash: Hex;
+  readonly status: 'SUBMITTED' | 'CONFIRMED' | 'FAILED' | 'STALE';
+  readonly reason: string;
+  readonly transactionHash?: Hex;
+}

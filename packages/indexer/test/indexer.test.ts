@@ -5,6 +5,7 @@ import { encodeAbiParameters, encodeEventTopics, type Address, type Hex } from '
 import { describe, expect, it } from 'vitest';
 import {
   DecisionJournal,
+  ExecutionAttemptJournal,
   JsonIndexStore,
   KAIROS_EVENTS_ABI,
   emptyIndex,
@@ -204,5 +205,38 @@ describe('Kairos event index and recovery', () => {
     expect(await journal.load()).toHaveLength(1);
     expect((await journal.load())[0]?.source).toBe('REPLAY');
     expect(JSON.stringify(await index.load())).not.toContain('STALE_MARKET_DATA');
+  });
+
+  it('persists execution attempt transitions separately from confirmed chain events', async () => {
+    const directory = await mkdtemp(join(tmpdir(), 'kairos-attempts-'));
+    const path = join(directory, 'attempts.json');
+    const journal = new ExecutionAttemptJournal(path);
+    await journal.append({
+      kind: 'EXECUTION_ATTEMPT',
+      source: 'CRE_WORKFLOW',
+      recordedAt: '2026-09-16T10:00:00Z',
+      orderId: '1',
+      nonce: '0',
+      proposalHash: REPORT,
+      status: 'SUBMITTED',
+      reason: 'REPORT_ACCEPTED_FOR_SUBMISSION',
+      transactionHash: TX_B,
+    });
+    await journal.append({
+      kind: 'EXECUTION_ATTEMPT',
+      source: 'CRE_WORKFLOW',
+      recordedAt: '2026-09-16T10:00:01Z',
+      orderId: '1',
+      nonce: '0',
+      proposalHash: REPORT,
+      status: 'FAILED',
+      reason: 'POLICY_REVERTED',
+      transactionHash: TX_B,
+    });
+
+    const restarted = new ExecutionAttemptJournal(path);
+    expect(await restarted.load()).toHaveLength(2);
+    expect((await restarted.load())[1]).toMatchObject({status: 'FAILED', reason: 'POLICY_REVERTED'});
+    expect(JSON.stringify(emptyIndex(identity))).not.toContain('POLICY_REVERTED');
   });
 });
