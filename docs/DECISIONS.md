@@ -43,6 +43,7 @@ Authoritative product text: PRODUCT_SPEC_FINAL.md.
 - 2026-09-16 — M2 parses Kuru manual L2 levels as integers and retains raw values plus block provenance. AMM vault levels are excluded until market and vault data can be validated at one block. This deliberately underestimates capacity rather than constructing liquidity from an incomplete snapshot.
 - 2026-09-16 — M2 capacity uses the user's cumulative effective-average price after Kuru output fee, not a per-level price cutoff. Quote cost rounds up and base output rounds down, so any precision mismatch reduces the proposal rather than overstating capacity. The contract still validates actual settlement.
 - 2026-09-16 — M2 policy reads are pinned to one canonical block. Lifecycle, released budget, and available-to-spend come from the contract; balance and allowance remain shared wallet observations and are never reserved per order offchain. An unknown market-state read fails closed in the decision layer.
+- 2026-09-16 — M2 proposals use Kuru `minAmountOut` derived from policy `minFill` at the maximum effective price, not from full proposed input, so a valid non-FOK partial fill is not accidentally turned into FOK. The policy contract still enforces actual minimum input and actual effective price across the complete settlement.
 
 ## Superseded
 Escrow/deposit-to-Kairos proposals, unconditional no-custody claims, mandatory Privy session signing, forced Intents Connect, guaranteed completion/better price, and $48K as a confirmed obtainable prize are not current requirements.

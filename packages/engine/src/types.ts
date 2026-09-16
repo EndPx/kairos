@@ -1,4 +1,13 @@
-import type { Address, OrderPolicy, OrderStatus, PriceUnits, TokenAmount, UnixSeconds } from '@kairos/shared';
+import type {
+  Address,
+  DecisionReason,
+  ExecutionProposal,
+  OrderPolicy,
+  OrderStatus,
+  PriceUnits,
+  TokenAmount,
+  UnixSeconds,
+} from '@kairos/shared';
 
 export type Hex = `0x${string}`;
 export type SnapshotKind = 'FIXED_REPLAY' | 'LIVE_READ' | 'FORK' | 'FIXTURE';
@@ -93,4 +102,25 @@ export interface PolicyStateSnapshot {
   readonly tokenAllowance: TokenAmount;
   readonly marketState: MarketState;
   readonly balanceScope: 'WALLET_SHARED_NOT_RESERVED';
+}
+
+export interface DecisionConstraintTrace {
+  readonly releasedAvailable: TokenAmount;
+  readonly remainingBudget: TokenAmount;
+  readonly maxPerFill: TokenAmount;
+  readonly walletBalance: TokenAmount;
+  readonly tokenAllowance: TokenAmount;
+  readonly estimatedLiquidityCapacity: TokenAmount;
+  readonly selectedInput: TokenAmount;
+}
+
+export interface EngineDecision {
+  readonly kind: 'EXECUTE' | 'WAIT';
+  readonly reason: DecisionReason;
+  readonly evaluatedAt: UnixSeconds;
+  readonly policyBlockHash: Hex;
+  readonly marketBlockHash: Hex;
+  readonly constraints: DecisionConstraintTrace;
+  readonly capacity: LiquidityCapacity;
+  readonly proposal?: ExecutionProposal;
 }

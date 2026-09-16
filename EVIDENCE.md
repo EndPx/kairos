@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M2-04 / M2.4 deterministic decision engine
+- Date: 2026-09-16
+- Environment and chain ID: Local deterministic fixtures using the selected Kuru integer parameters; no chain call or transaction
+- Version/commit/source URL: M1 shared domain/unit types and policy semantics at repository head; M2.1–M2.3 artifacts; Vitest `5.0.0`; TypeScript `7.0.2`
+- Command or reproducible steps: `pnpm engine:test`; `pnpm engine:typecheck`; `pnpm test`; `pnpm typecheck`.
+- Result (PASS / FAIL / BLOCKED): PASS — engine suite reported 4 files / 17 tests, shared suite 1 file / 4 tests, and both typechecks exited `0`. Tests cover minimum-constraint selection, proposal trace, lifecycle/market WAIT reasons, schedule/dust/balance/allowance distinctions, capacity below minimum without a proposal, price versus liquidity WAIT, identity mismatch, and deterministic replay.
+- Artifact / receipt / transaction hash: `packages/engine/src/decision/decisionEngine.ts`, `packages/engine/test/decisionEngine.test.ts`, `packages/shared/src/domain.ts`, and `docs/M2_DECISION_ENGINE.md`; no transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): Decisions use fixture books after the real empty-snapshot parser proof. A proposal is an auditable estimate, not an execution guarantee. No transaction is submitted, and the M1 contract remains final authority. Freshness/retry gating is the next M2 item.
+- Next action: M2.5 — attach evidence-backed freshness, timeout, retry/backoff, and proposal-validity rules so missing, stale, or failed data cannot produce EXECUTE.
+
+---
+
 - ID and requirement: M2-03 / M2.3 policy-state reader
 - Date: 2026-09-16
 - Environment and chain ID: Local Vitest source adapter tests; ethers `6.17.0`; no deployed Kairos policy or public chain transaction

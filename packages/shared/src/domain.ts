@@ -15,7 +15,10 @@ export type DecisionReason =
   | 'STALE_MARKET_DATA'
   | 'REMAINDER_BELOW_MIN_FILL'
   | 'EXPIRED'
-  | 'CANCELLED';
+  | 'CANCELLED'
+  | 'COMPLETED'
+  | 'MARKET_NOT_ACTIVE'
+  | 'INCONSISTENT_SNAPSHOT';
 
 export interface OrderPolicy {
   readonly id: OrderId;

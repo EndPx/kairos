@@ -31,14 +31,15 @@ Completed:
 - M2.1 market-data adapter: the engine package decodes ABI `bytes`, parses Kuru's integer L2 layout, preserves full snapshot provenance, validates identity/tick/order invariants, and conservatively excludes separately sourced AMM vault liquidity. A recorded raw RPC response from fixed block `62944132` is covered by a replay test.
 - M2.2 liquidity capacity: the manual-ask estimator walks integer levels, applies conservative quote/output rounding and Kuru's aggregate output-fee ceiling, enforces cumulative effective-average price, and emits an auditable per-level trace. Thin/deep, partial input, average-price, and nonzero-fee fixtures pass.
 - M2.3 policy-state reader: an ethers-backed adapter pins all policy, wallet, allowance, and market reads to one canonical block; consumes contract-derived lifecycle/release values; rejects inconsistent snapshots; and labels balance/allowance as shared wallet capacity rather than per-order reservations.
+- M2.4 decision engine: consistent policy/market snapshots now produce deterministic, traced EXECUTE or WAIT decisions over schedule, remaining budget, max fill, shared balance, allowance, and manual-L2 capacity. Proposal minimum output remains compatible with non-FOK partial fills while actual price enforcement stays onchain.
 
 Unverified:
 - Exact Kuru deployed-source/build equivalence, a public Kairos adapter deployment, and any public Kuru execution transaction.
-- M2.4–M2.6 decisions, freshness/retry, and engine acceptance behavior; plus the CRE, Privy, Aurora, UI, and end-to-end groups assigned to later milestones.
+- M2.5–M2.6 freshness/retry and final engine acceptance behavior; plus the CRE, Privy, Aurora, UI, and end-to-end groups assigned to later milestones.
 - Full primary-track rules and prize-stacking.
 - Submission visual design and the final deployed-product evidence package.
 
 Next:
-Implement M2.4 deterministic decision engine over contract-derived policy state and M2 capacity, emitting auditable EXECUTE or WAIT results without weakening contract authority.
+Implement M2.5 evidence-backed freshness, request timeout, retry/backoff, and proposal-validity policy; missing or stale data must fail closed.
 
 Do not report product ready, integration passed or tests passed based on this file.
