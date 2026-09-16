@@ -15,6 +15,10 @@
     "workflow:typecheck": "pnpm --filter @kairos/cre-workflow typecheck",
     "indexer:test": "pnpm --filter @kairos/indexer test",
     "indexer:typecheck": "pnpm --filter @kairos/indexer typecheck",
+    "web:build": "pnpm --filter @kairos/web build",
+    "web:dev": "pnpm --filter @kairos/web dev",
+    "web:test": "pnpm --filter @kairos/web test",
+    "web:typecheck": "pnpm --filter @kairos/web typecheck",
     "test": "pnpm --filter @kairos/shared test",
     "typecheck": "pnpm --filter @kairos/shared typecheck"
   },

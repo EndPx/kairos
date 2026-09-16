@@ -1,4 +1,6 @@
 node_modules/
+.next/
+*.tsbuildinfo
 .env
 .env.local
 .env.*.local
@@ -10,3 +12,8 @@ cache/
 typechain-types/
 packages/contracts/types/
 .cre_build_tmp.js
+playwright-report/
+test-results/
+.agents/
+.claude/
+.kiro/

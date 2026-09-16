@@ -1,0 +1,20 @@
+:root {
+  font-family: var(--font-geist-sans), "Segoe UI", sans-serif;
+  color: #171716;
+  background: #f3f1ea;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+}
+
+main {
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+}
