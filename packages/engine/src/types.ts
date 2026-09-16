@@ -52,3 +52,29 @@ export interface KuruMarketSnapshot {
   };
   readonly rawPayload: Hex;
 }
+
+export type CapacityStopReason = 'BOOK_EXHAUSTED' | 'INPUT_LIMIT' | 'PRICE_LIMIT' | 'NO_LIQUIDITY';
+
+export interface CapacityTraceStep {
+  readonly levelIndex: number;
+  readonly rawPrice: bigint;
+  readonly availableRawSize: bigint;
+  readonly takenRawSize: bigint;
+  readonly levelInput: TokenAmount;
+  readonly cumulativeInput: TokenAmount;
+  readonly cumulativeGrossOutput: TokenAmount;
+  readonly cumulativeFeeOutput: TokenAmount;
+  readonly cumulativeNetOutput: TokenAmount;
+  readonly result: 'FULL_LEVEL' | 'PARTIAL_INPUT_LIMIT' | 'PARTIAL_PRICE_LIMIT' | 'REJECTED_PRICE_LIMIT';
+}
+
+export interface LiquidityCapacity {
+  readonly estimatedInput: TokenAmount;
+  readonly estimatedGrossOutput: TokenAmount;
+  readonly estimatedFeeOutput: TokenAmount;
+  readonly estimatedOutput: TokenAmount;
+  readonly stopReason: CapacityStopReason;
+  readonly trace: readonly CapacityTraceStep[];
+  readonly includedSources: readonly ['MANUAL_L2'];
+  readonly excludedSources: readonly ['KURU_AMM_VAULT'];
+}

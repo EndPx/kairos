@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M2-02 / M2.2 liquidity-capacity calculation
+- Date: 2026-09-16
+- Environment and chain ID: Local Vitest integer fixtures derived from the selected Kuru USDC/MON parameters; no chain call or transaction
+- Version/commit/source URL: Kuru contracts `2060bb2736080c175d80d568bfdb6226bb5abd04` market-buy fee/rounding semantics; `@kairos/shared` integer price helpers; Vitest `5.0.0`; TypeScript `7.0.2`
+- Command or reproducible steps: `pnpm engine:test`; `pnpm engine:typecheck`.
+- Result (PASS / FAIL / BLOCKED): PASS — 2 Vitest files / 8 tests passed and typecheck exited `0`. Thin and deep books produce different capacity; a worse individual level is included when cumulative effective average remains valid; a tighter average-price limit produces a deterministic partial level; nonzero taker fee can reject an otherwise at-limit level; and an input-limited partial fill rounds conservatively.
+- Artifact / receipt / transaction hash: `packages/engine/src/capacity/manualBookCapacity.ts`, `packages/engine/test/manualBookCapacity.test.ts`, and `docs/M2_CAPACITY.md`; no transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): Non-empty books and nonzero fees are explicit fixtures. The estimator includes manual L2 only and can underestimate an active AMM vault. It is a proposal estimate, not a guarantee against market movement; the M1 contract remains final authority over actual values.
+- Next action: M2.3 — read policy and wallet state at one pinned block and expose shared balance/allowance without any per-order reservation assumption.
+
+---
+
 - ID and requirement: M2-01 / M2.1 Kuru market-data adapter
 - Date: 2026-09-16
 - Environment and chain ID: Windows local tests; recorded Monad Testnet `10143` read at block `62944132`; no signer or transaction
