@@ -29,6 +29,12 @@ importers:
 
   packages/contracts: {}
 
+  packages/engine:
+    dependencies:
+      '@kairos/shared':
+        specifier: workspace:*
+        version: link:../shared
+
   packages/shared: {}
 
 packages:

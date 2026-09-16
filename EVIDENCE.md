@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M2-01 / M2.1 Kuru market-data adapter
+- Date: 2026-09-16
+- Environment and chain ID: Windows local tests; recorded Monad Testnet `10143` read at block `62944132`; no signer or transaction
+- Version/commit/source URL: Kuru SDK `636509c2eafd63479d3f399703354e0d09f51e18`; Kuru contracts `2060bb2736080c175d80d568bfdb6226bb5abd04`; source block hash `0xb5a5a55678513ced1b7a43da8bed39a2d3b3e9284c34c0dc6e033ed12c914098`; Vitest `5.0.0`; TypeScript `7.0.2`
+- Command or reproducible steps: Read the pinned SDK decoder and contract `getL2Book` encoder; JSON-RPC `eth_call` of `getL2Book()` selector `0x46fdfbb1` at block `0x3c07384`; `eth_getBlockByNumber` for the full hash/timestamp; read-only `marketState()` runtime probe; `pnpm engine:test`; `pnpm engine:typecheck`.
+- Result (PASS / FAIL / BLOCKED): PASS — raw ABI bytes decode and the fixed real snapshot replay parses with full source identity; 1 Vitest file / 3 tests passed and typecheck exited `0`. Synthetic tests also cover integer normalization and malformed/mismatched snapshots. AMM capacity is explicitly excluded rather than inferred from manual L2.
+- Artifact / receipt / transaction hash: `packages/engine/src/market/kuruL2.ts`, `packages/engine/test/fixtures/kuruFixedSnapshot.ts`, `packages/engine/test/kuruL2.test.ts`, and `docs/M2_MARKET_DATA.md`; no transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): The recorded real snapshot has an empty manual book and zero evidenced vault size. Non-empty layout cases are labeled fixtures. The parser proves format compatibility, not live liquidity; AMM vault levels require a separate same-block model.
+- Next action: M2.2 — calculate manual-ask input/output capacity with conservative integer rounding, verified fee semantics, effective-average-price enforcement, and an auditable trace.
+
+---
+
 - ID and requirement: M1-16 / M1 exit review
 - Date: 2026-09-16
 - Environment and chain ID: Documentation and artifact review; existing local Hardhat EDR policy evidence and fixed fork of Monad Testnet `10143` on local chain `31337`; no new chain call or transaction

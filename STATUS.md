@@ -1,6 +1,6 @@
 # Current status
 Updated: 2026-09-16
-Stage: M1 policy and execution core — COMPLETE by the written WORKPLAN exit criteria; M2 has not started.
+Stage: M2 adaptive execution engine — in progress; M2.1 market-data adapter implemented and locally verified.
 
 Completed:
 - Final user specification copied unchanged.
@@ -28,14 +28,15 @@ Completed:
 - Kuru behavioral settlement on the fixed fork: 5 adapter tests prove partial actual input/output, refund, native MON forwarding, Kuru minOut/FOK reverts, policy minFill/effective-price rollback, nonce/allowance behavior, pre-existing balance isolation, zero new residual, and no active resting taker order. All liquidity/balance mutations are local-only and documented.
 - M1 local acceptance closure: a dedicated dust test proves a remainder below `minFill` stays in the owner wallet, cannot be force-filled, and does not create a false completed status.
 - M1 exit review: all M1.1–M1.8 requirements and the M1-scoped acceptance IDs map to local policy evidence or the documented fixed-fork Kuru proof. `WORKPLAN.md` allows selected-deployment or documented-fork adapter evidence and does not require exact deployed-source/build equivalence for M1 closure. M1 is COMPLETE; the stronger source-equivalence/public-deployment gate remains unchanged.
+- M2.1 market-data adapter: the engine package decodes ABI `bytes`, parses Kuru's integer L2 layout, preserves full snapshot provenance, validates identity/tick/order invariants, and conservatively excludes separately sourced AMM vault liquidity. A recorded raw RPC response from fixed block `62944132` is covered by a replay test.
 
 Unverified:
 - Exact Kuru deployed-source/build equivalence, a public Kairos adapter deployment, and any public Kuru execution transaction.
-- M2 adaptive-engine behavior and the CRE, Privy, Aurora, UI, and end-to-end acceptance groups assigned to later milestones.
+- M2.2–M2.6 capacity, policy reader, decisions, freshness/retry, and engine acceptance behavior; plus the CRE, Privy, Aurora, UI, and end-to-end groups assigned to later milestones.
 - Full primary-track rules and prize-stacking.
 - Submission visual design and the final deployed-product evidence package.
 
 Next:
-Begin M2 only in a separately authorized task, starting with the verified Kuru L2/market-parameter normalization boundary. In parallel, obtain Kuru's exact standard-JSON compiler input/output or deployment manifest for implementation `0x72cae0...c9374`, including the missing Solady revision/source hashes, before considering removal of the public execution interlock.
+Implement M2.2 manual-order liquidity capacity with exact integer fee/rounding and effective-average-price traces. AMM capacity remains excluded until a same-block vault snapshot is explicitly modeled.
 
 Do not report product ready, integration passed or tests passed based on this file.

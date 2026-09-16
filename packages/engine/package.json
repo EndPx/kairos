@@ -1,5 +1,5 @@
 {
-  "name": "@kairos/shared",
+  "name": "@kairos/engine",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -9,5 +9,8 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --project tsconfig.json"
+  },
+  "dependencies": {
+    "@kairos/shared": "workspace:*"
   }
 }

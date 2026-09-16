@@ -9,6 +9,8 @@
   "scripts": {
     "contracts:compile": "pnpm --filter @kairos/contracts compile",
     "contracts:test": "pnpm --filter @kairos/contracts test",
+    "engine:test": "pnpm --filter @kairos/engine test",
+    "engine:typecheck": "pnpm --filter @kairos/engine typecheck",
     "test": "pnpm --filter @kairos/shared test",
     "typecheck": "pnpm --filter @kairos/shared typecheck"
   },
