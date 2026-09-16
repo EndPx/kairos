@@ -1,0 +1,82 @@
+type Order {
+  id: ID!
+  chainId: Int! @index
+  policy: Bytes! @index
+  orderId: BigInt! @index
+  owner: Bytes! @index
+  budget: BigInt!
+  startTime: BigInt!
+  endTime: BigInt!
+  eventStatus: String! @index
+  totalActualInput: BigInt!
+  totalActualOutput: BigInt!
+  totalReturnedInput: BigInt!
+  fillCount: Int!
+  weightedAveragePrice: BigInt
+  createdBlockNumber: BigInt!
+  createdBlockHash: Bytes!
+  createdTimestamp: BigInt!
+  createdTransactionHash: Bytes!
+  lastEventBlockNumber: BigInt!
+  lastEventBlockHash: Bytes!
+  lastEventTimestamp: BigInt!
+  lastEventTransactionHash: Bytes!
+  fills: [Fill!]! @derivedFrom(field: "order")
+}
+
+type Fill {
+  id: ID!
+  order: Order! @index
+  chainId: Int! @index
+  policy: Bytes! @index
+  orderId: BigInt! @index
+  nonce: BigInt!
+  actualInput: BigInt!
+  actualOutput: BigInt!
+  returnedInput: BigInt!
+  snapshotId: Bytes! @index
+  transactionHash: Bytes! @index
+  logIndex: Int!
+  blockNumber: BigInt! @index
+  blockHash: Bytes!
+  blockTimestamp: BigInt!
+}
+
+type SettlementKey {
+  id: ID!
+  fill: Fill!
+}
+
+type ReceiverIdentity {
+  id: ID!
+  chainId: Int! @index
+  receiver: Bytes! @index
+  policy: Bytes! @index
+  workflowId: Bytes! @index
+  workflowName: Bytes!
+  workflowOwner: Bytes! @index
+  activationBlockNumber: BigInt!
+  activationBlockHash: Bytes!
+  activationTransactionHash: Bytes!
+  reports: [CreReport!]! @derivedFrom(field: "receiverIdentity")
+}
+
+type CreReport {
+  id: ID!
+  receiverIdentity: ReceiverIdentity
+  fill: Fill
+  chainId: Int! @index
+  receiver: Bytes! @index
+  reportHash: Bytes! @index
+  workflowId: Bytes! @index
+  orderId: BigInt! @index
+  nonce: BigInt!
+  snapshotId: Bytes! @index
+  reportId: Bytes!
+  settlementCorrelation: String! @index
+  transactionHash: Bytes! @index
+  logIndex: Int!
+  blockNumber: BigInt! @index
+  blockHash: Bytes!
+  blockTimestamp: BigInt!
+}

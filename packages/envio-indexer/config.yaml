@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=./node_modules/envio/evm.schema.json
+name: kairos-monad-testnet
+description: Kairos order lifecycle and actual-settlement history on Monad Testnet
+ecosystem: evm
+address_format: lowercase
+rollback_on_reorg: true
+field_selection:
+  transaction_fields:
+    - hash
+
+contracts:
+  - name: KairosPolicy
+    abi_file_path: ./abis/KairosPolicy.events.json
+    events:
+      - event: OrderCreated
+      - event: OrderCancelled
+      - event: ExecutionSettled
+
+  # The receiver ABI is intentionally present for typed handlers, but the
+  # lifecycle-only deployment does not attach a receiver address to the chain.
+  # A receiver may be added only after its own deployment identity is proven.
+  - name: KairosCreReceiver
+    abi_file_path: ./abis/KairosCreReceiver.events.json
+    events:
+      - event: ReceiverActivated
+      - event: ReportForwarded
+
+chains:
+  - id: 10143
+    start_block: ${ENVIO_KAIROS_POLICY_START_BLOCK}
+    contracts:
+      - name: KairosPolicy
+        address: "${ENVIO_KAIROS_POLICY_ADDRESS}"

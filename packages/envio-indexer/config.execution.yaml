@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=./node_modules/envio/evm.schema.json
+name: kairos-monad-testnet-execution
+description: Kairos policy and CRE receiver history after both deployments are proven
+ecosystem: evm
+address_format: lowercase
+rollback_on_reorg: true
+field_selection:
+  transaction_fields:
+    - hash
+
+contracts:
+  - name: KairosPolicy
+    abi_file_path: ./abis/KairosPolicy.events.json
+    events:
+      - event: OrderCreated
+      - event: OrderCancelled
+      - event: ExecutionSettled
+
+  - name: KairosCreReceiver
+    abi_file_path: ./abis/KairosCreReceiver.events.json
+    events:
+      - event: ReceiverActivated
+      - event: ReportForwarded
+
+chains:
+  - id: 10143
+    start_block: ${ENVIO_KAIROS_POLICY_START_BLOCK}
+    contracts:
+      - name: KairosPolicy
+        address: "${ENVIO_KAIROS_POLICY_ADDRESS}"
+      - name: KairosCreReceiver
+        address: "${ENVIO_KAIROS_CRE_RECEIVER_ADDRESS}"
+        start_block: ${ENVIO_KAIROS_CRE_RECEIVER_START_BLOCK}
