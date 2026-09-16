@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import {GeistMono, GeistSans} from 'geist/font';
 
 import {DevTools} from '@/components/dev-tools';
+import {ApplicationProviders} from '@/components/providers';
 
 import './styles.css';
 
@@ -18,7 +19,7 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
   return (
     <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <body>
-        {children}
+        <ApplicationProviders>{children}</ApplicationProviders>
         {enableDevTools ? <DevTools /> : null}
       </body>
     </html>

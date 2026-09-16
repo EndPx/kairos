@@ -12,6 +12,8 @@ import Link from 'next/link';
 import {usePathname} from 'next/navigation';
 import type {ReactNode} from 'react';
 
+import {WalletControl} from './wallet-control';
+
 const navigation = [
   {href: '/', label: 'Overview', icon: Blocks},
   {href: null, label: 'Create order', icon: Plus},
@@ -63,12 +65,15 @@ export function AppShell({children}: {children: ReactNode}) {
           <NavigationLinks />
         </nav>
 
-        <div className="rail-network" aria-label="Configured network">
+        <div className="rail-footer">
+          <WalletControl />
+          <div className="rail-network" aria-label="Configured network">
           <RadioTower aria-hidden="true" size={15} />
           <span>
             <strong>Monad Testnet</strong>
             <small>Chain 10143</small>
           </span>
+          </div>
         </div>
       </aside>
 
@@ -84,6 +89,7 @@ export function AppShell({children}: {children: ReactNode}) {
           <summary>Menu</summary>
           <nav aria-label="Mobile navigation">
             <NavigationLinks />
+            <WalletControl />
           </nav>
         </details>
       </header>

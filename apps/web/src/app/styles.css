@@ -218,14 +218,98 @@ code {
   opacity: 0.48;
 }
 
+.rail-footer {
+  display: grid;
+  gap: 10px;
+  margin-top: auto;
+}
+
 .rail-network {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: auto;
   padding: 13px 11px;
   border-top: 1px solid var(--rail-soft);
   color: var(--rail-muted);
+}
+
+.wallet-control {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+  padding: 11px;
+  border: 1px solid var(--rail-soft);
+  border-radius: 7px;
+  color: var(--rail-muted);
+  background: var(--rail-soft);
+  text-align: left;
+}
+
+.wallet-control > span {
+  display: grid;
+  min-width: 0;
+}
+
+.wallet-control strong,
+.wallet-control small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wallet-control strong {
+  color: var(--rail-text);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 560;
+}
+
+.wallet-control small {
+  font-size: 10px;
+}
+
+.wallet-control-button,
+.wallet-icon-button {
+  cursor: pointer;
+}
+
+.wallet-control-button:hover {
+  border-color: var(--accent);
+}
+
+.wallet-control[data-state="connected"] > svg {
+  color: var(--success-soft);
+}
+
+.wallet-control[data-state="blocked"] > svg {
+  color: var(--warning-soft);
+}
+
+.wallet-control[data-state="loading"] > svg {
+  animation: slow-spin 1.5s linear infinite;
+}
+
+.wallet-session {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px;
+}
+
+.wallet-icon-button {
+  display: grid;
+  width: 38px;
+  place-items: center;
+  border: 1px solid var(--rail-soft);
+  border-radius: 7px;
+  color: var(--rail-muted);
+  background: transparent;
+}
+
+.wallet-icon-button:hover {
+  color: var(--rail-text);
+  background: var(--rail-soft);
 }
 
 .rail-network span {
@@ -804,6 +888,11 @@ code {
     border-radius: 9px;
     background: var(--rail);
     box-shadow: var(--shadow-frame);
+  }
+
+  .mobile-nav .wallet-control,
+  .mobile-nav .wallet-session {
+    margin-top: 9px;
   }
 
   .app-main {
