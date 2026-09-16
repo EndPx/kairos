@@ -2,12 +2,17 @@ import 'server-only';
 
 import {readFile} from 'node:fs/promises';
 
-import {createPublicClient, http, parseAbi, type Hex} from 'viem';
+import {createPublicClient, http, type Hex} from 'viem';
 
 import type {OffchainDecisionRecord, PersistedIndexState} from '../../../../packages/indexer/src/types';
 
-import {kairosPolicyAbi} from './abi';
+import {kairosPolicyAbi, kuruReadAbi} from './abi';
 import {DEFAULT_MONAD_RPC_URL, monadTestnet} from './chain';
+import {
+  buildExecutionReport,
+  type ExecutionReportsReadModel,
+  type FillChainEvidence,
+} from './execution-report';
 import {summarizeKuruManualBook} from './kuru-market-summary';
 import {
   mergeIndexedOrders,
@@ -17,11 +22,6 @@ import {
   type PolicyLifecycle,
 } from './order-read-model';
 import {runtimeConfig} from './runtime-config';
-
-const kuruReadAbi = parseAbi([
-  'function getL2Book() view returns (bytes)',
-  'function getMarketParams() view returns (uint32 pricePrecision, uint96 sizePrecision, address baseAsset, uint256 baseAssetDecimals, address quoteAsset, uint256 quoteAssetDecimals, uint32 tickSize, uint96 minSize, uint96 maxSize, uint256 takerFeeBps, uint256 makerFeeBps)',
-]);
 
 const lifecycle: Record<number, PolicyLifecycle> = {
   0: 'ACTIVE',
@@ -241,4 +241,68 @@ export async function loadOrdersReadModel(): Promise<OrdersReadModel> {
       message: 'Indexed state or the pinned onchain read could not be recovered. No stale lifecycle is shown.',
     };
   }
+}
+
+async function readFillEvidence(
+  client: ReturnType<typeof createPublicClient>,
+  transactionHash: Hex,
+  expectedBlockNumber: bigint,
+): Promise<FillChainEvidence> {
+  if (!runtimeConfig.marketAddress) throw new Error('Market address is unavailable.');
+  const [transaction, receipt, block, params] = await Promise.all([
+    client.getTransaction({hash: transactionHash}),
+    client.getTransactionReceipt({hash: transactionHash}),
+    client.getBlock({blockNumber: expectedBlockNumber}),
+    client.readContract({
+      address: runtimeConfig.marketAddress,
+      abi: kuruReadAbi,
+      functionName: 'getMarketParams',
+      blockNumber: expectedBlockNumber,
+    }),
+  ]);
+  if (
+    receipt.status !== 'success' ||
+    receipt.blockNumber !== expectedBlockNumber ||
+    transaction.blockNumber !== expectedBlockNumber ||
+    receipt.blockHash !== block.hash
+  ) {
+    throw new Error('Fill transaction evidence does not match the indexed successful block.');
+  }
+  return {
+    blockHash: receipt.blockHash,
+    blockTimestamp: block.timestamp.toString(),
+    effectiveGasPrice: receipt.effectiveGasPrice.toString(),
+    gasLimit: transaction.gas.toString(),
+    gasUsed: receipt.gasUsed.toString(),
+    takerFeeBps: params[9].toString(),
+    transactionHash,
+  };
+}
+
+export async function loadExecutionReportsReadModel(): Promise<ExecutionReportsReadModel> {
+  const ordersModel = await loadOrdersReadModel();
+  if (ordersModel.state !== 'READY') return {ordersModel, reports: []};
+
+  const rpcUrl = process.env.MONAD_RPC_URL || process.env.NEXT_PUBLIC_MONAD_RPC_URL || DEFAULT_MONAD_RPC_URL;
+  const client = createPublicClient({chain: monadTestnet, transport: http(rpcUrl)});
+  const reports = await Promise.all(
+    ordersModel.orders.map(async (order) => {
+      const evidence = (
+        await Promise.all(
+          order.fills.map(async (fill) => {
+            try {
+              return await readFillEvidence(client, fill.transactionHash, BigInt(fill.blockNumber));
+            } catch {
+              return undefined;
+            }
+          }),
+        )
+      ).filter((item): item is FillChainEvidence => item !== undefined);
+      return {
+        order,
+        report: buildExecutionReport(order.fills, evidence, order.spent, order.received),
+      };
+    }),
+  );
+  return {ordersModel, reports};
 }

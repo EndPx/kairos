@@ -23,7 +23,7 @@ const navigation: ReadonlyArray<{
   {href: '/', label: 'Overview', icon: Blocks},
   {href: '/orders/new', label: 'Create order', icon: Plus},
   {href: '/orders', label: 'Orders', icon: ClipboardList},
-  {href: null, label: 'Reports', icon: FileCheck2},
+  {href: '/reports' as Route, label: 'Reports', icon: FileCheck2},
   {href: '/system', label: 'System', icon: ListTree},
 ];
 

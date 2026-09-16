@@ -3,6 +3,8 @@ import type {Hex} from 'viem';
 
 import type {IndexedFill} from '../../../../packages/indexer/src/types';
 
+import type {OrderViewModel, OrdersReadModel} from './order-read-model';
+
 export interface FillChainEvidence {
   readonly blockHash: Hex;
   readonly blockTimestamp: string;
@@ -31,6 +33,16 @@ export interface ExecutionReportView {
     | {readonly status: 'EXACT_ZERO'; readonly amount: '0'}
     | {readonly status: 'UNAVAILABLE'; readonly reason: string};
   readonly weightedAveragePrice?: string;
+}
+
+export interface ExecutionReportOrder {
+  readonly order: OrderViewModel;
+  readonly report: ExecutionReportView;
+}
+
+export interface ExecutionReportsReadModel {
+  readonly ordersModel: OrdersReadModel;
+  readonly reports: readonly ExecutionReportOrder[];
 }
 
 const INPUT_DECIMALS = 6;

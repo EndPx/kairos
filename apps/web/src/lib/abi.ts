@@ -16,3 +16,8 @@ export const kairosPolicyAbi = parseAbi([
   'function availableToSpend(uint256 orderId, uint256 timestamp) view returns (uint256)',
   'function statusOf(uint256 orderId) view returns (uint8)',
 ]);
+
+export const kuruReadAbi = parseAbi([
+  'function getL2Book() view returns (bytes)',
+  'function getMarketParams() view returns (uint32 pricePrecision, uint96 sizePrecision, address baseAsset, uint256 baseAssetDecimals, address quoteAsset, uint256 quoteAssetDecimals, uint32 tickSize, uint96 minSize, uint96 maxSize, uint256 takerFeeBps, uint256 makerFeeBps)',
+]);

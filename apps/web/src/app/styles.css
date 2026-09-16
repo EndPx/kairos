@@ -1130,6 +1130,70 @@ code {
   gap: 12px;
 }
 
+.reports-stack,
+.execution-report,
+.report-receipts,
+.report-failures {
+  display: grid;
+  gap: 20px;
+}
+
+.execution-report {
+  padding: 26px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-raised);
+}
+
+.execution-report > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.report-summary-grid,
+.report-evidence-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.report-summary-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.report-summary-grid > section {
+  display: grid;
+  gap: 7px;
+  padding: 18px;
+  border-radius: 7px;
+  color: var(--surface-raised);
+  background: var(--ink);
+}
+
+.report-summary-grid p {
+  color: var(--rail-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.report-summary-grid strong {
+  overflow-wrap: anywhere;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 540;
+}
+
+.report-failures {
+  padding: 18px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 8px;
+  color: var(--ink-muted);
+}
+
 .order-action-panel {
   border: 0;
   padding: 0;
@@ -1342,8 +1406,19 @@ code {
   }
 
   .order-detail-grid,
-  .receipt-grid {
+  .receipt-grid,
+  .report-summary-grid,
+  .report-evidence-grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .execution-report {
+    padding: 18px;
+  }
+
+  .execution-report > header {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .detail-wide {
