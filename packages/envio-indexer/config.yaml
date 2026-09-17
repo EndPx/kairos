@@ -27,7 +27,9 @@ contracts:
 
 chains:
   - id: 10143
-    start_block: ${ENVIO_KAIROS_POLICY_START_BLOCK}
+    # Lifecycle-only public deployment. Receipt and immutable-configuration
+    # evidence: docs/evidence/M3_PRIVY_LIFECYCLE.md.
+    start_block: 63220558
     contracts:
       - name: KairosPolicy
-        address: "${ENVIO_KAIROS_POLICY_ADDRESS}"
+        address: "0x3cbdb8f7d91966ad543982b76cdb71a0283d3213"

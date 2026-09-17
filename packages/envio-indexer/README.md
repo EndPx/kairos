@@ -4,11 +4,11 @@ This package projects Kairos onchain history into a GraphQL model using Envio Hy
 
 ## Deployment configurations
 
-- `config.yaml` is the lifecycle-only configuration. It indexes `KairosPolicy` after a real Monad Testnet address and deployment block are supplied.
+- `config.yaml` is the lifecycle-only Cloud configuration. It pins the verified Monad Testnet policy `0x3cBdB8f7D91966AD543982b76CDb71a0283d3213` from deployment block `63220558`; see `docs/evidence/M3_PRIVY_LIFECYCLE.md`.
 - `config.execution.yaml` adds `KairosCreReceiver`. It is intentionally separate because a lifecycle-only policy deployment does not prove a CRE receiver or public execution path.
 - `schema.graphql` and `src/handlers/kairos.ts` are shared by both configurations.
 
-No deployment address or block is checked in before it is observed onchain. Copy `.env.example` to `.env` and set only the variables for the selected configuration. `.env` is ignored by Git.
+The lifecycle identity is public, receipt-verified deployment metadata and is checked in so the free Envio Cloud plan does not require paid custom environment variables. `config.execution.yaml` remains environment-bound and must not be deployed until a receiver identity is independently proven. Copy `.env.example` to `.env` only for configurations that still require variables; `.env` is ignored by Git.
 
 ## Data boundaries
 
