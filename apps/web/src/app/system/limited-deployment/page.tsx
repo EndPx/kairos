@@ -1,5 +1,6 @@
 import {AppShell} from '@/components/app-shell';
 import {LimitedDeploymentPanel} from '@/components/limited-deployment-panel';
+import {LimitedLifecycleCleanup} from '@/components/limited-lifecycle-cleanup';
 import {PageHeader, SourceBadge} from '@/components/primitives';
 
 export default function LimitedDeploymentPage() {
@@ -13,6 +14,7 @@ export default function LimitedDeploymentPage() {
           actions={<SourceBadge source="LOCAL WALLET" />}
         />
         <LimitedDeploymentPanel />
+        <LimitedLifecycleCleanup />
       </div>
     </AppShell>
   );

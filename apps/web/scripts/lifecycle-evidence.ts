@@ -14,7 +14,13 @@ const client = createPublicClient({chain: monadTestnet, transport: http()});
 const receipts = await Promise.all(hashes.map((hash) => client.getTransactionReceipt({hash})));
 const transactions = await Promise.all(hashes.map((hash) => client.getTransaction({hash})));
 const blocks = await Promise.all(receipts.map((receipt) => client.getBlock({blockNumber: receipt.blockNumber})));
-const [chainId, adapterCode, policyCode, allowance, nextOrderId] = await Promise.all([
+const stateBlock = await client.getBlock();
+const policyReadAbi = parseAbi([
+  'function getOrder(uint256 orderId) view returns ((address owner, uint128 budget, uint128 spent, uint128 received, uint64 startTime, uint64 endTime, uint128 maxPerFill, uint128 minFill, uint128 maxEffectivePrice, uint64 executionNonce, bool cancelled))',
+  'function nextOrderId() view returns (uint256)',
+  'function statusOf(uint256 orderId) view returns (uint8)',
+]);
+const [chainId, adapterCode, policyCode, allowance, nextOrderId, order, orderStatus] = await Promise.all([
   client.getChainId(),
   client.getBytecode({address: adapter}),
   client.getBytecode({address: policy}),
@@ -23,11 +29,27 @@ const [chainId, adapterCode, policyCode, allowance, nextOrderId] = await Promise
     abi: parseAbi(['function allowance(address owner, address spender) view returns (uint256)']),
     functionName: 'allowance',
     args: [account, policy],
+    blockNumber: stateBlock.number,
   }),
   client.readContract({
     address: policy,
-    abi: parseAbi(['function nextOrderId() view returns (uint256)']),
+    abi: policyReadAbi,
     functionName: 'nextOrderId',
+    blockNumber: stateBlock.number,
+  }),
+  client.readContract({
+    address: policy,
+    abi: policyReadAbi,
+    functionName: 'getOrder',
+    args: [0n],
+    blockNumber: stateBlock.number,
+  }),
+  client.readContract({
+    address: policy,
+    abi: policyReadAbi,
+    functionName: 'statusOf',
+    args: [0n],
+    blockNumber: stateBlock.number,
   }),
 ]);
 
@@ -50,7 +72,22 @@ console.log(JSON.stringify({
     hasCode: Boolean(policyCode && policyCode !== '0x'),
     nextOrderId: nextOrderId.toString(),
   },
-  allowance: allowance.toString(),
+  stateSnapshot: {
+    blockNumber: stateBlock.number.toString(),
+    blockHash: stateBlock.hash,
+    allowance: allowance.toString(),
+    order: {
+      id: '0',
+      owner: order.owner,
+      budget: order.budget.toString(),
+      spent: order.spent.toString(),
+      received: order.received.toString(),
+      executionNonce: order.executionNonce.toString(),
+      cancelled: order.cancelled,
+      status: orderStatus,
+      statusName: ['ACTIVE', 'COMPLETED', 'CANCELLED', 'EXPIRED'][orderStatus] ?? `UNKNOWN_${orderStatus}`,
+    },
+  },
   receipts: receipts.map((receipt, index) => ({
     hash: receipt.transactionHash,
     status: receipt.status,
