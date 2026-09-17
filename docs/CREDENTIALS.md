@@ -11,7 +11,9 @@ This file names configuration only. Never commit values, tokens, private keys, o
 | `NEXT_PUBLIC_PRIVY_APP_ID` | Privy browser client configuration | Missing |
 | `NEXT_PUBLIC_PRIVY_CLIENT_ID` | Optional Privy client identifier documented by Monad template | Missing |
 | `CRE_API_KEY` | Placeholder only; exact CRE credential name remains to be verified in M0.7 | Missing / unverified name |
-| `AURORA_API_KEY` | Placeholder only; exact requirement remains to be verified in M0.9 | Missing / unverified name |
+| `AURORA_API_KEY` | Aurora Intents application key used in supported-token and quote endpoint paths | Verified variable name; rotated value is not visible to the current process or ignored local files |
+| `AURORA_SOURCE_BLOCKCHAIN` | Selected source-chain label from authenticated token discovery | Optional until discovery selects a real source |
+| `AURORA_SOURCE_ASSET_ID` | Exact origin `assetId` returned by Aurora Intents | Optional until discovery selects a real source |
 | `KAIROS_DEPLOYER_PRIVATE_KEY` | Test-only deployment signer, never required for read probes | Missing |
 | `KAIROS_EXECUTOR_PRIVATE_KEY` | Test-only executor signer, never required for read probes | Missing |
 

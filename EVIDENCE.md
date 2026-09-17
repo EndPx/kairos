@@ -16,6 +16,20 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M4-01 / Aurora source-destination-token route verification foundation
+- Date: 2026-09-17
+- Environment and chain ID: Windows Node `v24.18.0`; documentation/API schema reads; intended destination Monad Testnet `10143`; no authenticated Aurora request or transaction
+- Version/commit/source URL: Aurora Intents OpenAPI service version `0.0.1`; official supported-chains, supported-token, quote, API integration, and key documentation reviewed 2026-09-17; implementation commit `aa5d4c615c93907c030cfbe7bdfba960420025e6`; full analysis in `docs/M4_ROUTE_VERIFICATION.md`
+- Command or reproducible steps: fetched official Markdown/OpenAPI pages; checked only credential presence and local variable names; ran `pnpm aurora:test`, `pnpm aurora:typecheck`, and `pnpm aurora:probe`
+- Result (PASS / FAIL / BLOCKED): PARTIAL PASS. Official documentation lists `Monad` for source and destination and the token schema includes `monad`, but no chain ID or testnet identity is provided. The repository probe performs exact contract/decimals and source-asset matching, response validation, timeout, and credential-redacted errors. Vitest reports 2 files / 8 tests; TypeScript exits `0`. BLOCKED runtime discovery: `pnpm aurora:probe` exits `1` before HTTP because root `.env.local` and process `AURORA_API_KEY` are absent. Therefore Monad Testnet `10143`, exact Kuru USDC `0x3bA3d39AFcf8bb994f7964B3e0171Ea2Ba361570`, and any source asset remain unverified.
+- Artifact / receipt / transaction hash: `packages/aurora`; `docs/M4_ROUTE_VERIFICATION.md`; no quote ID, deposit address, receipt, or transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): Unit tests use explicit token-catalog fixtures. Documentation proves generic chain labeling only. No authenticated token catalog, dry quote, mainnet/testnet route, transfer, status lifecycle, arrival, refund, or Kairos use is claimed. The old exposed key was not used.
+- Next action: expose the rotated key only through ignored root `.env.local` or the launching process, rerun discovery, and compare the returned `monad` asset contract and decimals to Kuru exactly. Select a source from that same response before reviewing any `dry: true` quote.
+
+Historical implementation failures retained: the first test run had one over-specific malformed-payload assertion; the first two typechecks exposed missing local Node type linking and an exact-optional `AbortSignal` mismatch. The assertion, package installation, Node types, and conditional signal construction were corrected before the final passing runs.
+
+---
+
 - ID and requirement: M3-CLOSE / written M3 exit, live-policy CRE simulation, lifecycle final-state confirmation, and controlled recovery evidence
 - Date: 2026-09-17
 - Environment and chain ID: Windows host; authenticated CRE CLI `v1.34.0`; Monad Testnet `10143`; Hardhat local receiver tests; Ubuntu 24.04 WSL for Envio generated-runtime tests

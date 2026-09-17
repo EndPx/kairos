@@ -55,6 +55,9 @@ Do not assume sponsorship/batching on selected network. If a .md URL fails, try 
 - https://docs.intents.aurora.dev/intents-deposits/supported-chains — linked from docs; re-fetch.
 - https://docs.intents.aurora.dev/getting-started/api-keys-and-fees — linked from docs; re-fetch.
 - https://intents.aurora.dev/ — product overview. Read.
+- https://docs.intents.aurora.dev/intents-deposits/supported-chains.md — reviewed 2026-09-17; lists `Monad` as source and destination but does not identify chain ID or testnet.
+- https://docs.intents.aurora.dev/api-reference/swap-api-reference/get-supported-tokens.md — reviewed 2026-09-17; OpenAPI `0.0.1`, authoritative `GET /api/tokens/{apiKey}`, token schema includes `monad`, exact contract/asset discovery still requires a key.
+- https://docs.intents.aurora.dev/api-reference/swap-api-reference/request-a-quote.md — reviewed 2026-09-17; authoritative `POST /api/quote/{apiKey}`, `dry: true` omits deposit-address/activation fields, and requests use smallest-unit amounts plus explicit recipient/refund identities.
 API examples require revalidation against endpoint reference, not blind copying. Exact token IDs, route, account key, destination, and refund handling remain unproven. Do not assume Connect and Deposits share support matrices.
 
 ## Envio

@@ -61,7 +61,7 @@ Evidence is recorded separately from documentation claims in [EVIDENCE.md](EVIDE
 
 ## Status
 
-M1 and M2 are complete. M3 is partial at its documented local/simulation boundary, and M3-Envio is now in progress as a separate onchain-history submilestone. No public deployment or transaction is represented as complete without evidence. See [STATUS.md](STATUS.md), [docs/M2_EXIT_REVIEW.md](docs/M2_EXIT_REVIEW.md), and [docs/M3_ACCEPTANCE_REVIEW.md](docs/M3_ACCEPTANCE_REVIEW.md).
+M1, M2, and the written M3 exit are complete. M3-Envio is complete for its explicitly accepted create/cancel lifecycle proof. M4 route verification is in progress; no Aurora funding route, public Kuru settlement, or final product readiness is claimed without evidence. See [STATUS.md](STATUS.md), [docs/M3_GAP_AUDIT.md](docs/M3_GAP_AUDIT.md), and [docs/M4_ROUTE_VERIFICATION.md](docs/M4_ROUTE_VERIFICATION.md).
 
 ## Scope and safety
 

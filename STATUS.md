@@ -1,6 +1,6 @@
 # Current status
 Updated: 2026-09-17
-Stage: M3 CRE, Privy, indexer, and application — COMPLETE against written M3 exit; public Kuru settlement remains a final-product/M5 blocker, not an M3 exit condition.
+Stage: M4 Aurora funding journey — route verification PARTIAL; generic Monad support is documented, but Monad Testnet `10143` and exact Kuru USDC compatibility remain unproven.
 
 Completed:
 - Final user specification copied unchanged.
@@ -61,6 +61,9 @@ Completed:
 - M3-Envio implementation: `envio` `3.12.0` is pinned. Lifecycle-only and execution/receiver configs, exact compiled event ABIs, `schema.graphql`, typed handlers, cumulative actual-settlement aggregates, deterministic IDs, replay guard, and strict same-transaction CRE correlation are committed. WSL/Linux verification codegenerated both configs, passed 2 files / 7 tests, and typechecked generated bindings.
 - M3-Envio application boundary: `/orders`, `/orders/[orderId]`, and `/reports` now use the server-only Envio GraphQL boundary instead of the JSON projector. Official `_meta` controls sync readiness/lag; partial history and endpoint failures fail closed with no fixture substitution. Policy/Kuru reads are pinned to the Envio progress block for comparison, while WAIT and attempt journals remain offchain. Web verification reports 16 files / 47 tests, TypeScript exit `0`, production build success, and changed-scope React Doctor 100/100. Browser QA confirmed truthful missing-configuration states.
 - M3-Envio live lifecycle proof: GitHub App access is restricted to `EndPx/kairos`; project `endpx/kairos` uses branch `main`, root `packages/envio-indexer`, public visibility, and the Development/free plan. Deployment `c6adc64` exposed `https://indexer.dev.hyperindex.xyz/f319caf/v1/graphql`, reached 100% sync, and returned two real events plus order `0` as `CANCELLED`. `/orders`, detail after reload, and `/reports` consumed it with lag zero and no fixture substitution. M3-Envio is COMPLETE for the explicitly accepted create/cancel initial proof. Nonzero settlement aggregates and CRE correlation remain conditional follow-up after a real `ExecutionSettled` event; no public reorg is claimed or required.
+- M4 route documentation: current primary Intents Deposits documentation lists `Monad` as both source and destination, and its token schema includes `monad`; neither source identifies chain ID or testnet. Generic Monad support therefore does not prove Monad Testnet `10143` or Kuru testnet USDC `0x3bA3…1570`.
+- M4 read-only route probe: `packages/aurora` strictly parses supported-token discovery, requires an exact destination contract/decimal match, supports exact source `assetId` selection, redacts the path-based application key from failures, and refuses to claim dry-quote readiness before both sides match. Aurora tests report 2 files / 8 tests and TypeScript exit `0`.
+- M4 credential boundary: the rotated `AURORA_API_KEY` is not visible to the current process, Windows user/machine environment, ignored repository environment files, or a discoverable credential-manager label. The old exposed value was not reused. `pnpm aurora:probe` exits before HTTP with the explicit local-configuration blocker; no quote, deposit address, status lookup, transfer, or transaction occurred.
 
 Unverified:
 - Exact Kuru deployed-source/build equivalence, an execution-capable public Kairos adapter proof, and any public Kuru execution transaction. The deployed lifecycle adapter is deliberately execution-disabled.
@@ -69,8 +72,9 @@ Unverified:
 - Full primary-track rules and prize-stacking.
 - Submission visual design and the final deployed-product evidence package.
 - Nonzero Envio settlement aggregates from a real `ExecutionSettled` event and CRE report correlation. Lifecycle create/cancel ingestion, endpoint use, reload, and receipt/state comparison are proven. A naturally occurring public reorg is optional strengthening; controlled rollback/replay evidence is complete.
+- Aurora authenticated token discovery, a product-specific source asset, Monad Testnet `10143` identity, exact destination-token compatibility, and a non-funding dry quote. Documentation-only `monad` support is insufficient.
 
 Next:
-M3 is closed. Retain the active free Envio lifecycle deployment and public execution interlock. The next final-product proof requires Kuru source/build provenance, a separately reviewed execution-capable deployment plan, and explicit transaction authorization before producing a real `ExecutionSettled` event. Until then do not claim public fill/refund/weighted-price or CRE correlation evidence. No paid Envio plan or additional transaction is authorized; M4 has not started.
+M4.1 next: make the rotated key available locally as `AURORA_API_KEY` in root `.env.local` or the launching process, never chat. Run supported-token discovery only. Select a source asset from that response and prepare `dry: true` quote evidence only if destination contract and environment exactly match. Do not create a deposit address, use mainnet, move funds, or relax the Kuru interlock without separate authorization. The Kuru compiler-input request remains an external dependency and is not being polled.
 
 Do not report product ready, integration passed or tests passed based on this file.
