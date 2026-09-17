@@ -45,10 +45,10 @@ All statuses start NOT RUN. Each item must point to EVIDENCE.md before claiming 
 | ENVIO-01 | PASS (repository implementation) | `envio` `3.12.0` is pinned; public lifecycle/execution configs, exact event ABIs, `schema.graphql`, typed handlers, and generated-type verification are committed |
 | ENVIO-02 | PASS — lifecycle ingestion | Public deployment `c6adc64` is Active and 100% synced from policy block `63220558`; `_meta` reports two events and the live query returns the real create/cancel order. |
 | ENVIO-03 | PASS — live lifecycle consumption | `/orders`, `/orders/0`, and `/reports` consume the public endpoint, use the Envio comparison block for contract reads, and survive a full browser reload without fixtures. |
-| ENVIO-04 | PARTIAL | Named lifecycle receipts and zero aggregates match pinned contract state, but no `ExecutionSettled` event exists; nonzero input/output/refund/weighted-price proof remains unavailable. |
-| ENVIO-05 | PARTIAL | Live readiness, lag-zero display, reload, handler replay guard, reorg configuration, endpoint-failure tests, and no-fixture states pass; a public reorg has not been observed. |
+| ENVIO-04 | PASS — accepted lifecycle scope | Named create/cancel receipts and zero aggregates match pinned contract state. Nonzero input/output/refund/weighted-price proof is conditional on a future real `ExecutionSettled` event and is not inferred from lifecycle data. |
+| ENVIO-05 | PASS — live plus controlled recovery | Live readiness, lag-zero display, reload, deterministic IDs, replay guard, `rollback_on_reorg`, cursor-hash rebuild, endpoint-failure tests, and no-fixture states pass. No naturally occurring public reorg is claimed or required. |
 
-M3-Envio remains **PARTIAL** because lifecycle ingestion/E2E is proven but real settlement aggregates are not.
+M3-Envio is **COMPLETE for the explicitly accepted create/cancel initial proof**. Settlement analytics and CRE correlation remain deferred until their source events exist; this closure does not claim a fill or trade.
 
 Use unit/property or invariant tests for accounting and policy; adapter integration tests on the selected deployment/fork; E2E tests for user journeys.
 Fix failures before broadening features. Do not equate test mocks with completed sponsor acceptance.

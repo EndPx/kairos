@@ -142,3 +142,37 @@ KURU_AMM_VAULT: EXCLUDED
 ```
 
 The handler durations (`927ms` and `647ms`) are the decision/report measurements relevant to the five-second proposal validity window. The longer CLI wall times include TypeScript/WASM compilation and simulator startup and therefore are not transaction-submission latency. The simulator used its documented default simulation key warning and did not use a user deployer key. No `--broadcast` flag was supplied. The WAIT run performs external Foundation JSON-RPC acquisition and real Kuru ABI reads with fixture policy state. The EXECUTE run proves report generation with fixture policy and L2 while still acquiring the latest chain block, market parameters, and market state. Neither run proves a production forwarder call, receiver activation, policy execution, Kuru settlement, or public transaction.
+
+## Live lifecycle policy / WAIT — 2026-09-17
+
+This additional authenticated simulation reads the real lifecycle-only Kairos policy and order `0` together with the selected Kuru market at one current Monad Testnet block. The target uses `RPC_POLICY` and `RPC_L2`, keeps `submitReports: false`, and identifies the policy's actual dead executor in the receiver field. It does not treat that address as a deployable receiver.
+
+Command:
+
+```text
+cre workflow simulate workflows/kairos -T live-lifecycle-wait-settings
+```
+
+The first invocation failed before compilation because the new target did not yet have a matching `project.yaml` RPC entry: `no RPC URLs found for target "live-lifecycle-wait-settings"`. After adding the required public Monad Testnet RPC mapping, the rerun exited `0`:
+
+```text
+Binary hash: bbdff3d5dfa03450836e5d87355b3944f04d3719c4c132824571f496028e36b9
+Config hash: 39142b01c984976d5eec043536eddc71cbcd770a85560872c059471f5933a95b
+proofKind: LIVE_RPC_POLICY
+decision: WAIT / CANCELLED
+blockNumber: 63248233
+blockHash: 0x8cb7f22dfd01e8b01583e0f79a47e941ece483bd52e448456ab0439b327d6181
+policyBlockHash: same as marketBlockHash
+freshness: FRESH, ageSeconds 3, maxAgeSeconds 10
+releasedAvailable: 1000000
+remainingBudget: 1000000
+walletBalance: 0
+tokenAllowance: 0
+estimatedLiquidityCapacity: 0
+handlerElapsedMs: 3486
+submitted: false
+manualL2: INCLUDED
+KURU_AMM_VAULT: EXCLUDED
+```
+
+This is the strongest public-state CRE simulation in the current repository: both policy and Kuru reads are real and same-block, and the engine refuses the cancelled order deterministically. It does not produce or submit a report because a cancelled order must not execute. The separately labeled fixture EXECUTE simulation remains the report-generation proof; local receiver tests remain the report-decoding/forwarding proof. No production CRE deployment, forwarder delivery, public receiver call, or Kuru settlement is claimed.

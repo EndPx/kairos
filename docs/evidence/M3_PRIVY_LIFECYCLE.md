@@ -51,6 +51,8 @@ At comparison block `63227224`, full hash `0xb80d9fb34b0caf3e0b3ea372f1903d6ddc6
 
 The zero spend/output/nonce values are expected because this lifecycle-only proof never attempted execution.
 
+A later read-only confirmation at block `63247646`, full hash `0x6a3620464fb83d3602a6b684502422e2e7f017eb9ac42d0381f54778eb2e4ab7`, returned the same final state: order `0` is `CANCELLED`, spent/received/execution nonce remain zero, and allowance remains zero. All six receipts remained successful and their total cost remained `0.21368949 MON`. No transaction was repeated.
+
 ## Browser path and verification commands
 
 The adapter deployment, policy deployment, approval, creation, cancellation, and revocation were submitted through the Kairos application using visible Privy confirmations. The final application state showed `CANCELLED`, `0 USDC` policy allowance, and a confirmed revoke receipt. The cleanup panel reads the policy directly at one named block and explicitly identifies itself as a local cleanup control, not an Envio history fallback.
