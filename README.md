@@ -1,5 +1,7 @@
 # Kairos
 
+[![CI](https://github.com/EndPx/kairos/actions/workflows/ci.yml/badge.svg)](https://github.com/EndPx/kairos/actions/workflows/ci.yml)
+
 > Liquidity-aware spot execution with user-owned funds.
 
 Kairos schedules a spot order, sizes each proposed fill against Kuru's executable liquidity, and makes the policy contract re-check every limit before value can move. The initial route is a USDC → MON buy on Monad.

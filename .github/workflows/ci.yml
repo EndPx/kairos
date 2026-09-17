@@ -1,0 +1,105 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  application:
+    name: Contracts, engine, workflow, and web
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.21.0
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.23.2
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Compile contracts
+        run: pnpm contracts:compile
+
+      - name: Test contracts
+        run: pnpm contracts:test
+
+      - name: Test TypeScript packages
+        run: |
+          pnpm test
+          pnpm engine:test
+          pnpm workflow:test
+          pnpm indexer:test
+          pnpm aurora:test
+          pnpm web:test
+
+      - name: Type-check TypeScript packages
+        run: |
+          pnpm typecheck
+          pnpm engine:typecheck
+          pnpm workflow:typecheck
+          pnpm indexer:typecheck
+          pnpm aurora:typecheck
+          pnpm web:typecheck
+
+      - name: Build web application
+        run: pnpm web:build
+
+  envio:
+    name: Envio generated-runtime verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.21.0
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.23.2
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate lifecycle bindings
+        working-directory: packages/envio-indexer
+        run: pnpm codegen
+
+      - name: Verify execution bindings and handlers
+        working-directory: packages/envio-indexer
+        env:
+          ENVIO_KAIROS_POLICY_ADDRESS: "0x1111111111111111111111111111111111111111"
+          ENVIO_KAIROS_POLICY_START_BLOCK: "1"
+          ENVIO_KAIROS_CRE_RECEIVER_ADDRESS: "0x2222222222222222222222222222222222222222"
+          ENVIO_KAIROS_CRE_RECEIVER_START_BLOCK: "1"
+        run: |
+          cp config.execution.yaml config.yaml
+          pnpm codegen
+          pnpm test
+          pnpm typecheck
