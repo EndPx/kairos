@@ -16,6 +16,20 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: SUB-03 / clean-checkout public CI reproducibility
+- Date: 2026-09-17
+- Environment and chain ID: GitHub-hosted `ubuntu-latest`; Node `22.23.2`; pnpm `10.21.0`; no sponsor credentials, RPC fork mutation, or public transaction
+- Version/commit/source URL: commit `93b050dc3db46bad50571706e78841ec0a3e9f9b`; `actions/checkout` `v7.0.1`; `actions/setup-node` `v7.0.0`; `pnpm/action-setup` `v6.1.0`; run `https://github.com/EndPx/kairos/actions/runs/35197372445`
+- Command or reproducible steps: push to `main` triggers `.github/workflows/ci.yml`; application job installs the frozen lockfile, compiles/tests contracts, tests and typechecks shared/engine/CRE workflow/indexer/Aurora/web packages, then builds Next.js; Envio job generates lifecycle bindings, swaps to the separately gated execution configuration with sentinel identities, regenerates, tests handlers, and typechecks generated bindings
+- Result (PASS / FAIL / BLOCKED): PASS. Both checks concluded `success`: Envio generated-runtime verification completed in `42s`; contracts/engine/workflow/web completed in `1m52s`. The logs report 16 default contract tests, shared 4, engine 24, CRE workflow 5, local indexer 5, Aurora 8, web 47, and Envio 2 test files passing; every configured typecheck and the production build passed. The final run produced no Node-20 action deprecation annotation.
+- Artifact / receipt / transaction hash: `.github/workflows/ci.yml`; GitHub Actions run `35197372445`; no chain receipt or transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): Credential-gated fixed-fork tests, authenticated CRE simulation, Aurora discovery, wallet transactions, Envio Cloud state, and public settlement are intentionally outside CI. The Envio execution job uses documented sentinel configuration solely to validate interpolation and generated types; it is not a deployment identity.
+- Next action: keep CI required as the repository evolves and add separately authorized deployed-E2E checks only when stable non-secret test identities exist.
+
+Historical CI correction retained: run `35197180807` passed both jobs but GitHub annotated the then-used action majors for their Node 20 runtime. The workflow was updated to the official current releases above; run `35197372445` is the clean replacement evidence.
+
+---
+
 - ID and requirement: SUB-02 / evaluator-facing application overview
 - Date: 2026-09-17
 - Environment and chain ID: Next.js `16.3.5`; React `19.3.0`; Windows local production build; browser QA at 375, 768, and 1280 px; displayed network Monad Testnet `10143`
