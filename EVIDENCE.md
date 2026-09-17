@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M4-02 / authenticated Aurora destination-token discovery
+- Date: 2026-09-17
+- Environment and chain ID: Aurora Intents personal portal plus Windows Node `v24.18.0`; intended destination Monad Testnet `10143`; read-only HTTPS token discovery only
+- Version/commit/source URL: existing active portal key named `Kairos`; repository probe at `packages/aurora/scripts/route-probe.ts`; Aurora token endpoint documented in `docs/M4_ROUTE_VERIFICATION.md`
+- Command or reproducible steps: opened `https://portal.intents.aurora.dev/keys` in the user's authenticated Edge session; copied the existing key without creating a credential; injected the clipboard value only into the child process environment; ran `pnpm aurora:probe`; removed the environment variable and cleared the clipboard in `finally`
+- Result (PASS / FAIL / BLOCKED): PASS for authenticated discovery; BLOCKED for the exact Kairos route. Command exited `0` and parsed 195 tokens plus 197 asset stats. The `monad` catalog contains native MON, USDT0 `0xe7cd…c82d`, and USDC `0x754704bc059f8c67012fed69bc8a327a5aafb603` with 6 decimals. It does not contain required Kuru Testnet USDC `0x3bA3d39AFcf8bb994f7964B3e0171Ea2Ba361570`, producing `CHAIN_WITHOUT_EXACT_TOKEN` and `routeReadyForDryQuote:false`.
+- Artifact / receipt / transaction hash: `docs/M4_ROUTE_VERIFICATION.md`; authenticated command output; no quote ID, deposit address, receipt, or transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): The token catalog labels the chain `monad` but does not expose EVM chain ID or testnet/mainnet identity. Its internal asset identifier `143` is not treated as chain ID `10143`. Individually listed source assets are candidates, not proof that a source-to-destination quote exists. No source was selected, no quote was sent, and no funds moved.
+- Next action: obtain authoritative Aurora mapping for the returned Monad environment or exact catalog support for Kuru Testnet USDC. Do not construct a dry quote until discovery returns the exact destination contract and decimals.
+
+---
+
 - ID and requirement: HOST-01 / truthful lifecycle-only frontend hosting readiness
 - Date: 2026-09-17
 - Environment and chain ID: Windows Node `v24.18.0`; pnpm `10.21.0`; Next.js `16.3.5`; prepared target Vercel with `apps/web` root; displayed/read network Monad Testnet `10143`; no hosting deployment or chain transaction
