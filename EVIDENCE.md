@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M4-03 / authoritative environment identity for the Aurora-returned Monad asset
+- Date: 2026-09-17
+- Environment and chain ID: read-only official metadata verification; returned asset resolves to Monad Mainnet chain `143`; current Kairos remains Monad Testnet chain `10143`; no Aurora credential or transaction used
+- Version/commit/source URL: official Monad docs; official `monad-crypto/token-list` revision `3a34e9b761422f52c7386ac2714f2d366c841ab9`; pinned Mainnet and Testnet JSON links in `docs/M4_ROUTE_VERIFICATION.md`
+- Command or reproducible steps: resolve `HEAD` with `git ls-remote https://github.com/monad-crypto/token-list.git HEAD`; fetch both token lists at that immutable revision; compare exact address `0x754704bc059f8c67012fed69bc8a327a5aafb603` in both lists
+- Result (PASS / FAIL / BLOCKED): PASS for environment identity; BLOCKED for a direct route matching current Kairos. The Mainnet list is named `Monad Mainnet` and contains exactly one matching token with chain ID `143`, symbol USDC, and 6 decimals. The Testnet list is named `Monad Testnet` and contains zero matches. Official Monad network documentation independently maps chain `143` to Mainnet and `10143` to Testnet.
+- Artifact / receipt / transaction hash: command JSON `{"revision":"3a34e9b761422f52c7386ac2714f2d366c841ab9","mainnetName":"Monad Mainnet","mainnetMatchCount":1,"mainnetChainId":143,"mainnetSymbol":"USDC","mainnetDecimals":6,"testnetName":"Monad Testnet","testnetMatchCount":0}`; `docs/M4_ROUTE_VERIFICATION.md`; no receipt or transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): This identifies the returned contract's official Monad environment. It does not prove an Aurora quote for any source asset, direct Testnet support, or incompatibility with Aurora generally. Kairos does not change its configured token based on symbol and decimals. No quote, deposit, bridge, swap, transfer, migration, or public execution occurred.
+- Next action: keep the current Testnet deployment unchanged and wait for an exact Aurora destination entry for chain `10143` token `0x3bA3…1570`. Before any future authenticated request, rotate the historically exposed key into local-only storage; clearing environment or clipboard data is not credential rotation.
+
+---
+
 - ID and requirement: HOST-02 / read-only preview labeling and lifecycle-proof separation
 - Date: 2026-09-17
 - Environment and chain ID: Windows Node `v24.18.0`; pnpm `10.21.0`; Next.js `16.3.5`; local production build only; displayed/read network Monad Testnet `10143`; no hosting deployment or chain transaction
@@ -33,10 +45,10 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 - Environment and chain ID: Aurora Intents personal portal plus Windows Node `v24.18.0`; intended destination Monad Testnet `10143`; read-only HTTPS token discovery only
 - Version/commit/source URL: existing active portal key named `Kairos`; repository probe at `packages/aurora/scripts/route-probe.ts`; Aurora token endpoint documented in `docs/M4_ROUTE_VERIFICATION.md`
 - Command or reproducible steps: opened `https://portal.intents.aurora.dev/keys` in the user's authenticated Edge session; copied the existing key without creating a credential; injected the clipboard value only into the child process environment; ran `pnpm aurora:probe`; removed the environment variable and cleared the clipboard in `finally`
-- Result (PASS / FAIL / BLOCKED): PASS for authenticated discovery; BLOCKED for the exact Kairos route. Command exited `0` and parsed 195 tokens plus 197 asset stats. The `monad` catalog contains native MON, USDT0 `0xe7cd…c82d`, and USDC `0x754704bc059f8c67012fed69bc8a327a5aafb603` with 6 decimals. It does not contain required Kuru Testnet USDC `0x3bA3d39AFcf8bb994f7964B3e0171Ea2Ba361570`, producing `CHAIN_WITHOUT_EXACT_TOKEN` and `routeReadyForDryQuote:false`.
+- Result (PASS / FAIL / BLOCKED): PASS for authenticated discovery; BLOCKED because no direct funding route matches the current Kairos deployment. Command exited `0` and parsed 195 tokens plus 197 asset stats. The `monad` catalog contains native MON, USDT0 `0xe7cd…c82d`, and USDC `0x754704bc059f8c67012fed69bc8a327a5aafb603` with 6 decimals. It does not contain required Kuru Testnet USDC `0x3bA3d39AFcf8bb994f7964B3e0171Ea2Ba361570`, producing `CHAIN_WITHOUT_EXACT_TOKEN` and `routeReadyForDryQuote:false`. This record does not claim Aurora-wide incompatibility.
 - Artifact / receipt / transaction hash: `docs/M4_ROUTE_VERIFICATION.md`; authenticated command output; no quote ID, deposit address, receipt, or transaction hash
-- Limitations (fixture, fork, testnet, simulation, live): The token catalog labels the chain `monad` but does not expose EVM chain ID or testnet/mainnet identity. Its internal asset identifier `143` is not treated as chain ID `10143`. Individually listed source assets are candidates, not proof that a source-to-destination quote exists. No source was selected, no quote was sent, and no funds moved.
-- Next action: obtain authoritative Aurora mapping for the returned Monad environment or exact catalog support for Kuru Testnet USDC. Do not construct a dry quote until discovery returns the exact destination contract and decimals.
+- Limitations (fixture, fork, testnet, simulation, live): The Aurora catalog itself labels the chain only `monad`; M4-03 separately resolves the exact returned contract to Monad Mainnet through official Monad metadata. Individually listed source assets are candidates, not proof that a source-to-destination quote exists. No source was selected, no quote was sent, and no funds moved. The credential used here had previously been exposed; clearing the environment and clipboard did not rotate it, and it is now retired.
+- Next action: require exact catalog support for Monad Testnet `10143` Kuru USDC before constructing a dry quote, and use only a newly rotated local credential for any future authenticated request.
 
 ---
 

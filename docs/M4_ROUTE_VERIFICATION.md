@@ -2,7 +2,7 @@
 
 Date: 2026-09-17
 
-Status: **PARTIAL / authenticated discovery proves the exact Kairos destination is unsupported**
+Status: **PARTIAL / no direct funding route matches the current Kairos deployment**
 
 No quote, deposit address, transfer, transaction-history lookup, or public transaction was created during this verification.
 
@@ -40,9 +40,11 @@ Sources:
 
 During the original verification, the rotated key was not visible to the current process, Windows user/machine environment, root/application environment files, or a discoverable Windows credential-manager label. Only variable names were inspected; no secret value was printed, and the previously exposed key was not reused in that run.
 
-The user subsequently authorized reuse of the existing key instead of another rotation. Its value is still absent from local environment/file storage. A masked interactive prompt now provides a process-only path: it sets `AURORA_API_KEY` only for `pnpm aurora:probe`, clears the variable afterward, and does not copy the value into Git, command text, or evidence. Authenticated discovery remains blocked until that local prompt receives the key.
+Before the later historical probe, the user authorized reuse of the existing key instead of another rotation. A masked interactive prompt was prepared to set `AURORA_API_KEY` only for `pnpm aurora:probe`, clear the variable afterward, and avoid copying the value into Git, command text, or evidence. At that point authenticated discovery remained blocked until a value was supplied locally.
 
-That follow-up is now complete. The Aurora portal already contained one active key named `Kairos`; no new key was created. The portal copied the existing key to the local clipboard, the probe consumed it only through the child process environment, and both the environment variable and clipboard were cleared after the request. The key value is not stored in the repository or evidence.
+That historical follow-up completed once. The Aurora portal already contained one active key named `Kairos`; no new key was created. The portal copied the existing key to the local clipboard, the probe consumed it only through the child process environment, and both the environment variable and clipboard were cleared after the request. The key value is not stored in the repository or evidence.
+
+The credential used for that historical probe had previously been exposed. Clearing the process environment and clipboard reduced local persistence but did **not** rotate or revoke the credential. It is now retired for Kairos and must not be reused. Any future authenticated Aurora request requires a newly rotated credential supplied through local secret storage, never chat or Git.
 
 ## Authenticated discovery result
 
@@ -54,11 +56,37 @@ That follow-up is now complete. The Aurora portal already contained one active k
 | USDT0 | 6 | `0xe7cd86e13ac4309349f30b3435a9d337750fc82d` | `nep245:v2_1.omni.hot.tg:143_4EJiJxSALvGoTZbnc8K7Ft9533et` |
 | USDC | 6 | `0x754704bc059f8c67012fed69bc8a327a5aafb603` | `nep245:v2_1.omni.hot.tg:143_2dmLwYWkCQKyTjeUPAsGJuiVLbFx` |
 
-The required Kuru Testnet USDC is `0x3bA3d39AFcf8bb994f7964B3e0171Ea2Ba361570`, so the result is `CHAIN_WITHOUT_EXACT_TOKEN`. The catalog's internal `143` identifier is not treated as EVM chain ID `10143`; the response still does not state a Monad chain ID or testnet/mainnet label.
+The required Kuru Testnet USDC is `0x3bA3d39AFcf8bb994f7964B3e0171Ea2Ba361570`, so the strict probe result is `CHAIN_WITHOUT_EXACT_TOKEN`. This establishes only that no direct funding route matches the current Kairos deployment; it is not a claim that Aurora is incompatible with Monad generally.
 
-The catalog also exposed possible source assets such as Ethereum USDC `nep141:eth-0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.omft.near` and Base USDC `nep141:base-0x833589fcd6edb6e08f4c7c32d4f71b54bda02913.omft.near`. These are discovery candidates only, not a selected or quoted source route. Kairos does not select a source `assetId` while the destination is incompatible.
+The catalog also exposed possible source assets such as Ethereum USDC `nep141:eth-0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.omft.near` and Base USDC `nep141:base-0x833589fcd6edb6e08f4c7c32d4f71b54bda02913.omft.near`. These are discovery candidates only, not a selected or quoted source route. Kairos does not select a source `assetId` while no exact destination matches the current deployment.
 
 The probe reads `AURORA_API_KEY` from the process or ignored root `.env.local`. Aurora's current documentation describes the application key as public-facing, but Kairos still keeps it outside Git and redacts it from errors and evidence.
+
+## Official Monad environment verification
+
+The Aurora response itself used the generic `monad` label, so Kairos verified the returned contract against official Monad metadata instead of inferring an environment from ticker, decimals, or the asset ID:
+
+- Monad's official network documentation identifies Mainnet as chain ID `143` and Testnet as chain ID `10143`.
+- The official `monad-crypto/token-list` repository separates Mainnet and Testnet lists. At pinned revision `3a34e9b761422f52c7386ac2714f2d366c841ab9`, address `0x754704Bc059F8C67012fEd69BC8A327a5aafb603` occurs once in `tokenlist-mainnet.json` as USDC with chain ID `143` and 6 decimals.
+- The same address has zero matches in `tokenlist-testnet.json`, whose network is Monad Testnet.
+
+Reproducible read-only verification:
+
+```powershell
+git ls-remote https://github.com/monad-crypto/token-list.git HEAD
+# Fetch tokenlist-mainnet.json and tokenlist-testnet.json at the returned revision,
+# then compare the exact contract address in both lists.
+```
+
+Pinned sources:
+
+- `https://docs.monad.xyz/developer-essentials/changelog`
+- `https://docs.monad.xyz/developer-essentials/network-information`
+- `https://docs.monad.xyz/developer-essentials/testnet`
+- `https://github.com/monad-crypto/token-list/blob/3a34e9b761422f52c7386ac2714f2d366c841ab9/tokenlist-mainnet.json`
+- `https://github.com/monad-crypto/token-list/blob/3a34e9b761422f52c7386ac2714f2d366c841ab9/tokenlist-testnet.json`
+
+Therefore the Aurora-returned USDC is verified as a Monad Mainnet chain `143` asset. Kairos does not replace its configured Testnet token with this asset: identical ticker and decimals do not establish contract or deployment compatibility.
 
 ## Reproducible probe
 
@@ -95,7 +123,8 @@ Without a source selection, the authenticated probe may be run once to enumerate
 | Question | Result |
 |---|---|
 | Is Monad named as an Aurora Intents source and destination? | YES — official documentation |
-| Is Monad Testnet chain ID `10143` identified? | NO — the catalog says only `monad`; internal asset identifier `143` is not assumed to be an EVM chain ID |
+| Which environment contains the returned USDC contract? | Monad Mainnet, chain ID `143` — exact match in the pinned official Mainnet token list and absent from the Testnet list |
+| Is Monad Testnet chain ID `10143` represented by that returned asset? | NO |
 | Is Kuru testnet USDC `0x3bA3…1570` present in the token catalog? | NO — discovered `monad` USDC is `0x7547…b603` |
 | Is a source chain and exact origin asset selected? | NO — source selection is intentionally withheld because the destination fails exact matching |
 | Is a non-funding dry quote proven? | NOT RUN — the precondition failed, so no quote request was constructed or sent |
@@ -103,8 +132,14 @@ Without a source selection, the authenticated probe may be run once to enumerate
 
 ## Supported-environment implication
 
-Authenticated discovery exposes a different `monad` USDC contract and does not identify chain `10143`. Kairos must not relabel that route as testnet support. The only compatible product option would require confirming the catalog's exact Monad network and deploying Kairos/Kuru against its observed USDC contract, or Aurora adding the existing Kuru Testnet USDC. Either path is an external/environment change and any public or mainnet deployment requires separate authorization.
+Authenticated discovery exposes Monad Mainnet USDC, while the current Kairos policy, Kuru market, Privy lifecycle proof, and Envio indexer are on Monad Testnet `10143` with a different token contract. The available choices are therefore:
+
+1. preserve the current Testnet deployment and wait for Aurora to expose an exact route to `0x3bA3…1570` on chain `10143`;
+2. request authoritative Aurora confirmation or future support for that exact Testnet asset without building a workaround; or
+3. evaluate a separate Mainnet Kairos/Kuru deployment only as a future scope decision requiring compatible market evidence, complete redeployment/reconfiguration, and explicit authorization.
+
+Option 3 is not a migration plan and was not started. No current choice authorizes bridging, swapping, funding, or changing the configured token.
 
 ## Next action
 
-Do not request a dry quote for the current Kairos deployment. The next external dependency is authoritative Aurora confirmation of which EVM chain ID the returned `monad` assets map to, or catalog support for Monad Testnet `10143` and exact Kuru USDC `0x3bA3…1570`. If a future catalog returns an exact destination match, rerun discovery, select one exact source asset from that same response, and only then prepare a reviewed `dry: true` quote without creating a deposit or moving funds.
+Do not request a dry quote for the current Kairos deployment and do not reuse the exposed credential. The remaining route dependency is Aurora catalog support for Monad Testnet `10143` and exact Kuru USDC `0x3bA3…1570`. If a future catalog returns that exact destination under a newly rotated local credential, rerun discovery, select one exact source asset from the same response, and only then prepare a reviewed `dry: true` quote without creating a deposit or moving funds.
