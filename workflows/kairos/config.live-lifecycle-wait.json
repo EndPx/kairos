@@ -1,0 +1,16 @@
+{
+  "schedule": "0 */5 * * * *",
+  "chainSelectorName": "monad-testnet",
+  "chainId": "10143",
+  "rpcUrl": "https://rpc-testnet.monadinfra.com",
+  "blockTag": "latest",
+  "marketAddress": "0xa241896A7Dbe8a550D2E5fF7A914bB1989ceD2D9",
+  "policyAddress": "0x3cBdB8f7D91966AD543982b76CDb71a0283d3213",
+  "receiverAddress": "0x000000000000000000000000000000000000dEaD",
+  "orderId": "0",
+  "gasLimit": "750000",
+  "marketDataSource": "RPC_L2",
+  "policySource": "RPC_POLICY",
+  "submitReports": false,
+  "sourceRevision": "Kuru SDK 636509c2eafd63479d3f399703354e0d09f51e18; contracts 2060bb2736080c175d80d568bfdb6226bb5abd04; lifecycle policy deployment block 63220558"
+}

@@ -7,3 +7,8 @@ fixture-execute-settings:
   rpcs:
     - chain-name: monad-testnet
       url: https://rpc-testnet.monadinfra.com
+
+live-lifecycle-wait-settings:
+  rpcs:
+    - chain-name: monad-testnet
+      url: https://rpc-testnet.monadinfra.com

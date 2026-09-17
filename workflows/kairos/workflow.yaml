@@ -13,3 +13,11 @@ fixture-execute-settings:
     workflow-path: "./main.ts"
     config-path: "./config.fixture-execute.json"
     secrets-path: ""
+
+live-lifecycle-wait-settings:
+  user-workflow:
+    workflow-name: "kairos-live-lifecycle-wait"
+  workflow-artifacts:
+    workflow-path: "./main.ts"
+    config-path: "./config.live-lifecycle-wait.json"
+    secrets-path: ""
