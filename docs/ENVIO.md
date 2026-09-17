@@ -4,7 +4,7 @@
 
 Kairos uses Envio HyperIndex as the production boundary for mined order, fill, cancellation, and optional CRE receiver history. The earlier viem/JSON projector remains a local migration oracle and recovery test fixture; the application no longer treats it as the production history source.
 
-The repository implementation is complete through code generation, typed handler simulation, GraphQL parsing, and frontend unavailable/sync states. It has **not** indexed a public Kairos deployment because no Kairos policy has been deployed on Monad Testnet and no public deployment transaction is authorized by the Envio scope decision.
+The lifecycle-only Envio Cloud deployment is live on the free Development plan. It indexes the public Monad Testnet policy from its deployment block, has processed the real create/cancel events, and is consumed by `/orders`, order detail, and `/reports`. No `ExecutionSettled` or receiver event exists, so fill analytics and CRE correlation remain unproven.
 
 ## Version and source identity
 
@@ -12,15 +12,12 @@ The repository implementation is complete through code generation, typed handler
 - Network: Monad Testnet, chain ID `10143`.
 - Official HyperSync support: `https://envio.dev/chains/monad-testnet`.
 - Event ABIs: exact event-only copies of the compiled Hardhat artifacts for `KairosPolicy` and `KairosCreReceiver`.
-- Deployment identity: supplied at runtime through environment variables; no sentinel or predicted address is accepted as live evidence.
+- Lifecycle deployment identity: policy `0x3cBdB8f7D91966AD543982b76CDb71a0283d3213`, start block `63220558`, pinned in `config.yaml` only after receipt and immutable-configuration verification.
+- Live deployment commit and endpoint: `c6adc6416124d1428196a2d6b9ffc74866f5940e`; `https://indexer.dev.hyperindex.xyz/f319caf/v1/graphql`.
 
 ## Configurations
 
-`packages/envio-indexer/config.yaml` is lifecycle-only. It binds `KairosPolicy` through:
-
-- `ENVIO_KAIROS_POLICY_ADDRESS`;
-- `ENVIO_KAIROS_POLICY_START_BLOCK`; and
-- `ENVIO_API_TOKEN` for HyperSync access.
+`packages/envio-indexer/config.yaml` is lifecycle-only. It pins the verified public policy address and start block so the free Cloud plan does not depend on paid custom environment variables. The hosted public endpoint does not require an application API token.
 
 `packages/envio-indexer/config.execution.yaml` additionally binds `KairosCreReceiver` through:
 
@@ -60,17 +57,15 @@ wsl -d Ubuntu-24.04 -- bash "/mnt/d/path/to/kairos/scripts/verify-envio-wsl.sh" 
 
 Sentinel values test interpolation only. They are not written to Git, used for live indexing, or presented as deployment evidence.
 
-## Live pipeline procedure
+## Live pipeline result
 
-After an authorized deployment produces a confirmed policy address and deployment block:
+The authorized free Cloud setup completed on 2026-09-17:
 
-1. Record the deployment transaction, receipt, block number/hash, bytecode, and immutable configuration.
-2. Set the lifecycle environment variables and `ENVIO_API_TOKEN` locally; never commit `.env`.
-3. Run `pnpm envio:codegen` in Linux/WSL.
-4. Start self-hosted development with `pnpm --filter @kairos/envio-indexer dev`, or deploy the same Git revision to an approved free Envio Cloud project.
-5. Query `_meta`, `Order`, `Fill`, and `CreReport`; record endpoint revision, progress/source blocks, and event count.
-6. Configure the web server with `ENVIO_GRAPHQL_URL` and, only when required, its server-side admin secret.
-7. Compare HyperIndex actual totals with transaction receipts and `getOrder` at the Envio progress block.
-8. Capture create/cancel as the minimum real lifecycle proof. Do not claim fill analytics or CRE correlation until those public events exist.
+1. GitHub App access was restricted to `EndPx/kairos`.
+2. Project `endpx/kairos` uses branch `main`, root `packages/envio-indexer`, public visibility, and the Development/free plan.
+3. Deployment `c6adc64` reached Active and 100% sync with two lifecycle events.
+4. `_meta` returned `isReady: true`, start block `63220558`, first event block `63221326`, and two processed events.
+5. Order `0` matched the create/cancel receipts and pinned contract state.
+6. The application consumed the public endpoint after reload with no fixture substitution.
 
-No paid Envio plan, Cloud deployment, public contract deployment, or transaction is authorized by this document.
+Full runtime evidence is in `docs/evidence/M3_ENVIO_LIVE.md`. Do not claim fill analytics or CRE correlation until those public events exist. No paid plan was selected, and no transaction beyond the previously authorized lifecycle sequence occurred.

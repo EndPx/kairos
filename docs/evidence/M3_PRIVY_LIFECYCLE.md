@@ -69,15 +69,15 @@ pnpm web:typecheck  # exit 0
 pnpm web:build      # exit 0; /system/limited-deployment emitted
 ```
 
-## Envio boundary
+## Envio boundary at lifecycle completion
 
-The Envio OAuth account link succeeded. GitHub App installation was limited to the single repository `EndPx/kairos`; no organization-wide or additional repository access was selected. Installation remains blocked at GitHub sudo-mode verification, which requires the user to enter a verification code manually. No Envio API token, paid plan, deployed pipeline, or GraphQL endpoint was created.
+At the time the lifecycle transactions completed, Envio OAuth had succeeded and GitHub App installation was limited to the single repository `EndPx/kairos`, but installation still awaited user-only GitHub sudo verification. This historical blocker was later resolved without changing repository scope. The resulting live-pipeline evidence is recorded separately in `docs/evidence/M3_ENVIO_LIVE.md`.
 
-Consequently:
+At that initial capture:
 
 - the public `OrderCreated` and `OrderCancelled` events now exist and can be backfilled from policy start block `63220558`;
 - neither event is yet proven indexed by Envio;
 - `/orders`, order detail, and `/reports` are not yet proven to consume this deployment from a live Envio endpoint;
 - create/cancel evidence does not prove a fill, settlement aggregate, refund, or CRE report correlation.
 
-Next action: the user completes the open GitHub verification-code step. Then install the already repository-scoped Envio GitHub App, deploy the free lifecycle pipeline with the confirmed policy identity/start block, and compare the live GraphQL result and frontend state with the receipts and pinned contract snapshot above.
+Resolved follow-up: the user completed GitHub verification; the free public deployment at commit `c6adc64` indexed both events and the frontend recovered the cancelled order after reload. This lifecycle document retains the earlier blocker wording as chronology and does not claim fill/settlement evidence.

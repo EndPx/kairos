@@ -43,12 +43,12 @@ All statuses start NOT RUN. Each item must point to EVIDENCE.md before claiming 
 | ID | Status | Current evidence boundary |
 |---|---|---|
 | ENVIO-01 | PASS (repository implementation) | `envio` `3.12.0` is pinned; public lifecycle/execution configs, exact event ABIs, `schema.graphql`, typed handlers, and generated-type verification are committed |
-| ENVIO-02 | PARTIAL / BLOCKED at pipeline install | Public policy `0x3cBdB8f7D91966AD543982b76CDb71a0283d3213`, start block `63220558`, and real create/cancel events now exist. Envio GitHub App scope is limited to `EndPx/kairos`, but GitHub sudo verification is still awaiting manual user input; no running pipeline or indexed-event query exists. |
-| ENVIO-03 | PASS (implementation), BLOCKED (live query) | Application routes use the server-only Envio GraphQL boundary and pinned comparison-block reads; runtime endpoint evidence awaits ENVIO-02 |
-| ENVIO-04 | PARTIAL | Named lifecycle receipts now match a pinned contract snapshot, but no `ExecutionSettled` event exists; fill/refund/weighted-price aggregates remain fixture-only. |
-| ENVIO-05 | PARTIAL | Handler replay guard, Envio reorg configuration, `_meta` lag state, endpoint-failure tests, and no-fixture UI states pass; live reorg/restart behavior awaits a pipeline |
+| ENVIO-02 | PASS — lifecycle ingestion | Public deployment `c6adc64` is Active and 100% synced from policy block `63220558`; `_meta` reports two events and the live query returns the real create/cancel order. |
+| ENVIO-03 | PASS — live lifecycle consumption | `/orders`, `/orders/0`, and `/reports` consume the public endpoint, use the Envio comparison block for contract reads, and survive a full browser reload without fixtures. |
+| ENVIO-04 | PARTIAL | Named lifecycle receipts and zero aggregates match pinned contract state, but no `ExecutionSettled` event exists; nonzero input/output/refund/weighted-price proof remains unavailable. |
+| ENVIO-05 | PARTIAL | Live readiness, lag-zero display, reload, handler replay guard, reorg configuration, endpoint-failure tests, and no-fixture states pass; a public reorg has not been observed. |
 
-M3-Envio remains **PARTIAL** because its exit requires real Monad Testnet ingestion and reproducible end-to-end evidence.
+M3-Envio remains **PARTIAL** because lifecycle ingestion/E2E is proven but real settlement aggregates are not.
 
 Use unit/property or invariant tests for accounting and policy; adapter integration tests on the selected deployment/fork; E2E tests for user journeys.
 Fix failures before broadening features. Do not equate test mocks with completed sponsor acceptance.

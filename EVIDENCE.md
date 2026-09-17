@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: M3-ENVIO-LIVE / ENVIO-02–05 live lifecycle pipeline and frontend E2E
+- Date: 2026-09-17
+- Environment and chain ID: Envio Cloud Development/free deployment in EU; public HyperIndex GraphQL; Monad Testnet `10143`; Next.js application with authenticated Privy wallet
+- Version/commit/source URL: `envio` `3.12.0`; deployment commit `c6adc6416124d1428196a2d6b9ffc74866f5940e`; public endpoint `https://indexer.dev.hyperindex.xyz/f319caf/v1/graphql`; full record `docs/evidence/M3_ENVIO_LIVE.md`
+- Command or reproducible steps: restricted the Envio GitHub App to `EndPx/kairos`; created public project `endpx/kairos` on the Development/free plan with branch `main`, root `packages/envio-indexer`, and lifecycle `config.yaml`; pinned the receipt-verified policy/start block because custom environment variables require a paid plan; ran `scripts/verify-envio-wsl.sh`; pushed commit `c6adc64`; queried the public endpoint through `fetchEnvioHistory`; opened `/orders`, `/orders/0`, reloaded detail, and opened `/reports` in the authenticated browser
+- Result (PASS / FAIL / BLOCKED): PASS for ENVIO-02 and lifecycle-scoped ENVIO-03. The deployment reached Active and 100% sync in one minute, reporting two processed events for one address. `_meta` returned chain `10143`, `isReady: true`, start block `63220558`, first event block `63221326`, and two events. Order `0` returned owner/budget/timestamps matching the receipt and final `CANCELLED` status with zero spend/output and no fills/reports. `/orders`, detail after full reload, and `/reports` consumed the endpoint with lag zero and comparison-block contract reads. WSL verification codegenerated both configs, passed 2 files / 7 tests, and typechecked generated bindings. PARTIAL for ENVIO-04/05: zero aggregates and readiness/reload are proven, but no real `ExecutionSettled` event or observed public reorg exists.
+- Artifact / receipt / transaction hash: `docs/evidence/M3_ENVIO_LIVE.md`; deployment `c6adc64`; create `0x0a1da531b3a160ca072eb0bc043b39b7ee0afcf999553f9e9b16a5608764ea60`; cancel `0x2715db8a6b9783683c356b9d889eeed6d8635e561f47515ddb5ca0de60046cd6`; GraphQL endpoint above
+- Limitations (fixture, fork, testnet, simulation, live): This is real public-testnet lifecycle ingestion and real frontend consumption, not fixture substitution. There is no fill, refund, nonzero weighted price, CRE receiver event, or Kuru trade. Duplicate/reorg semantics remain test/config evidence rather than an observed public reorg. Browser console noise came from injected wallet extensions and did not produce an Envio/application failure.
+- Next action: Keep the public lifecycle deployment active. Obtain separate authorization and an execution-capable target before attempting a real settlement event; do not repeat the completed lifecycle sequence or present zero-fill history as settlement proof.
+
+---
+
 - ID and requirement: M3-PRIVY-01 / public lifecycle-only Privy E2E and M3-ENVIO-02 deployment prerequisite
 - Date: 2026-09-17
 - Environment and chain ID: Next.js application with Privy embedded EVM wallet on Monad Testnet `10143`; Foundation RPC receipt/state verification; Envio Cloud OAuth in the user's browser
