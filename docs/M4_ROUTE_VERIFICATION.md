@@ -38,7 +38,9 @@ Sources:
 
 ## Runtime credential boundary
 
-The rotated key was not visible to the current process, Windows user/machine environment, root/application environment files, or a discoverable Windows credential-manager label. Only variable names were inspected; no secret value was printed. The previously exposed key was not reused.
+During the original verification, the rotated key was not visible to the current process, Windows user/machine environment, root/application environment files, or a discoverable Windows credential-manager label. Only variable names were inspected; no secret value was printed, and the previously exposed key was not reused in that run.
+
+The user subsequently authorized reuse of the existing key instead of another rotation. Its value is still absent from local environment/file storage. A masked interactive prompt now provides a process-only path: it sets `AURORA_API_KEY` only for `pnpm aurora:probe`, clears the variable afterward, and does not copy the value into Git, command text, or evidence. Authenticated discovery remains blocked until that local prompt receives the key.
 
 The probe reads `AURORA_API_KEY` from the process or ignored root `.env.local`. Aurora's current documentation describes the application key as public-facing, but Kairos still keeps it outside Git and redacts it from errors and evidence.
 
@@ -89,4 +91,4 @@ If authenticated discovery exposes `monad` only for a production/mainnet asset r
 
 ## Next action
 
-Make the rotated key available locally as `AURORA_API_KEY` in the repository root `.env.local` or the launching process environment. Do not send it in chat. The next run will perform supported-token discovery only. If and only if the exact destination exists, Kairos will select an observed source asset and prepare a `dry: true` quote request for review without creating a deposit or moving funds.
+Enter the already-authorized existing key in the open masked local prompt. The next run performs supported-token discovery only and clears the process variable afterward. If and only if the exact destination exists, Kairos will select an observed source asset and prepare a `dry: true` quote request for review without creating a deposit or moving funds.

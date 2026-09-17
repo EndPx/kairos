@@ -16,6 +16,30 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: HOST-01 / truthful lifecycle-only frontend hosting readiness
+- Date: 2026-09-17
+- Environment and chain ID: Windows Node `v24.18.0`; pnpm `10.21.0`; Next.js `16.3.5`; prepared target Vercel with `apps/web` root; displayed/read network Monad Testnet `10143`; no hosting deployment or chain transaction
+- Version/commit/source URL: implementation commit `1070b83fa36e344c795d3f5a4d5d7f9f241bceec`; Vercel monorepo, package-manager, and environment-variable documentation reviewed 2026-09-17
+- Command or reproducible steps: `pnpm web:test`; `pnpm web:typecheck`; `pnpm web:build`; `git diff --check`; credential-pattern scan of the complete change
+- Result (PASS / FAIL / BLOCKED): PASS for local deployment readiness. Final Vitest run reported 17 files / 49 tests; typecheck exited `0`; the production build exited `0` and emitted all application routes. The default/unknown deployment mode resolves to `lifecycle-only`, the UI displays the boundary, wallet writes are blocked, and create-order navigation is absent. The first test run correctly failed one stale landing assertion that expected the removed create CTA; the assertion was updated to require the new safety boundary before the final clean run. BLOCKED for hosting evidence because no preview or production deployment is authorized.
+- Artifact / receipt / transaction hash: `apps/web/vercel.json`; `apps/web/src/lib/runtime-config.ts`; `docs/HOSTING_READINESS.md`; no deployment URL, receipt, or transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): This proves local build/configuration behavior only. It does not prove Vercel runtime behavior, Privy origin configuration on a future domain, public Kuru execution, CRE delivery, Aurora funding, or settlement history.
+- Next action: after explicit hosting authorization, create a Vercel project rooted at `apps/web`, configure only the documented public/server values, add the generated HTTPS origin to Privy, and validate the lifecycle-only preview before any production promotion.
+
+---
+
+- ID and requirement: HANDOFF-01 / Kuru public-execution handoff and continuous demo gap map
+- Date: 2026-09-17
+- Environment and chain ID: Evidence review only; selected external network Monad Testnet `10143`; fixed-fork source block `62944132`; no RPC retry, external message, deployment, or transaction
+- Version/commit/source URL: Kuru implementation `0x72cae0a99c19b574e8a6de558f43fc1d019c9374`; contracts revision `2060bb2736080c175d80d568bfdb6226bb5abd04`; SDK/ABI revision `636509c2eafd63479d3f399703354e0d09f51e18`; prior fork and M3/Envio evidence
+- Command or reproducible steps: mapped existing immutable implementation/source identities and fork results into `docs/KURU_TECHNICAL_HANDOFF.md`; mapped each step of the one required demo into `docs/CORE_DEMO_ACCEPTANCE.md`; no failed metadata endpoint was retried
+- Result (PASS / FAIL / BLOCKED): PASS for the requested internal handoff and evidence mapping. The requested external artifact is the exact standard-JSON compiler input/output or deployment manifest including Solady revision/source hashes and build/link settings. The continuous demo remains BLOCKED: create and lifecycle indexing are public, automation is simulation/local implementation evidence, settlement/output are fixed-fork evidence, and no real `ExecutionSettled` exists for Envio/frontend consumption.
+- Artifact / receipt / transaction hash: `docs/KURU_TECHNICAL_HANDOFF.md`; `docs/CORE_DEMO_ACCEPTANCE.md`; prior fork hash `0xb5a5a55678513ced1b7a43da8bed39a2d3b3e9284c34c0dc6e033ed12c914098`; no new receipt or transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): This is a consolidation of existing proof, not new Kuru source equivalence, audit evidence, user demand, public settlement, or sponsor communication.
+- Next action: obtain the exact Kuru build artifact without repeating prior blind searches, compare runtime bytecode, then prepare a separately authorized bounded public-testnet execution deployment and transaction plan.
+
+---
+
 - ID and requirement: SUB-03 / clean-checkout public CI reproducibility
 - Date: 2026-09-17
 - Environment and chain ID: GitHub-hosted `ubuntu-latest`; Node `22.23.2`; pnpm `10.21.0`; no sponsor credentials, RPC fork mutation, or public transaction
