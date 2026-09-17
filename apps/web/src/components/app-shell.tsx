@@ -15,6 +15,7 @@ import type {ReactNode} from 'react';
 
 import {runtimeConfig} from '@/lib/runtime-config';
 
+import {StatePanel} from './primitives';
 import {WalletControl} from './wallet-control';
 
 const navigation: ReadonlyArray<{
@@ -23,7 +24,9 @@ const navigation: ReadonlyArray<{
   icon: typeof Blocks;
 }> = [
   {href: '/', label: 'Overview', icon: Blocks},
-  {href: '/orders/new', label: 'Create order', icon: Plus},
+  ...(runtimeConfig.deploymentMode === 'execution'
+    ? [{href: '/orders/new' as Route, label: 'Create order', icon: Plus}]
+    : []),
   {href: '/orders', label: 'Orders', icon: ClipboardList},
   {href: '/reports' as Route, label: 'Reports', icon: FileCheck2},
   {href: '/system', label: 'System', icon: ListTree},
@@ -105,6 +108,12 @@ export function AppShell({children}: {children: ReactNode}) {
       </header>
 
       <main className="app-main" id="main-content">
+        {runtimeConfig.deploymentMode === 'lifecycle-only' ? (
+          <StatePanel state="missing" title="Lifecycle-only public deployment">
+            This site presents the verified create/cancel history. Wallet writes and Kuru execution remain disabled
+            until the public execution interlock is cleared.
+          </StatePanel>
+        ) : null}
         {children}
       </main>
     </div>

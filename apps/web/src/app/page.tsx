@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 import {AppShell} from '@/components/app-shell';
 import {KeyValueList, PageHeader, SourceBadge, StatusPill} from '@/components/primitives';
+import {runtimeConfig} from '@/lib/runtime-config';
 
 export default function HomePage() {
   return (
@@ -13,9 +14,11 @@ export default function HomePage() {
           description="Kairos sizes each proposed USDC → MON fill against Kuru liquidity, while an onchain policy keeps the budget, schedule, price, assets, recipient, and lifecycle bounded. Unused funds stay in your wallet."
           actions={
             <>
-              <Link className="button" href="/orders/new">
-                Create bounded order
-              </Link>
+              {runtimeConfig.deploymentMode === 'execution' ? (
+                <Link className="button" href="/orders/new">
+                  Create bounded order
+                </Link>
+              ) : null}
               <Link className="button" data-tone="quiet" href="/orders">
                 Inspect history
               </Link>

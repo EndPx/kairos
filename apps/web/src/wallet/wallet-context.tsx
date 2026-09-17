@@ -125,6 +125,9 @@ function parseChainId(chainId: string | undefined): number | undefined {
 
 function transactionBlockers(): string[] {
   const blockers: string[] = [];
+  if (runtimeConfig.deploymentMode === 'lifecycle-only') {
+    blockers.push('This deployment is lifecycle-only. Wallet writes and Kuru execution are disabled.');
+  }
   if (!runtimeConfig.policyAddress) blockers.push('Kairos policy address is not configured.');
   if (!runtimeConfig.inputTokenAddress) blockers.push('Input token address is not configured.');
   if (!runtimeConfig.marketAddress) blockers.push('Kuru market address is not configured.');
