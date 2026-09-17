@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: HOST-02 / read-only preview labeling and lifecycle-proof separation
+- Date: 2026-09-17
+- Environment and chain ID: Windows Node `v24.18.0`; pnpm `10.21.0`; Next.js `16.3.5`; local production build only; displayed/read network Monad Testnet `10143`; no hosting deployment or chain transaction
+- Version/commit/source URL: application shell, landing-page assertion, and `docs/HOSTING_READINESS.md` in this evidence commit
+- Command or reproducible steps: `pnpm web:test`; `pnpm web:typecheck`; `pnpm web:build`; `git diff --check`; credential-pattern scan of the complete change
+- Result (PASS / FAIL / BLOCKED): PASS. Vitest reported 17 files / 49 tests; typecheck exited `0`; the production build exited `0` and emitted every application route. The UI says `Read-only preview`, explains that it reads separately verified public create/cancel history, and keeps all wallet writes plus Kuru execution disabled.
+- Artifact / receipt / transaction hash: `apps/web/src/components/app-shell.tsx`; `apps/web/src/app/page.test.tsx`; `docs/HOSTING_READINESS.md`; no deployment URL, receipt, or transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): This is local UI/build evidence. The prior public lifecycle proof remains the separate Monad Testnet/Envio record; it is not evidence that this preview has been hosted. No public settlement, Aurora funding, or Kuru execution was performed.
+- Next action: retain this read-only boundary for any future authorized preview deployment and verify the exact hosted origin separately.
+
+---
+
 - ID and requirement: M4-02 / authenticated Aurora destination-token discovery
 - Date: 2026-09-17
 - Environment and chain ID: Aurora Intents personal portal plus Windows Node `v24.18.0`; intended destination Monad Testnet `10143`; read-only HTTPS token discovery only

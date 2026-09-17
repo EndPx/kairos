@@ -6,7 +6,7 @@ Date: 2026-09-17
 
 The prepared target is a Vercel Next.js project connected to `EndPx/kairos` with project root `apps/web`, Node.js 22.x, and the committed `apps/web/vercel.json`. Vercel is selected because the application already uses Next.js server routes and a pnpm workspace. This document and configuration are deployment preparation only: no Vercel project, preview, production deployment, domain, or paid service has been created or authorized.
 
-The first hosted configuration must remain **lifecycle-only**. `NEXT_PUBLIC_KAIROS_DEPLOYMENT_MODE=lifecycle-only` is the fail-closed default: the global notice is visible, wallet writes are blocked, and create-order navigation is hidden. The public site may display the verified lifecycle history but must not suggest that a Kuru trade can execute.
+The prepared hosted configuration is a **read-only preview**. `NEXT_PUBLIC_KAIROS_DEPLOYMENT_MODE=lifecycle-only` is the fail-closed technical mode: the global preview notice is visible, wallet writes are blocked, and create-order navigation is hidden. The preview may read the separately verified public lifecycle history but must not present that testnet proof as a hosting deployment or suggest that a Kuru trade can execute. No Vercel deployment currently exists.
 
 ## Verified public deployment configuration
 
@@ -42,7 +42,7 @@ pnpm web:build
 
 After a preview URL exists, add that exact HTTPS origin to Privy, rebuild the preview, then verify:
 
-1. the lifecycle-only notice is visible on every route;
+1. the read-only preview notice is visible on every route;
 2. create-order navigation and all wallet write controls are unavailable;
 3. `/orders`, `/orders/0`, and `/reports` read the live Envio endpoint;
 4. order `0` remains `CANCELLED` and the index synchronization state is visible;

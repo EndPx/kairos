@@ -109,9 +109,9 @@ export function AppShell({children}: {children: ReactNode}) {
 
       <main className="app-main" id="main-content">
         {runtimeConfig.deploymentMode === 'lifecycle-only' ? (
-          <StatePanel state="missing" title="Lifecycle-only public deployment">
-            This site presents the verified create/cancel history. Wallet writes and Kuru execution remain disabled
-            until the public execution interlock is cleared.
+          <StatePanel state="missing" title="Read-only preview">
+            This preview reads the separately verified public create/cancel history. Wallet writes and Kuru execution
+            remain disabled until the public execution interlock is cleared.
           </StatePanel>
         ) : null}
         {children}
