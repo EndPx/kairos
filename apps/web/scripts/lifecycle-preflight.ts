@@ -93,6 +93,7 @@ console.log(JSON.stringify({
   chainId,
   blockNumber: block.number.toString(),
   blockHash: block.hash,
+  blockTimestamp: block.timestamp.toString(),
   baseNonce: baseNonce.toString(),
   currentPendingNonce: currentNonce,
   balanceWei: balance.toString(),
