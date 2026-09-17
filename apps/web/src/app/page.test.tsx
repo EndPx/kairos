@@ -1,13 +1,19 @@
 import {render, screen} from '@testing-library/react';
-import {describe, expect, it} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 
 import HomePage from './page';
 
+vi.mock('next/navigation', () => ({usePathname: () => '/'}));
+
 describe('HomePage', () => {
-  it('identifies the application while product screens are assembled', () => {
+  it('presents the product boundary and routes evaluators to real evidence', () => {
     render(<HomePage />);
 
-    expect(screen.getByRole('heading', {level: 1, name: 'Kairos'})).toBeInTheDocument();
-    expect(screen.getByText(/verified primitives/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', {level: 1, name: /execute within your limits/i})).toBeInTheDocument();
+    expect(screen.getByText(/unused funds stay in your wallet/i)).toBeInTheDocument();
+    expect(screen.getByRole('link', {name: /create bounded order/i})).toHaveAttribute('href', '/orders/new');
+    expect(screen.getByRole('link', {name: /open order 0/i})).toHaveAttribute('href', '/orders/0');
+    expect(screen.getByText(/public Kuru trades/i)).toBeInTheDocument();
+    expect(screen.getByText('Not claimed')).toBeInTheDocument();
   });
 });

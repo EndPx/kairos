@@ -9,6 +9,7 @@ Completed:
 - User-provided Metropolis resource update incorporated into implementation references and environment matrix; no sponsor runtime capability is implied.
 - Submission-facing repository documentation translated to English; user communication remains Indonesian per `AGENTS.md`.
 - Submission entrypoint upgraded for judging: `README.md` now exposes the problem, audience, architecture, exact proof boundaries, public lifecycle deployment, reproducible quickstart, verification commands, and repository map; `docs/SUBMISSION.md` adds the evidence-backed pitch, measured validation, demo path, and adoption wedge. This is presentation work only and does not upgrade any integration claim.
+- Submission overview route upgraded: `/` now replaces the obsolete assembly placeholder with the existing application shell, product/control boundaries, direct order/history/report paths, and explicitly sourced evidence. Responsive QA at 375/768/1280 px found no horizontal overflow; the mobile menu remained operable. No integration status changed.
 - M0.1 repository baseline: clean `main` tracking `origin/main`; repository currently contains handoff documentation only.
 - M0.2 toolchain selection and M0.3 credential inventory recorded without installing packages or storing secrets.
 - M0.4 Monad Testnet public-read probe and M0.5 Kuru deployment/token reads recorded; Kuru write compatibility remains blocked on source ABI and funded test authorization.

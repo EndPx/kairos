@@ -16,6 +16,20 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: SUB-02 / evaluator-facing application overview
+- Date: 2026-09-17
+- Environment and chain ID: Next.js `16.3.5`; React `19.3.0`; Windows local production build; browser QA at 375, 768, and 1280 px; displayed network Monad Testnet `10143`
+- Version/commit/source URL: based on submission documentation commit `b84da874fa31dc67d1494e095b3dc65f7b2895d5`; implementation in `apps/web/src/app/page.tsx`
+- Command or reproducible steps: `pnpm web:test`; `pnpm web:typecheck`; `pnpm web:build`; `pnpm --dir apps/web exec react-doctor --verbose --scope changed`; real-browser inspection of `/` at 375/768/1280 px including DOM overflow/landmark checks, desktop/mobile navigation state, mobile menu expansion, and browser error-log inspection
+- Result (PASS / FAIL / BLOCKED): PASS. Vitest reported 16 files / 47 tests; TypeScript exited `0`; the production build compiled and generated `/`; React Doctor scored 100/100 across the two changed files. Each viewport had one `h1`, one `main`, no horizontal overflow, and the intended single/two-column reflow. Desktop rail and mobile header switched at the documented breakpoint; the 375 px menu expanded with every route visible. Browser error log was empty.
+- Artifact / receipt / transaction hash: `apps/web/src/app/page.tsx`; `apps/web/src/app/page.test.tsx`; no public transaction or integration artifact
+- Limitations (fixture, fork, testnet, simulation, live): This is local UI/build evidence. The page links to existing public lifecycle data but does not create a hosted demo, public Kuru fill, CRE delivery, Aurora route, or broader runtime proof. Development-only React/Next inspection controls appeared during QA and remain excluded from the production build by the existing gate.
+- Next action: publish the verified frontend to an authorized host, then rerun the same routes against the deployment before adding a live-demo URL to the submission.
+
+Historical command note retained: the initial combined verification wrapper returned while the first production build process was still finishing. An immediate second invocation correctly failed with `Another next build process is already running`; after the original process exited, an isolated `pnpm web:build` completed with exit `0` and the result above.
+
+---
+
 - ID and requirement: SUB-01 / public hackathon repository language and evaluator entrypoint
 - Date: 2026-09-17
 - Environment and chain ID: Windows repository audit; public GitHub repository; documentation-only change; public evidence still targets Monad Testnet `10143`
