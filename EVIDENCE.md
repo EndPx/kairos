@@ -16,6 +16,18 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: SUB-01 / public hackathon repository language and evaluator entrypoint
+- Date: 2026-09-17
+- Environment and chain ID: Windows repository audit; public GitHub repository; documentation-only change; public evidence still targets Monad Testnet `10143`
+- Version/commit/source URL: audit baseline `6724e60bc82469d36afb7fe9bed715e79a9d9ffb`; public repository `https://github.com/EndPx/kairos`; new artifacts `README.md` and `docs/SUBMISSION.md`
+- Command or reproducible steps: `gh repo view EndPx/kairos --json ...`; scan every tracked file for a bounded Indonesian-language term set; resolve every local Markdown link in the new entrypoint documents; run `git diff --check`; run credential-shape and tracked-environment-file scans
+- Result (PASS / FAIL / BLOCKED): PASS for the repository-facing language and documentation boundary. The public repository is non-fork, public, and uses `main`; the tracked-file language scan returned zero Indonesian phrase matches; every local link in `README.md` and `docs/SUBMISSION.md` resolved; the new files contain no credential-shaped values. The entrypoint now separates live lifecycle, simulation, fork, blocked route, and unproven public-execution claims while giving a fresh evaluator install/run/verify paths.
+- Artifact / receipt / transaction hash: `README.md`; `docs/SUBMISSION.md`; no new chain transaction or runtime artifact
+- Limitations (fixture, fork, testnet, simulation, live): This improves submission legibility only. It does not create a hosted frontend, demo video, pitch deck, public Kuru fill, deployed CRE delivery, Aurora route, user research, or adoption data. Existing proof boundaries remain unchanged.
+- Next action: publish a hosted read-only frontend and record the evidence-backed demo/deck without upgrading lifecycle, simulation, or fork evidence into a public settlement claim.
+
+---
+
 - ID and requirement: M4-01 / Aurora source-destination-token route verification foundation
 - Date: 2026-09-17
 - Environment and chain ID: Windows Node `v24.18.0`; documentation/API schema reads; intended destination Monad Testnet `10143`; no authenticated Aurora request or transaction
