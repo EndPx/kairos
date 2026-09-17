@@ -1,5 +1,5 @@
 # Evidence ledger
-Runtime tests, replays, local fixtures, and fixed-fork proofs are recorded below with their boundaries. No public Kairos deployment or public execution transaction is claimed.
+Runtime tests, replays, local fixtures, fixed-fork proofs, and the bounded public lifecycle deployment are recorded below with their boundaries. No public Kuru execution or settlement transaction is claimed.
 
 Add records:
 - ID and requirement:
@@ -13,6 +13,18 @@ Add records:
 - Next action:
 
 Documentation reads are context evidence only. Keep runtime proof separate.
+
+---
+
+- ID and requirement: M3-PRIVY-01 / public lifecycle-only Privy E2E and M3-ENVIO-02 deployment prerequisite
+- Date: 2026-09-17
+- Environment and chain ID: Next.js application with Privy embedded EVM wallet on Monad Testnet `10143`; Foundation RPC receipt/state verification; Envio Cloud OAuth in the user's browser
+- Version/commit/source URL: `@privy-io/react-auth` `3.42.0`; viem `2.56.5`; Next.js `16.3.5`; cleanup/evidence implementation commit `1f4dbab68088d30242cf4898a8cd460dbd8c0536`; full receipt record in `docs/evidence/M3_PRIVY_LIFECYCLE.md`
+- Command or reproducible steps: verified fresh cancel and revoke estimates with `pnpm --dir apps/web exec tsx scripts/lifecycle-preflight.ts`; submitted all six authorized actions through the Kairos/Privy UI without repeating a successful nonce; decoded `OrderCreated` and `OrderCancelled` against the compiled event ABI; ran `pnpm --dir apps/web exec tsx scripts/lifecycle-evidence.ts` with all six hashes; ran `pnpm web:test`, `pnpm web:typecheck`, and `pnpm web:build`; authorized Envio OAuth and selected only `EndPx/kairos` in the GitHub App repository scope
+- Result (PASS / FAIL / BLOCKED): PASS for PRIVY-01 at the lifecycle-only boundary. All six transactions succeeded at wallet nonces `0–5`; adapter `0x2EE968D016bfF614a516E6e1D469769b9a771269` and policy `0x3cBdB8f7D91966AD543982b76CDb71a0283d3213` have bytecode; actual aggregate gas was `0.21368949 MON`, below the `0.23 MON` authorization. Snapshot block `63227224`, hash `0xb80d9fb34b0caf3e0b3ea372f1903d6ddc679542575fed902c267711e89f14de`, reports order `0` as `CANCELLED`, spent/output/execution nonce all zero, and allowance zero. Web Vitest reported 16 files / 47 tests; typecheck and production build exited `0`. PARTIAL/BLOCKED for ENVIO-02: the public policy/start block and real events now exist, OAuth succeeded, and GitHub App scope was limited to the one repository; installation remains at the user-only GitHub sudo verification-code prompt, so there is no pipeline, GraphQL query, or Envio-backed frontend result.
+- Artifact / receipt / transaction hash: `docs/evidence/M3_PRIVY_LIFECYCLE.md`; adapter `0xff0a25e0c3c20541fa0bb0f1b133bc675c0da114e3f7d848a0e4e80d9c33347a`; policy `0xc4a512b05c622da97a15277f0ad5ad130dcbd640cf3ae70f66f1ce846396d611`; approve `0xdcb30e9fb538946728e056abc6ea2b02fafdc8ffc3d2979a9f6f150c949f679d`; create `0x0a1da531b3a160ca072eb0bc043b39b7ee0afcf999553f9e9b16a5608764ea60`; cancel `0x2715db8a6b9783683c356b9d889eeed6d8635e561f47515ddb5ca0de60046cd6`; revoke `0x3de58c84ee0ad0be1beb8913873d797adae859ed1a830741a84301d3e11a6d49`
+- Limitations (fixture, fork, testnet, simulation, live): This is real public-testnet lifecycle evidence, but the adapter and dead-executor policy deliberately cannot execute. Create/cancel do not prove a fill, actual settlement aggregates, refund behavior, CRE correlation, or Envio ingestion. The cleanup panel uses pinned contract reads and is explicitly not a fallback for `/orders` history. No Envio token, paid plan, additional repository permission, Kuru call, CRE deployment, Aurora action, or mainnet transaction occurred.
+- Next action: The user enters the GitHub verification code in the open `Confirm access` tab. Then finish installation/deployment on the free Envio path, backfill policy `0x3cBdB8f7D91966AD543982b76CDb71a0283d3213` from block `63220558`, and compare live GraphQL/frontend create/cancel state with the named receipts and pinned contract snapshot.
 
 ---
 

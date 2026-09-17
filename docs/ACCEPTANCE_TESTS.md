@@ -43,9 +43,9 @@ All statuses start NOT RUN. Each item must point to EVIDENCE.md before claiming 
 | ID | Status | Current evidence boundary |
 |---|---|---|
 | ENVIO-01 | PASS (repository implementation) | `envio` `3.12.0` is pinned; public lifecycle/execution configs, exact event ABIs, `schema.graphql`, typed handlers, and generated-type verification are committed |
-| ENVIO-02 | BLOCKED | No authorized public Kairos deployment, actual address/start block, API token, or live indexed event exists |
+| ENVIO-02 | PARTIAL / BLOCKED at pipeline install | Public policy `0x3cBdB8f7D91966AD543982b76CDb71a0283d3213`, start block `63220558`, and real create/cancel events now exist. Envio GitHub App scope is limited to `EndPx/kairos`, but GitHub sudo verification is still awaiting manual user input; no running pipeline or indexed-event query exists. |
 | ENVIO-03 | PASS (implementation), BLOCKED (live query) | Application routes use the server-only Envio GraphQL boundary and pinned comparison-block reads; runtime endpoint evidence awaits ENVIO-02 |
-| ENVIO-04 | PARTIAL | Fixture handler tests prove integer cumulative accounting and weighted price; named public receipts/state comparison does not exist |
+| ENVIO-04 | PARTIAL | Named lifecycle receipts now match a pinned contract snapshot, but no `ExecutionSettled` event exists; fill/refund/weighted-price aggregates remain fixture-only. |
 | ENVIO-05 | PARTIAL | Handler replay guard, Envio reorg configuration, `_meta` lag state, endpoint-failure tests, and no-fixture UI states pass; live reorg/restart behavior awaits a pipeline |
 
 M3-Envio remains **PARTIAL** because its exit requires real Monad Testnet ingestion and reproducible end-to-end evidence.

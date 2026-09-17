@@ -1,6 +1,6 @@
 # M3 limited Privy lifecycle deployment plan
 
-Status: prepared only; **not authorized and not executed**.
+Status: **executed on Monad Testnet within the authorized lifecycle-only boundary**. Receipt and state evidence is recorded in `docs/evidence/M3_PRIVY_LIFECYCLE.md`.
 
 Purpose: provide a real Monad Testnet target for the PRIVY-01 approve/create/cancel/revoke wallet demonstration without enabling Kairos execution or a public Kuru trade.
 
@@ -8,8 +8,8 @@ Purpose: provide a real Monad Testnet target for the PRIVY-01 approve/create/can
 
 - Network: Monad Testnet, chain ID `10143` (`0x279f`).
 - Wallet: one user-controlled Privy embedded EVM wallet acts as contract deployer and order owner.
-- Required native balance: at least `0.23 MON` of testnet gas for the declared full-sequence cap. An initial authenticated-wallet read returned `0 MON`; a later fresh read on 2026-09-17 returned `5 MON`, so the gas-readiness blocker is removed. No transaction was authorized or submitted.
-- Required USDC movement: none. Approval is capped at `1,000,000` USDC-6 units (`1 USDC`), but no transfer or execution is planned.
+- Required native balance: the sequence was authorized with a `0.23 MON` aggregate cap and completed for `0.21368949 MON` actual gas cost.
+- Required USDC movement: none. Approval was capped at `1,000,000` USDC-6 units (`1 USDC`); no transfer or execution occurred, and the allowance was returned to zero.
 - No CRE owner key, workflow deployment, receiver activation, delegated signer, sponsorship, or Aurora route is part of this plan.
 
 ## Contracts and immutable configuration
@@ -38,9 +38,9 @@ The deploy script must read the wallet nonce, precompute both CREATE addresses, 
 
 `KairosCreReceiver` is deliberately excluded. The written CRE criterion is already met by simulation, and receiver deployment without a deployed workflow identity would add gas without improving the Privy lifecycle proof.
 
-## Planned user-confirmed transactions
+## Executed user-confirmed transactions
 
-Every transaction remains visible in the Privy wallet and requires user confirmation:
+Every transaction was visible in the Privy wallet and received user-authorized confirmation:
 
 1. Deploy `KuruAdapterBoundary` with the predicted policy address.
 2. Deploy `KairosPolicy` with the dead executor and deployed disabled adapter.
@@ -85,4 +85,4 @@ The bounded Monad Testnet read on 2026-09-17 returned `eth_gasPrice = 1020000000
 
 ## Authorization boundary
 
-A future authorization request should cover exactly the six transactions above on Monad Testnet from the selected Privy embedded wallet, with allowance capped at `1 USDC`, aggregate gas limit capped at `2,210,000`, worst-case gas spend capped at `0.23 MON`, and zero intentional token transfer. It must not authorize receiver activation, CRE deployment, policy execution, Kuru trading, Aurora funding, mainnet activity, or publication.
+The consumed authorization covered exactly the six transactions above on Monad Testnet from the selected Privy embedded wallet, with allowance capped at `1 USDC`, aggregate gas limit capped at `2,210,000`, worst-case gas spend capped at `0.23 MON`, and zero intentional token transfer. It did not authorize receiver activation, CRE deployment, policy execution, Kuru trading, Aurora funding, mainnet activity, or publication. No additional transaction is authorized by this completed plan.
