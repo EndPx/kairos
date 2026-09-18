@@ -67,7 +67,7 @@ The public HyperIndex deployment starts at the verified policy deployment block 
 
 ### Aurora Intents
 
-The integration begins with strict supported-token discovery. It requires the exact destination chain, token contract, and decimals to match the Kuru market before a route can become usable. Current primary documentation establishes generic Monad support but not Monad Testnet `10143` or the exact Kuru testnet USDC route, so funding remains blocked before quote creation or value movement.
+The integration begins with strict supported-token discovery. It requires the exact destination chain, token contract, and decimals to match the Kuru market before a route can become usable. Authenticated discovery maps the available Monad USDC to Mainnet chain `143`, not the current Monad Testnet `10143` Kuru token. A user-relayed Aurora team response says there is no separate testnet. M4 is unmet and parked before quote creation or value movement, pending an explicit Mainnet-scope decision or an official support change.
 
 ## Measured validation
 
@@ -82,7 +82,7 @@ The integration begins with strict supported-token discovery. It requires the ex
 | CRE real-policy cancelled WAIT handler | `3486 ms` | Simulation; real same-block reads |
 | Adaptive engine tests | `24` passing | Replay and fixtures |
 | Web tests after M3 recovery work | `39` passing | Local component/journey tests |
-| Aurora route-boundary tests | `8` passing | No authenticated route claim |
+| Aurora route-boundary tests | `8` passing | Authenticated discovery; no route matching the current deployment and no quote |
 
 These are engineering-validation measurements, not user adoption or trading-performance claims. Kairos has not published ROI, price-improvement, or user-growth numbers.
 

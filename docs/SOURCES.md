@@ -51,7 +51,7 @@ Do not assume sponsorship/batching on selected network. If a .md URL fails, try 
 - https://docs.intents.aurora.dev/ — official products overview. Read.
 - https://docs.intents.aurora.dev/intents-deposits/quickstart/api-integration — recipient/refund/status flow. Read.
 - https://docs.intents.aurora.dev/intents-deposits/quickstart — quickstart index. Read.
-- https://docs.intents.aurora.dev/intents-connect/supported-chains — linked from docs; failed retrieval in session.
+- https://docs.intents.aurora.dev/intents-connect/supported-chains — reviewed through its official Markdown representation on 2026-09-18; lists Monad as supported for source and destination but does not label Testnet/Mainnet environments.
 - https://docs.intents.aurora.dev/intents-deposits/supported-chains — linked from docs; re-fetch.
 - https://docs.intents.aurora.dev/getting-started/api-keys-and-fees — linked from docs; re-fetch.
 - https://intents.aurora.dev/ — product overview. Read.
@@ -59,6 +59,8 @@ Do not assume sponsorship/batching on selected network. If a .md URL fails, try 
 - https://docs.intents.aurora.dev/api-reference/swap-api-reference/get-supported-tokens.md — reviewed 2026-09-17; OpenAPI `0.0.1`, authoritative `GET /api/tokens/{apiKey}`, token schema includes `monad`, exact contract/asset discovery still requires a key.
 - https://docs.intents.aurora.dev/api-reference/swap-api-reference/request-a-quote.md — reviewed 2026-09-17; authoritative `POST /api/quote/{apiKey}`, `dry: true` omits deposit-address/activation fields, and requests use smallest-unit amounts plus explicit recipient/refund identities.
 API examples require revalidation against endpoint reference, not blind copying. Exact token IDs, route, account key, destination, and refund handling remain unproven. Do not assume Connect and Deposits share support matrices.
+
+User-relayed source, 2026-09-18: the user reports that an Aurora team member said, “Please check here for the list of supported chains. Also, there is no separate testnet,” linking the Intents Connect page above. This is not an independently observed Telegram message; no permalink or message metadata is claimed.
 
 ## Envio
 - https://envio.dev/chains/monad-testnet — official chain page; reviewed 2026-09-17. It identifies Monad Testnet chain ID `10143` as first-class for HyperIndex, HyperSync, and HyperRPC and publishes the testnet service endpoints.

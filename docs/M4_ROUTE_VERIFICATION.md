@@ -1,8 +1,8 @@
 # M4 Aurora route verification
 
-Date: 2026-09-17
+Date: 2026-09-18
 
-Status: **PARTIAL / no direct funding route matches the current Kairos deployment**
+Status: **PARKED / M4 exit unmet — no direct funding route matches the current Kairos deployment**
 
 No quote, deposit address, transfer, transaction-history lookup, or public transaction was created during this verification.
 
@@ -30,11 +30,18 @@ The supported-chains table does not publish a chain ID or distinguish Monad main
 
 Sources:
 
+- `https://docs.intents.aurora.dev/intents-connect/supported-chains`
 - `https://docs.intents.aurora.dev/intents-deposits/supported-chains.md`
 - `https://docs.intents.aurora.dev/api-reference/swap-api-reference/get-supported-tokens.md`
 - `https://docs.intents.aurora.dev/api-reference/swap-api-reference/request-a-quote.md`
 - `https://docs.intents.aurora.dev/intents-deposits/quickstart/api-integration`
 - `https://docs.intents.aurora.dev/getting-started/api-keys-and-fees.md`
+
+### User-relayed Aurora team confirmation
+
+On 2026-09-18, the user relayed this response from the Aurora team through Telegram: “Please check here for the list of supported chains. Also, there is no separate testnet.” The linked page was `https://docs.intents.aurora.dev/intents-connect/supported-chains`.
+
+This is recorded as a **user-relayed team confirmation**, not a message independently observed by Kairos. No Telegram permalink, sender identity, or message metadata was supplied, so none is invented. A separate read-only fetch of the linked page's Markdown representation returned HTTP `200`, listed Monad as supported for both source and destination, and contained no Testnet/Mainnet environment label. The page corroborates the supported-chain list; the statement that there is no separate testnet comes from the user-relayed team response.
 
 ## Runtime credential boundary
 
@@ -116,7 +123,7 @@ pnpm aurora:typecheck
 pnpm aurora:probe
 ```
 
-Without a source selection, the authenticated probe may be run once to enumerate public USDC/USDT candidates and verify the exact destination. `routeReadyForDryQuote` remains false until both the exact destination and exactly one configured source asset match.
+This probe capability is retained for a future scope change, but it must not be rerun while M4 is parked. `routeReadyForDryQuote` remains false for the current deployment.
 
 ## Current verdict
 
@@ -125,6 +132,7 @@ Without a source selection, the authenticated probe may be run once to enumerate
 | Is Monad named as an Aurora Intents source and destination? | YES — official documentation |
 | Which environment contains the returned USDC contract? | Monad Mainnet, chain ID `143` — exact match in the pinned official Mainnet token list and absent from the Testnet list |
 | Is Monad Testnet chain ID `10143` represented by that returned asset? | NO |
+| Does Aurora provide a separate testnet? | NO according to the user-relayed Aurora team response; this was not independently observed in Telegram |
 | Is Kuru testnet USDC `0x3bA3…1570` present in the token catalog? | NO — discovered `monad` USDC is `0x7547…b603` |
 | Is a source chain and exact origin asset selected? | NO — source selection is intentionally withheld because the destination fails exact matching |
 | Is a non-funding dry quote proven? | NOT RUN — the precondition failed, so no quote request was constructed or sent |
@@ -134,12 +142,11 @@ Without a source selection, the authenticated probe may be run once to enumerate
 
 Authenticated discovery exposes Monad Mainnet USDC, while the current Kairos policy, Kuru market, Privy lifecycle proof, and Envio indexer are on Monad Testnet `10143` with a different token contract. The available choices are therefore:
 
-1. preserve the current Testnet deployment and wait for Aurora to expose an exact route to `0x3bA3…1570` on chain `10143`;
-2. request authoritative Aurora confirmation or future support for that exact Testnet asset without building a workaround; or
-3. evaluate a separate Mainnet Kairos/Kuru deployment only as a future scope decision requiring compatible market evidence, complete redeployment/reconfiguration, and explicit authorization.
+1. preserve the current Testnet deployment and keep Aurora parked; or
+2. evaluate a separate Mainnet Kairos/Kuru deployment only after an explicit scope decision, compatible Kuru market evidence, complete redeployment/reconfiguration review, and new authorization.
 
-Option 3 is not a migration plan and was not started. No current choice authorizes bridging, swapping, funding, or changing the configured token.
+An official future change that adds a route matching the current deployment can also reopen M4. No Mainnet evaluation or migration was started. No current choice authorizes bridging, swapping, funding, token substitution, or another credential request.
 
 ## Next action
 
-Do not request a dry quote for the current Kairos deployment and do not reuse the exposed credential. The remaining route dependency is Aurora catalog support for Monad Testnet `10143` and exact Kuru USDC `0x3bA3…1570`. If a future catalog returns that exact destination under a newly rotated local credential, rerun discovery, select one exact source asset from the same response, and only then prepare a reviewed `dry: true` quote without creating a deposit or moving funds.
+Park Aurora work. Do not repeat token discovery, request another credential, ask the same Testnet-support question, request a quote, or build a funding workaround. Reopen M4 only after either (a) an explicit decision to evaluate Mainnet under a separately authorized scope or (b) a verified official support change that supplies a route matching the current Kairos deployment. The M4 exit criterion remains unmet.

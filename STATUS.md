@@ -1,6 +1,6 @@
 # Current status
-Updated: 2026-09-17
-Stage: M4 Aurora funding journey — route verification PARTIAL; official metadata identifies the discovered asset as Monad Mainnet chain `143`, so no direct funding route matches the current Monad Testnet `10143` Kairos deployment.
+Updated: 2026-09-18
+Stage: Core demo public Kuru fill — BLOCKED on exact deployment provenance and later authorization; M4 Aurora is unmet and PARKED.
 
 Completed:
 - Final user specification copied unchanged.
@@ -71,6 +71,8 @@ Completed:
 - M4 read-only route probe: `packages/aurora` strictly parses supported-token discovery, requires an exact destination contract/decimal match, supports exact source `assetId` selection, redacts the path-based application key from failures, and refuses to claim dry-quote readiness before both sides match. Aurora tests report 2 files / 8 tests and TypeScript exit `0`.
 - M4 credential boundary: the portal credential used by the historical authenticated probe had previously been exposed. Clearing its process environment and clipboard reduced local persistence but did not rotate or revoke it. The credential is retired for Kairos and must not be reused; any future authenticated Aurora call requires a newly rotated local-only key. No credential value is stored in Git or evidence.
 - M4 authenticated discovery and environment identity: the one completed probe parsed 195 tokens / 197 asset stats and returned `monad` USDC `0x754704bc059f8c67012fed69bc8a327a5aafb603` (6 decimals). Official Monad metadata at pinned token-list revision `3a34e9b761422f52c7386ac2714f2d366c841ab9` places that exact contract on Monad Mainnet chain `143` and returns zero matches in the Testnet list. Current Kairos remains Testnet `10143` with Kuru USDC `0x3bA3…1570`; therefore no direct funding route matches the current deployment. This is not a claim of Aurora-wide incompatibility. No source asset, quote, deposit address, bridge, swap, or transfer was used.
+- M4 parked: on 2026-09-18 the user relayed an Aurora team response stating there is no separate testnet and linking the Intents Connect supported-chains page. The linked official page was fetched read-only and lists Monad for source and destination without an environment label; the Telegram message itself was not independently observed and no permalink is claimed. M4 exit remains unmet. Do not repeat discovery, request a credential, ask the same Testnet question, migrate Mainnet, or substitute a token unless scope changes explicitly or official support changes.
+- Kuru public-fill readiness review: the minimum external artifact is a reproducible build-provenance bundle for implementation `0x72ca…c9374` plus deployment/upgrade provenance tying it to proxy `0xa241…D2D9`. The fixed-fork suite now passes 6/6 cases, adding a successful FOK full fill (`20 USDC` input, `400 MON` output, zero refund/residual) to the existing partial/revert evidence. No additional trade-path feature can replace the missing provenance; independent no-broadcast work is limited to deployment planning, immutable/state verification, and receipt/Envio/frontend evidence collection. A public fill still also requires real CRE delivery identity/access for the continuous demo and explicit transaction authorization.
 
 Unverified:
 - Exact Kuru deployed-source/build equivalence, an execution-capable public Kairos adapter proof, and any public Kuru execution transaction. The deployed lifecycle adapter is deliberately execution-disabled.
@@ -79,9 +81,9 @@ Unverified:
 - Full primary-track rules and prize-stacking.
 - Submission visual design and the final deployed-product evidence package.
 - Nonzero Envio settlement aggregates from a real `ExecutionSettled` event and CRE report correlation. Lifecycle create/cancel ingestion, endpoint use, reload, and receipt/state comparison are proven. A naturally occurring public reorg is optional strengthening; controlled rollback/replay evidence is complete.
-- An exact Aurora destination entry for Monad Testnet `10143` Kuru USDC `0x3bA3…1570`, a product-specific source asset, and a non-funding dry quote. The discovered Mainnet asset does not change the configured Testnet token.
+- M4 exit: a real supported Aurora route that funds the user wallet and accurately exposes settlement/refund state. Work is parked because no route matches the current deployment and the user-relayed team response says there is no separate testnet.
 
 Next:
-M4.1 next: preserve the Testnet deployment and do not issue a quote or build a funding workaround. Await Aurora catalog support or authoritative confirmation for exact Monad Testnet `10143` Kuru USDC `0x3bA3…1570`. Any future authenticated discovery requires a newly rotated local-only credential. A separate Mainnet evaluation would require compatible Kuru market evidence, redeployment/reconfiguration, and explicit authorization; none is started. Do not create a deposit address, bridge, swap, transfer, or relax the Kuru interlock. Hosting remains an unperformed read-only-preview target, while the prior public lifecycle proof remains separate.
+Kuru next: obtain the exact compiler/build provenance and proxy deployment/upgrade evidence specified in `docs/KURU_TECHNICAL_HANDOFF.md`. Then perform an offline runtime comparison and prepare a separately reviewed, explicitly authorized execution deployment/public-fill plan. Do not open the interlock or broadcast. Aurora remains parked until an explicit Mainnet evaluation or verified official support change; hosting remains an unperformed read-only-preview target, while the prior public lifecycle proof remains separate.
 
 Do not report product ready, integration passed or tests passed based on this file.

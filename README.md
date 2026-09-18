@@ -47,7 +47,7 @@ The policy contract remains the final authority even when market conditions chan
 | CRE orchestration | Authenticated CLI simulations with real chain/Kuru reads; separately labeled executable fixture report | Proven as simulation, not deployed delivery |
 | Privy lifecycle | Six user-signed Monad Testnet transactions: deploy, approve, create, cancel, revoke | Proven on public testnet |
 | Envio history | Public HyperIndex deployment indexed the real create/cancel events and feeds `/orders`, detail, and `/reports` | Proven for lifecycle history |
-| Aurora funding | Generic Monad support is documented; the exact source → Monad Testnet → Kuru USDC route is not yet verified | Blocked at exact-route verification |
+| Aurora funding | Discovery maps the available Monad asset to Mainnet, not the current Testnet Kuru token; a user-relayed Aurora team response says there is no separate testnet | M4 unmet and parked pending an explicit Mainnet decision or official support change |
 | Public Kuru trade | Execution-capable public adapter and real settlement are intentionally interlocked | Not claimed |
 
 This boundary is deliberate. A cancelled lifecycle order is not presented as a fill, a fixed fork is not presented as a public trade, and a CRE simulation is not presented as deployed automation.

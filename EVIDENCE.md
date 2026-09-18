@@ -16,6 +16,30 @@ Documentation reads are context evidence only. Keep runtime proof separate.
 
 ---
 
+- ID and requirement: DEMO-KURU-01 / public execution interlock and one-fill readiness review
+- Date: 2026-09-18
+- Environment and chain ID: repository/evidence review; selected public target remains Monad Testnet `10143`; no RPC write, deployment, transaction, or interlock change
+- Version/commit/source URL: implementation `0x72cae0a99c19b574e8a6de558f43fc1d019c9374`; proxy `0xa241896A7Dbe8a550D2E5fF7A914bB1989ceD2D9`; Kuru contracts `2060bb2736080c175d80d568bfdb6226bb5abd04`; SDK/ABI `636509c2eafd63479d3f399703354e0d09f51e18`; fixed-fork block/hash recorded in `docs/KURU_FORK_SETTLEMENT.md`
+- Command or reproducible steps: inspect `docs/KURU_TECHNICAL_HANDOFF.md`, `docs/KURU_ADAPTER_BOUNDARY.md`, `docs/M1_EXIT_REVIEW.md`, `docs/KURU_COMPATIBILITY_INVESTIGATION.md`, `docs/KURU_FORK_SETTLEMENT.md`, `docs/CORE_DEMO_ACCEPTANCE.md`, contract/deployment tooling, `WORKPLAN.md`, and acceptance criteria; no failed metadata lookup was retried; run `pnpm contracts:compile`; `pnpm contracts:test`; then PowerShell `$env:RUN_KURU_FORK='1'; pnpm --filter @kairos/contracts kuru:fork:test; Remove-Item Env:RUN_KURU_FORK`
+- Result (PASS / FAIL / BLOCKED): PASS for gap identification and the remaining independent behavioral case; BLOCKED for public execution. Compile exited `0`; the default contract run reported 16 passing plus 6 intentionally pending fork tests; the enabled fixed-fork run reported 6/6 passing. The new successful FOK full fill consumed the complete `20,000,000`-unit proposal, delivered `400 MON`, returned no input, advanced nonce once, reset allowances, emptied active L2, and left no new residual. The minimum missing Kuru artifact is a reproducible compiler/build bundle including exact sources/dependency hashes/settings plus deployment or upgrade provenance tying the rebuilt implementation to the selected proxy. No additional trade-path feature can substitute for provenance.
+- Artifact / receipt / transaction hash: `packages/contracts/test/KuruForkIntegration.ts`; updated `docs/KURU_TECHNICAL_HANDOFF.md`, `docs/KURU_FORK_SETTLEMENT.md`, and `docs/CORE_DEMO_ACCEPTANCE.md`; fixed source block hash `0xb5a5a55678513ced1b7a43da8bed39a2d3b3e9284c34c0dc6e033ed12c914098`; no public receipt or transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): Build provenance is necessary but not sufficient for the continuous demo. A reviewed no-broadcast execution deployment plan, real CRE workflow identity/delivery access, fresh live market/gas reads, explicit transaction authorization, and the resulting public receipt remain absent. Existing public contracts are lifecycle-only and cannot execute.
+- Next action: obtain the Kuru provenance bundle; rebuild and compare runtime offline; only then prepare one bounded public-fill authorization request with exact deployments/calls, wallet roles, USDC and testnet-MON caps, abort conditions, and cleanup. Do not broadcast before that authorization.
+
+---
+
+- ID and requirement: M4-04 / Aurora no-separate-testnet team confirmation and M4 parking decision
+- Date: 2026-09-18
+- Environment and chain ID: user-relayed Telegram context plus read-only public documentation fetch; current Kairos remains Monad Testnet `10143`; no credential, quote, deposit, transfer, or chain transaction
+- Version/commit/source URL: `https://docs.intents.aurora.dev/intents-connect/supported-chains`; official Markdown response SHA-256 `f532799fe8f3640a26b58ae51a2a0d18dc9cdbc6752270cec81705a099d0e4c7`; prior token-list revision `3a34e9b761422f52c7386ac2714f2d366c841ab9`
+- Command or reproducible steps: fetch `https://docs.intents.aurora.dev/intents-connect/supported-chains.md` with `Invoke-WebRequest`; record HTTP status, final URL, content hash, the Monad source/destination row, and absence of a `testnet` label; separately record the user's relayed team statement without inventing a Telegram permalink
+- Result (PASS / FAIL / BLOCKED): PASS for source classification and linked-page read; BLOCKED for M4 exit. The official page lists Monad as supported for source and destination but does not identify a testnet environment. The user reports that the Aurora team explicitly said there is no separate testnet. The already inspected catalog supplies no route matching the current Kairos deployment, so Aurora integration is not fulfilled and M4 is parked.
+- Artifact / receipt / transaction hash: `docs/M4_ROUTE_VERIFICATION.md`; `docs/SOURCES.md`; no Telegram permalink, quote ID, deposit address, receipt, or transaction hash
+- Limitations (fixture, fork, testnet, simulation, live): The no-separate-testnet sentence is a user-relayed team confirmation, not a Telegram message independently observed by Kairos. The linked documentation corroborates chain support but does not itself contain that sentence. This does not claim Aurora-wide incompatibility.
+- Next action: none under the current scope. Do not repeat token discovery, request credentials, ask the same Testnet question, migrate Mainnet, change the configured token, or build a workaround. Reopen only after an explicit Mainnet-evaluation decision or verified official support change.
+
+---
+
 - ID and requirement: M4-03 / authoritative environment identity for the Aurora-returned Monad asset
 - Date: 2026-09-17
 - Environment and chain ID: read-only official metadata verification; returned asset resolves to Monad Mainnet chain `143`; current Kairos remains Monad Testnet chain `10143`; no Aurora credential or transaction used
