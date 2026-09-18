@@ -161,12 +161,12 @@ forkDescribe('KuruAdapter on fixed Monad Testnet fork', function () {
     };
   }
 
-  function proposal(validUntil: bigint, minimumOutput = 1n) {
+  function proposal(validUntil: bigint, minimumOutput = 1n, proposedInput = PROPOSED_INPUT) {
     return {
       orderId: 0n,
       nonce: 0n,
       validUntil,
-      proposedInput: PROPOSED_INPUT,
+      proposedInput,
       minimumOutput,
       snapshotId: FORK_BLOCK_HASH,
     };
@@ -249,6 +249,36 @@ forkDescribe('KuruAdapter on fixed Monad Testnet fork', function () {
         },
       }),
     );
+  });
+
+  it('settles a successful FOK full fill without an input refund or new residual', async function () {
+    const { ethers, owner, executor, quote, margin, market, adapter, policy, now, bookWithControlledAsk } =
+      await setup({ fillOrKill: true });
+    const adapterAddress = await adapter.getAddress();
+    const policyAddress = await policy.getAddress();
+    const ownerQuoteBefore = await quote.balanceOf(owner.address);
+    const ownerNativeBefore = await ethers.provider.getBalance(owner.address);
+    const adapterQuoteBefore = await quote.balanceOf(adapterAddress);
+    const adapterNativeBefore = await ethers.provider.getBalance(adapterAddress);
+
+    await policy.connect(executor).execute(proposal(now + 1_000n, ACTUAL_OUTPUT, ACTUAL_INPUT));
+
+    const order = await policy.getOrder(0);
+    expect(order.spent).to.equal(ACTUAL_INPUT);
+    expect(order.received).to.equal(ACTUAL_OUTPUT);
+    expect(order.executionNonce).to.equal(1n);
+    expect(await quote.balanceOf(owner.address)).to.equal(ownerQuoteBefore - ACTUAL_INPUT);
+    expect(await ethers.provider.getBalance(owner.address)).to.equal(ownerNativeBefore + ACTUAL_OUTPUT);
+    expect(await quote.allowance(owner.address, policyAddress)).to.equal(BUDGET - ACTUAL_INPUT);
+    expect(await quote.allowance(policyAddress, adapterAddress)).to.equal(0n);
+    expect(await quote.allowance(adapterAddress, MARKET)).to.equal(0n);
+    expect(await quote.balanceOf(policyAddress)).to.equal(0n);
+    expect(await quote.balanceOf(adapterAddress)).to.equal(adapterQuoteBefore);
+    expect(await ethers.provider.getBalance(adapterAddress)).to.equal(adapterNativeBefore);
+    expect(await margin.getBalance(adapterAddress, QUOTE)).to.equal(0n);
+    const bookAfter = await market.getL2Book();
+    expect(bookAfter).not.to.equal(bookWithControlledAsk);
+    expect(bookAfter.length).to.equal(130);
   });
 
   it('reverts FOK when controlled capacity cannot consume the full quote input', async function () {

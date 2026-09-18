@@ -31,7 +31,7 @@ pnpm test
 pnpm typecheck
 ```
 
-At the current run, compilation passed; the gated Kuru fork suite reported **5 passing** tests; the default contract suite reported **12 passing** and **5 intentionally pending** gated fork tests; shared Vitest reported **4 passing** tests; and TypeScript typecheck passed. See `docs/KURU_FORK_SETTLEMENT.md`.
+The M1 exit run recorded compilation, **5 passing** gated Kuru fork tests, **12 passing** default contract tests with **5 intentionally pending** fork tests, **4 passing** shared tests, and a clean TypeScript typecheck. The 2026-09-18 focused follow-up added the successful FOK full-fill case: compilation exited `0`, the expanded gated fork suite reported **6 passing**, and the current default contract suite reported **16 passing** with **6 intentionally pending** fork tests. Shared tests and typecheck were not rerun for this isolated fork-test change. See `docs/KURU_FORK_SETTLEMENT.md` and `EVIDENCE.md`.
 
 ## M1 exit interpretation
 

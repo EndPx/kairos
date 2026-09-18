@@ -43,7 +43,7 @@ Remove-Item Env:RUN_KURU_FORK
 
 `MONAD_RPC_URL` may override the documented public endpoint when a local authenticated archive endpoint is required. Do not store its value in version control.
 
-Final result: **5 passing fork tests**.
+Final result: **6 passing fork tests**.
 
 ## Observed settlement
 
@@ -64,6 +64,8 @@ The non-FOK Kairos proposal supplied `30,000,000` USDC units against `20,000,000
 | Taker resting order | None |
 
 Kuru's public `s_orders(id).size` retained the old `400 MON` value after an overfilling market buy even though the order was removed from the active tree and `getL2Book()` was empty. Kairos therefore uses active L2 state and trade/settlement deltas as the no-resting-order proof; the historical mapping alone is not a valid active-order indicator.
+
+The added successful FOK full-fill case proposed exactly `20,000,000` USDC units against the same `20,000,000` units of controlled capacity. It consumed the full proposal, returned zero input, forwarded exactly `400 MON`, advanced the nonce once, reduced owner allowance by the actual/proposed `20 USDC`, reset policy/adapter venue allowances, left zero new policy/adapter/venue residual, and emptied the active L2. This closes the previously untested S1 full-fill behavior on the documented fork; it is still not a public transaction.
 
 ## Revert and rollback cases
 
